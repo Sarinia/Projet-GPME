@@ -1,0 +1,221 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<!-- CARTOUCHE -->
+	<div id="block" class="border mb-2">
+		<div class="border">
+			<h2 class="text-center m-2">BTS gestion de la PME - Session 2019-2020</h2>
+		</div>
+		<div class="border">
+			<h3 class="text-center m-2">E4 - Gérer les relations avec les clients et les fournisseurs</h3>
+		</div>
+		<div class="d-flex">
+			<div class="col-6 border">
+				<p id="name" class="text-center m-1">{{card.student.user.lastName}} - {{card.student.user.firstName}}</p>
+			</div>
+			<div class="col-6 border">
+				<p id="candidateNb" class="text-center m-1">{{card.student.candidateNb}}</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- FICHE -->
+	<div id="block" class="border mb-2">
+		<div class="border">
+			<h4 class="text-center m-2">Fiche d'analyse d'une situation professionnelle</h4>
+		</div>
+		<div class="d-flex">
+			<div class="col-4 border">
+				<p class="text-center m-1">{{card.prob1}}</p>
+			</div>
+			<div class="col-4 border">
+				<p class="text-center m-1">{{card.prob2}}</p>
+			</div>
+			<div class="col-4 border">
+				<p class="text-center m-1">{{card.prob3}}</p>
+			</div>
+		</div>
+		<div class="d-flex">
+			<div class="col-2 border">
+				<p class="m-1">Identification de la situation professionnelle</p>
+			</div>
+			<div class="col-2 border">
+				<p class="text-center m-1">{{card.numbersp}}</p>
+			</div>
+			<div class="col-8 border">
+				<p class="m-1">Modalité de réalisation</p>
+				<p class="m-1">{{card.mod1}}</p>
+				<p class="m-1">{{card.mod2}}</p>
+				<p class="m-1">{{card.mod3}}</p>
+			</div>
+		</div>
+		<div class="d-flex">
+			<div class="col-2 border">
+				<p class="m-1">Période de réalisation</p>
+			</div>
+			<div class="col-2 border">
+				<p class="text-center m-1">Mois SP</p>
+				<p class="text-center m-1">Années SP</p>
+			</div>
+			<div class="col-8 border">
+				<p class="m-1">Condition de réalisation</p>
+				<p class="m-1">{{card.cond1}}</p>
+				<p class="m-1">{{card.cond2}}</p>
+				<p class="m-1">{{card.cond3}}</p>
+			</div>
+		</div>
+		<div class="d-flex">
+			<div class="col-2 border">
+				<p class="m-1">Activités concernées</p>
+			</div>
+			<div class="col-10 border">
+				<p class="m-1">Activité 1.1 Recherche de clientèle et contact</p>
+				<p class="m-1">Activité 1.2 Adminisdivation des ventes de la PME</p>
+				<p class="m-1">Activité 1.3 Maintien et développement de la relation avec les clients de la PME</p>
+				<p class="m-1">Activité 1.4 Recherche et choix des fournisseurs de la PME</p>
+				<p class="m-1">Activité 1.5 Suivi et condivôle des opérations d’achats et d'investissement de la PME</p>
+				<p class="m-1">Activité 1.6 Suivi comptable des opérations avec les clients et les fournisseurs de la PME</p>
+			</div>
+		</div>
+		<div class="d-flex">
+			<div class="col-2 border">
+				<p class="m-1">Intitulé de la situation professionnelle</p>
+			</div>
+			<div class="col-10 border">
+				<p class="m-1">{{card.entitledsp}}</p>
+			</div>
+		</div>
+		<div class="d-flex">
+			<div class="col-2 border">
+				<p class="m-1">Lieu, période et durée de réalisation</p>
+			</div>
+			<div class="col-10 border">
+				<p class="m-1">{{card.infossp}}</p>
+			</div>
+		</div>
+		<div class="d-flex">
+			<div class="col-2 border">
+				<p class="m-1">Cadre de la situation professionnelle</p>
+			</div>
+			<div class="col-10 border">
+				<p class="m-1">{{card.framesp}}</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- PROBLEME -->
+	<div id="block" class="border mb-2">
+		<div class="border">
+			<h4 class="text-center m-2">Problème de gestion soulevé et enjeux de la situation</h4>
+		</div>
+		<div class="d-flex">
+			<div class="col-4 border">
+				<p class="text-center m-1">{{card.prob1}}</p>
+			</div>
+			<div class="col-4 border">
+				<p class="text-center m-1">{{card.prob2}}</p>
+			</div>
+			<div class="col-4 border">
+				<p class="text-center m-1">{{card.prob3}}</p>
+			</div>
+		</div>
+		<div class="d-flex">
+			<div class="col-4 border">
+				<p class="text-center m-1">{{card.problemmanagsp}}</p>
+			</div>
+			<div class="col-4 border">
+				<p class="text-center m-1">{{card.problemcomosp}}</p>
+			</div>
+			<div class="col-4 border">
+				<p class="text-center m-1">{{card.problemcomwsp}}</p>
+			</div>
+		</div>
+		<div class="d-flex">
+			<div class="col-2 border">
+				<p>Acteurs et relation endive les acteurs</p>
+			</div>
+			<div class="col-10 border">
+				<p>{{card.actorssp}}</p>
+			</div>
+		</div>
+		<div class="d-flex">
+			<div class="col-2 border">
+				<p>Objectif</p>
+			</div>
+			<div class="col-10 border">
+				<p>{{card.targetsp}}</p>
+			</div>
+		</div>
+		<div class="d-flex">
+			<div class="col-2 border">
+				<p>Conditions de réalisation : condivaintes dont le processus et organisation comptable, environnement numérique</p>
+			</div>
+			<div class="col-10 border">
+				<p>{{card.conditionssp}}</p>
+			</div>
+		</div>
+		<div class="d-flex">
+			<div class="col-2 border">
+				<p>Ressources à disposition</p>
+			</div>
+			<div class="col-10 border">
+				<p>{{card.resourcessp}}</p>
+			</div>
+		</div>
+		<div class="d-flex">
+			<div class="col-2 border">
+				<p>Solutions logicielles choisies et fonctionnalités mobilisées</p>
+			</div>
+			<div class="col-10 border">
+				<p>{{card.answerssp}}</p>
+			</div>
+		</div>
+		<div class="d-flex">
+			<div class="col-2 border">
+				<p>Productions réalisées</p>
+			</div>
+			<div class="col-10 border">
+				<p>{{card.productionssp}}</p>
+			</div>
+		</div>
+		<div class="d-flex">
+			<div class="col-2 border">
+				<p>Ecrits professionnels produits</p>
+			</div>
+			<div class="col-10 border">
+				<p>{{card.writtensp}}</p>
+			</div>
+		</div>
+		<div class="d-flex">
+			<div class="col-2 border">
+				<p>Oraux professionnels</p>
+			</div>
+			<div class="col-10 border">
+				<p>{{card.oralsp}}</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- ANALYSE -->
+	<div id="block" class="border mb-2">
+		<div class="border">
+			<h4 class="text-center m-2">Analyse</h4>
+		</div>
+		<div class="d-flex">
+			<div class="col-2 border">
+				<p>Analyse de la situation</p>
+			</div>
+			<div class="col-10 border">
+				<p>{{card.analysissp}}</p>
+			</div>
+		</div>
+		<div class="d-flex">
+			<div class="col-2 border">
+				<p>Condivibution de la situation professionnelle à la professionnalisation</p>
+			</div>
+			<div class="col-10 border">
+				<p>{{card.contributionsp}}</p>
+			</div>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+
+{# formulaire de modification d'un administrateur #}
+{{ form_start(form) }}
+
+<div class="form-group">
+	<label for="establishment">Selectionner l'établissement :</label>
+	<select class="form-control" id="establishment" name="establishment">
+		{% for estab in estabs %}
+		{% set selected = "" %}
+		{% if estab.id == choice_estab %}
+		{% set selected = "selected" %}
+		{% endif %}
+		<option value="{{estab.id}}">{{estab.name}}</option>
+		{% endfor %}
+	</select>
+</div>
+{{ form_row(form.lastName, {'label':'Nom :'}) }}
+{{ form_row(form.firstName, {'label':'Prénom :'}) }}
+{{ form_row(form.email, {'label':'Email :'}) }}
+{{ form_row(form.birthDate, {'label':'Date de naissance :'}) }}
+
+{{ form_row(form.exist, {'label':"Activer l'administrateur :"}) }}
+
+<button class="btn btn-primary">Mettre à jour</button>
+
+{% if app.user.roles[0] == "ROLE_SADMIN" %}
+    <a href=" {{ path('admin_delete', {'id': user.id}) }}" class="btn btn-danger">Supprimer</a>
+{% endif %}
+
+{{ form_end(form) }}
+
+{% endblock %}

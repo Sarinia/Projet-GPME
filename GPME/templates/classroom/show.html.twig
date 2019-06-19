@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {# Affichage du tableau des classes #}
+
+    <p>Diplôme : {{classroom.degree}}</p>
+    <p>Date de début : {{classroom.startDate}}</p>
+    <p>Date de fin : {{classroom.endDate}}</p>
+    <p>Etablissement : {{classroom.establishment.name}}</p>
+
+    <h5>Liste des enseignants</h5>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Prénom</th>
+                <th scope="col">Email</th>
+                <th scope="col">Actif</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for teacher in classroom.teachers %}
+                <tr>
+                    <td><a href="{{ path('teacher_show', {'id': teacher.id,}) }}">{{ teacher.id }}</a></td>
+                    <td><a href="{{ path('teacher_show', {'id': teacher.id,}) }}">{{ teacher.user.firstName }}</a></td>
+                    <td><a href="{{ path('teacher_show', {'id': teacher.id,}) }}">{{ teacher.user.lastName }}</a></td>
+                    <td><a href="{{ path('teacher_show', {'id': teacher.id,}) }}">{{ teacher.user.email }}</a></td>
+                    <td><a class="{% if teacher.user.exist == 1 %}text-success{% else %}text-danger{% endif %}" href="{{ path('teacher_show', {'id': teacher.id}) }}">{% if teacher.user.exist == 1 %} oui {% else %} non {% endif %}</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h5>Liste des étudiants</h5>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Prénom</th>
+                <th scope="col">Email</th>
+                <th scope="col">Actif</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in classroom.students %}
+                <tr>
+                    <td><a href="{{ path('student_show', {'id': student.id,}) }}">{{ student.id }}</a></td>
+                    <td><a href="{{ path('student_show', {'id': student.id,}) }}">{{ student.user.firstName }}</a></td>
+                    <td><a href="{{ path('student_show', {'id': student.id,}) }}">{{ student.user.lastName }}</a></td>
+                    <td><a href="{{ path('student_show', {'id': student.id,}) }}">{{ student.user.email }}</a></td>
+                    <td><a class="{% if student.user.exist == 1 %}text-success{% else %}text-danger{% endif %}" href="{{ path('student_show', {'id': student.id}) }}">{% if student.user.exist == 1 %} oui {% else %} non {% endif %}</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

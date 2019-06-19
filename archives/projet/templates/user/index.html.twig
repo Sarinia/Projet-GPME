@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord {% endblock %}
+{% block pagetitle %}<h1 class="text-center mt-1">Tableau de bord de {{ user.slug }}</h1>{% endblock %}
+{% block body %}
+
+{% include 'partials/menu.html.twig' %}
+<h5>Passeport professionnel</h5>
+<table class="table table-bordered table-striped mb-0">
+	<thead>
+		<tr>
+			<th scope="col">Etat du passeport</th>
+			<th scope="col">Nombre de fiche</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>ProgressBar</td>
+			<td>Nb fiche {{ cards | length }} / 6</td>
+		</tr>
+	</tbody>
+</table>
+<h5>Historique fiches de situation professionnelle</h5>
+
+<table class="table table-bordered table-striped mb-0">
+	<thead>
+		<tr>
+			<th scope="col">Numéro fiche</th>
+			<th scope="col">Date de création</th>
+			<th scope="col">Etat de la fiche</th>
+			<th scope="col">Commentaire</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for card in cards %}
+		<tr>
+			<td>ficheSP n°{{ card.numbersp }}</td>
+			<td>Date de création</td>
+			<td>Etat de la fiche</td>
+			<td>Commentaire</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock %}

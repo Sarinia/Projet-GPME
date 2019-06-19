@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+
+{{ form_start(form) }}
+{% include 'partials/fiche_analyse.html.twig' %}
+{{ form_end(form) }}
+
+{% endblock %}

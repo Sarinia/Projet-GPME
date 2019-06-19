@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %} 
+
+{% block body %}
+	<form class="text-center w-25 mx-auto" method="post">
+		<select class="form-control my-2" name="dept">
+			<option value="" selected="selected">Choix du département</option>
+			{% for dept in depts %}
+			{% set selected = "" %}
+			{% if dept.id == app.request.request.get('dept') %}
+			{% set selected = "selected" %}
+			{% endif %}
+			<option value="{{ dept.id }}" {{ selected }}>{{ dept.name }}</option>
+			{% endfor %}
+		</select>
+			{% if (app.request.request.get('dept') != "") %}
+		<select class="form-control my-2" name="etb">
+			<option value="">Choix de l'établissement</option>
+			{% for etb in etbs %}
+			<option value="{{ etb.slug }}">{{ etb.name }}</option>
+			{% endfor %}
+		</select>
+			{% endif %}
+		<button type="submit" class="btn btn-success">Valider</button>
+	</form>
+{% endblock %}

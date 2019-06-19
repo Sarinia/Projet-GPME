@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+	{# Affichage du tableau des administrateurs #}
+	<p>Nom : {{admin.user.lastName}}</p>
+	<p>Prénom : {{admin.user.firstName}}</p>
+	<p>Email : {{admin.user.email}}</p>
+	<p>Etablissement : {{admin.establishment.name}}</p>
+
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">Diplôme</th>
+				<th scope="col">Date de début</th>
+				<th scope="col">Date de fin</th>
+				<th scope="col">Etablissement</th>
+				<th scope="col">Actif</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for classroom in admin.establishment.classrooms %}
+				<tr>
+					<td><a href="{{ path('classroom_show', {'id': classroom.id}) }}">{{ classroom.degree }}</a></td>
+					<td><a href="{{ path('classroom_show', {'id': classroom.id}) }}">{{ classroom.startDate}}</a></td>
+					<td><a href="{{ path('classroom_show', {'id': classroom.id}) }}">{{ classroom.endDate}}</a></td>
+					<td><a href="{{ path('establishment_show', {'id': classroom.establishment.id}) }}">{{ classroom.establishment.name}}</a></td>
+					<td><a class="{% if classroom.exist == 1 %}text-success{% else %}text-danger{% endif %}" href="{{ path('classroom_show', {'id': classroom.id}) }}">{% if classroom.exist == 1 %} oui {% else %} non {% endif %}</a></td>
+				</tr> 
+			{% endfor %}
+		</tbody>
+	</table>
+
+{% endblock %}

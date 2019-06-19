@@ -1,0 +1,54 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="{{ path('homepage') }}">Passeport numérique</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- <form class="form-inline m-auto my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form> -->
+        {% if (app.user.roles) is defined %}
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ path('contact') }}">Nous contacter</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Mon compte
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ path('dashboard') }}">Tableau de bord</a>
+                        <a class="dropdown-item" href="{{ path('account_profile') }}">Profil</a>
+                        <div class="dropdown-divider"></div>
+                        {# <a class="dropdown-item" href="{{ path('passport_show') }}">Passeport</a>
+                        <a class="dropdown-item" href="{{ path('card_show_list') }}">Fiche SP</a>
+                        {% if app.user.roles[0] == "ROLE_TEACHER" or app.user.roles[0] == "ROLE_ADMIN" or app.user.roles[0] == "ROLE_SADMIN" %}
+                            <a href="{{ path('student_show_list') }}" class="dropdown-item">Etudiants</a>
+                        {% endif %}
+                        {% if app.user.roles[0] == "ROLE_ADMIN" or app.user.roles[0] == "ROLE_SADMIN" %}
+                            <a href="{{ path('teacher_show_list') }}" class="dropdown-item">Enseignants</a>
+                            <a href="{{ path('classroom_show_list') }}" class="dropdown-item">Classes</a>
+                        {% endif %}
+                        {% if app.user.roles[0] == "ROLE_SADMIN" %}
+                            <a href="{{ path('admin_show_list') }}" class="dropdown-item">Administrateurs</a>
+                            <a href="{{ path('establishment_show_list') }}" class="dropdown-item">Etablissements</a>
+                            <a href="{{ path('department_show_list') }}" class="dropdown-item">Départements</a>
+                        {% endif %}
+                        <div class="dropdown-divider"></div> #}
+                        <a class="dropdown-item" href="{{ path('account_logout') }}">Deconnexion</a>
+                    </div>
+                </li>
+            </ul>
+        {% else %}
+            {% if app.request.attributes.get('_route') == "account_login" %}
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ path('homepage') }}">Changer l'établissement<span class="sr-only">(current)</span></a>
+                    </li>
+                </ul>
+            {% endif %}
+        {% endif %}
+    </div>
+</nav>

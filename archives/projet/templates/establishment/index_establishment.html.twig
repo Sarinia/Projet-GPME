@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des établissements{% endblock %}
+{% block pagetitle %}<h1 class="text-center mt-1">Liste des établissements</h1>{% endblock %}
+{% block body %}
+
+{% include 'partials/menu.html.twig' %}
+<table class="table table-bordered table-striped mb-0">
+	<thead>
+		<tr>
+			<th scope="col"></th>
+			<th scope="col"></th>
+			<th scope="col"></th>
+			<th scope="col"></th>
+			<th scope="col"></th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for establishment in establishments %}
+		<tr>
+			<td><input type="checkbox" name="card" value="{{establishment.id}}"></td>
+			<td>{{establishment.name}}</td>
+			<td>{{establishment.adress}}</td>
+			<td>{{establishment.postalcode}}</td>
+			<td>{{establishment.city}}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock %}

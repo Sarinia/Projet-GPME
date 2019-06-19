@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+
+{# formulaire de création d'un administrateur #}
+{{ form_start(form) }}
+
+<div class="form-group">
+	<label for="establishment">Selectionner l'établissement :</label>
+	<select class="form-control" id="establishment" name="establishment">
+		{% for estab in estabs %}
+		<option value="{{estab.id}}">{{estab.name}}</option>
+		{% endfor %}
+	</select>
+</div>
+{{ form_row(form.lastName, {'label':'Nom :'}) }}
+{{ form_row(form.firstName, {'label':'Prénom :'}) }}
+{{ form_row(form.email, {'label':'Email :'}) }}
+
+{{ form_row(form.exist, {'label':'Activer l\'administrateur :'}) }}
+
+<button class="btn btn-primary">Enregistrer l'administrateur</button>
+
+{{ form_end(form) }}
+
+{% endblock %}

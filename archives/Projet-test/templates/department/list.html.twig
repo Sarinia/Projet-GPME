@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+{# Affichage du tableau des départements #}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Nom</th>
+            <th scope="col">Actif</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for dept in depts %}
+            <tr>
+                <td><a href="{{ path('department_modify', {'id': dept.id, 'slug': dept.name}) }}">{{ dept.name }}</a></td>
+                <td><a class="{% if dept.exist == 1 %}text-success{% else %}text-danger{% endif %}" href="{{ path('department_modify', {'id': dept.id, 'slug': dept.name}) }}">{% if dept.exist == 1 %} oui {% else %} non {% endif %}</a></td>
+            </tr>  
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

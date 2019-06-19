@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+{# Affichage du tableau des classes #}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Diplôme</th>
+            <th scope="col">Date de début</th>
+            <th scope="col">Date de fin</th>
+            <th scope="col">Actif</th>
+        </tr>
+    </thead>
+    <tbody>        
+        {% for classroom in classrooms %}
+            {#{% for role in user.roles %}
+                {% if role == 'ROLE_ADMIN' %}#}
+                    <tr>
+                        <td><a href="{{ path('classroom_modify', {'id': classroom.id, 'slug': classroom.slug}) }}">{{ classroom.degree }}</a></td>
+                        <td><a href="{{ path('classroom_modify', {'id': classroom.id, 'slug': classroom.slug}) }}">{{ classroom.startDate | date('Y') }}</a></td>
+                        <td><a href="{{ path('classroom_modify', {'id': classroom.id, 'slug': classroom.slug}) }}">{{ classroom.endDate | date('Y') }}</a></td>
+                        <td><a class="{% if classroom.exist == 1 %}text-success{% else %}text-danger{% endif %}" href="{{ path('classroom_modify', {'id': classroom.id, 'slug': classroom.slug}) }}">{% if classroom.exist == 1 %} oui {% else %} non {% endif %}</a></td>
+                    </tr> 
+                {#{% endif %}              
+            {% endfor %}#}
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,55 @@
+{# Account #}
+{% if (app.request.attributes.get('_route') == "homepage") %}Accueil{% endif %}
+{% if (app.request.attributes.get('_route') == "account_login") %}Connexion{% endif %}
+{% if (app.request.attributes.get('_route') == "account_loginAdmin") %}Connexion{% endif %}
+{% if (app.request.attributes.get('_route') == "account_profile") %}Modification du profil{% endif %}
+{% if (app.request.attributes.get('_route') == "account_password") %}Modification du mot de passe{% endif %}
+
+{# Accueil #}
+{% if (app.request.attributes.get('_route') == "dashboard_student") %}Tableau de bord {{ app.user.firstName }} - {{ app.user.lastName }}{% endif %}
+{% if (app.request.attributes.get('_route') == "dashboard_teacher") %}Tableau de bord {{ app.user.firstName }} - {{ app.user.lastName }}{% endif %}
+{% if (app.request.attributes.get('_route') == "dashboard_admin") %}Tableau de bord {{ app.user.firstName }} - {{ app.user.lastName }}{% endif %}
+{% if (app.request.attributes.get('_route') == "dashboard_sadmin") %}Tableau de bord {{ app.user.firstName }} - {{ app.user.lastName }}{% endif %}
+
+{# Passport #}
+{% if (app.request.attributes.get('_route') == "passport_show") %}Passeport professionnel{% endif %}
+
+
+{# Cardsp #}
+{% if (app.request.attributes.get('_route') == "cardsp_show_list") %}Liste des fiches de situation professionnelle{% endif %}
+{% if (app.request.attributes.get('_route') == "cardsp_new") %}Création d'une fiche de situation professionnelle{% endif %}
+{% if (app.request.attributes.get('_route') == "cardsp_modify") %}Modification d'une fiche de situation professionnelle{% endif %}
+
+{# Student #}
+{% if (app.request.attributes.get('_route') == "student_show_list") %}Liste des étudiants{% endif %}
+{% if (app.request.attributes.get('_route') == "student_new") %}Création d'un étudiant{% endif %}
+{% if (app.request.attributes.get('_route') == "student_modify") %}Modification d'un étudiant{% endif %}
+
+
+{# Teacher #}
+{% if (app.request.attributes.get('_route') == "teacher_show_list") %}Liste des enseignants{% endif %}
+{% if (app.request.attributes.get('_route') == "teacher_new") %}Création d'un enseignant{% endif %}
+{% if (app.request.attributes.get('_route') == "teacher_modify") %}Modification d'un enseignant{% endif %}
+
+
+{# Admin #}
+{% if (app.request.attributes.get('_route') == "admin_show_list") %}Liste des administrateurs{% endif %}
+{% if (app.request.attributes.get('_route') == "admin_new") %}Création d'un administrateur{% endif %}
+{% if (app.request.attributes.get('_route') == "admin_modify") %}Modification d'un administrateur{% endif %}
+
+
+{# Classroom #}
+{% if (app.request.attributes.get('_route') == "classroom_show_list") %}Liste des classes{% endif %}
+{% if (app.request.attributes.get('_route') == "classroom_new") %}Création d'une classe{% endif %}
+{% if (app.request.attributes.get('_route') == "classroom_modify") %}Modification d'une classe{% endif %}
+
+
+{# Establishment #}
+{% if (app.request.attributes.get('_route') == "establishment_show_list") %}Liste des établissements{% endif %}
+{% if (app.request.attributes.get('_route') == "establishment_new") %}Création d'un établissement{% endif %}
+{% if (app.request.attributes.get('_route') == "establishment_modify") %}Modification d'un établissement{% endif %}
+
+{# Department #}
+{% if (app.request.attributes.get('_route') == "department_show_list") %}Liste des départements{% endif %}
+{% if (app.request.attributes.get('_route') == "department_new") %}Création d'un département{% endif %}
+{% if (app.request.attributes.get('_route') == "department_modify") %}Modification d'un département{% endif %}

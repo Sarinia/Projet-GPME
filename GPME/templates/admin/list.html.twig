@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {# Affichage du tableau des administrateurs #}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Prénom</th>
+                <th scope="col">Email</th>
+                <th scope="col">Etablissement</th>
+                <th scope="col">Actif</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for admin in admins %}
+                <tr>
+                    <td><a href="{{ path('admin_show', {'id': admin.id,}) }}">{{ admin.id }}</a></td>
+                    <td><a href="{{ path('admin_show', {'id': admin.id,}) }}">{{ admin.user.firstName }}</a></td>
+                    <td><a href="{{ path('admin_show', {'id': admin.id,}) }}">{{ admin.user.lastName }}</a></td>
+                    <td><a href="{{ path('admin_show', {'id': admin.id,}) }}">{{ admin.user.email }}</a></td>
+                    <td><a href="{{ path('establishment_show', {'id': admin.establishment.id,}) }}">{{ admin.establishment.name }}</a></td>
+                    <td><a class="{% if admin.user.exist == 1 %}text-success{% else %}text-danger{% endif %}" href="{{ path('admin_show', {'id': admin.id}) }}">{% if admin.user.exist == 1 %} oui {% else %} non {% endif %}</a></td>
+                </tr> 
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

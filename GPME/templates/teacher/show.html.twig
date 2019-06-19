@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {# Affichage du tableau des enseignants #}
+
+    <p>Nom : {{teacher.user.lastName}}</p>
+    <p>Prénom : {{teacher.user.firstName}}</p>
+    <p>Email : {{teacher.user.email}}</p>
+    <p>Etablissement : {{teacher.establishment.name}}</p>
+
+    {% for classroom in teacher.classrooms %}
+    <h5>Classe {{classroom.degree}}</h5>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Prénom</th>
+                <th scope="col">Email</th>
+                <th scope="col">Classe</th>
+                <th scope="col">Etablissement</th>
+                <th scope="col">Actif</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in classroom.students %}
+                <tr>
+                    <td><a href="{{ path('student_show', {'id': student.id,}) }}">{{ student.id }}</a></td>
+                    <td><a href="{{ path('student_show', {'id': student.id,}) }}">{{ student.user.firstName }}</a></td>
+                    <td><a href="{{ path('student_show', {'id': student.id,}) }}">{{ student.user.lastName }}</a></td>
+                    <td><a href="{{ path('student_show', {'id': student.id,}) }}">{{ student.user.email }}</a></td>
+                    <td><a href="{{ path('classroom_show', {'id': student.classroom.id,}) }}">{{ student.classroom.degree }}</a></td>
+                    <td><a href="{{ path('establishment_show', {'id': student.establishment.id,}) }}">{{ student.establishment.name }}</a></td>
+                    <td><a class="{% if student.user.exist == 1 %}text-success{% else %}text-danger{% endif %}" href="{{ path('student_show', {'id': student.id}) }}">{% if student.user.exist == 1 %} oui {% else %} non {% endif %}</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endfor %}
+{% endblock %}

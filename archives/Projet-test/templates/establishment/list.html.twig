@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+{# Affichage du tableau des établissements #}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Nom</th>
+            <th scope="col">Actif</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for estab in estabs %}
+            <tr>
+                <td><a href="{{ path('establishment_modify', {'id': estab.id, 'slug': estab.slug}) }}">{{ estab.name }}</a></td>
+                <td><a class="{% if estab.exist == 1 %}text-success{% else %}text-danger{% endif %}" href="{{ path('establishment_modify', {'id': estab.id, 'slug': estab.slug}) }}">{% if estab.exist == 1 %} oui {% else %} non {% endif %}</a></td>
+            </tr>  
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
