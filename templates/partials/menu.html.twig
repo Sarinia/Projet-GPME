@@ -74,27 +74,44 @@
 		{% if (app.request.attributes.get('_route') == "student_show_list") %}
 			<a href="{{ path('student_new') }}" class="btn btn-sm btn-primary">Créer un étudiant</a>
 		{% endif %}
+		
 		{% if (app.request.attributes.get('_route') == "student_show") %}
 			<a href="{{ path('student_show_list') }}" class="btn btn-sm btn-primary">Retour à la liste</a>
 			<a href="{{ path('student_modify', {'id': student.id}) }}" class="btn btn-sm btn-primary">Modifier l'étudiant</a>
 		{% endif %}
 
+		{% if (app.request.attributes.get('_route') == "student_modify") %}
+			<a class="btn btn-sm btn-primary" href="{{ path('student_show',{'id':student.id}) }}">Retour</a>
+		{% endif %}
+
+
 		<!-- teacher -->
 		{% if (app.request.attributes.get('_route') == "teacher_show_list") %}
 			<a href="{{ path('teacher_new') }}" class="btn btn-sm btn-primary">Créer un enseignant</a>
 		{% endif %}
+
 		{% if (app.request.attributes.get('_route') == "teacher_show") %}
 			<a href="{{ path('teacher_show_list') }}" class="btn btn-sm btn-primary">Retour à la liste</a>
 			<a href="{{ path('teacher_modify', {'id': teacher.id}) }}" class="btn btn-sm btn-primary">Modifier l'enseignant</a>
 		{% endif %}
 
+		{% if (app.request.attributes.get('_route') == "teacher_modify") %}
+			<a class="btn btn-sm btn-primary" href="{{ path('teacher_show',{'id':teacher.id}) }}">Retour</a>
+		{% endif %}
+
+
 		<!-- classroom -->
 		{% if (app.request.attributes.get('_route') == "classroom_show_list") %}
 			<a href="{{ path('classroom_new') }}" class="btn btn-sm btn-primary">Créer une classe</a>
 		{% endif %}
+
 		{% if (app.request.attributes.get('_route') == "classroom_show") %}
 			<a href="{{ path('admin_show_list') }}" class="btn btn-sm btn-primary">Retour à la liste</a>
 			<a href="{{ path('classroom_modify', {'id': classroom.id}) }}" class="btn btn-sm btn-primary">Modifier la classe</a>
+		{% endif %}
+
+		{% if (app.request.attributes.get('_route') == "classroom_modify") %}
+			<a class="btn btn-sm btn-primary" href="{{ path('classroom_show',{'id':classroom.id}) }}">Retour</a>
 		{% endif %}
 	{% endif %}
 
@@ -103,17 +120,19 @@
 
 		<!-- student -->
 		{% if (app.request.attributes.get('_route') == "student_show") %}
-			{% if student.exist == false %}
+			{% if student.user.exist == false %}
 				<a href=" {{ path('student_delete', {'id': student.id}) }}" class="btn btn-sm btn-danger">Supprimer</a>
 			{% endif %}
 		{% endif %}
 
+
 		<!-- teacher -->
 		{% if (app.request.attributes.get('_route') == "teacher_show") %}
-			{% if teacher.exist == false %}
+			{% if teacher.user.exist == false %}
 				<a href=" {{ path('teacher_delete', {'id': teacher.id}) }}" class="btn btn-sm btn-danger">Supprimer</a>
 			{% endif %}
 		{% endif %}
+
 
 		<!-- classroom -->
 		{% if (app.request.attributes.get('_route') == "classroom_show") %}
@@ -122,22 +141,30 @@
 			{% endif %}
 		{% endif %}
 
+
 		<!-- admin -->
 		{% if (app.request.attributes.get('_route') == "admin_show_list") %}
 			<a href="{{ path('admin_new') }}" class="btn btn-sm btn-primary">Créer un administrateur</a>
 		{% endif %}
+
 		{% if (app.request.attributes.get('_route') == "admin_show") %}
 			<a href="{{ path('admin_show_list') }}" class="btn btn-sm btn-primary">Retour à la liste</a>
 			<a href="{{ path('admin_modify', {'id': admin.id}) }}" class="btn btn-sm btn-primary">Modifier l'administrateur</a>
-			{% if admin.exist == false %}
+			{% if admin.user.exist == false %}
 				<a href=" {{ path('admin_delete', {'id': admin.id}) }}" class="btn btn-sm btn-danger">Supprimer</a>
 			{% endif %}
 		{% endif %}
+
+		{% if (app.request.attributes.get('_route') == "admin_modify") %}
+			<a class="btn btn-sm btn-primary" href="{{ path('admin_show',{'id':admin.id}) }}">Retour</a>
+		{% endif %}
+
 
 		<!-- establishment -->
 		{% if (app.request.attributes.get('_route') == "establishment_show_list") %}
 			<a href="{{ path('establishment_new') }}" class="btn btn-sm btn-primary">Créer un établissement</a>
 		{% endif %}
+
 		{% if (app.request.attributes.get('_route') == "establishment_show") %}
 			<a href="{{ path('establishment_show_list') }}" class="btn btn-sm btn-primary">Retour à la liste</a>
 			<a href="{{ path('establishment_modify', {'id': establishment.id}) }}" class="btn btn-sm btn-primary">Modifier l'établissement</a>
@@ -146,16 +173,26 @@
 			{% endif %}
 		{% endif %}
 
+		{% if (app.request.attributes.get('_route') == "establishment_modify") %}
+			<a class="btn btn-sm btn-primary" href="{{ path('establishment_show',{'id':establishment.id}) }}">Retour</a>
+		{% endif %}
+
+
 		<!-- department -->
 		{% if (app.request.attributes.get('_route') == "department_show_list") %}
 			<a href="{{ path('department_new') }}" class="btn btn-sm btn-primary">Créer un département</a>
 		{% endif %}
+
 		{% if (app.request.attributes.get('_route') == "department_show") %}
 			<a href="{{ path('department_show_list') }}" class="btn btn-sm btn-primary">Retour à la liste</a>
 			<a href="{{ path('department_modify', {'id': department.id}) }}" class="btn btn-sm btn-primary">Modifier le département</a>
 			{% if department.exist == false %}
 				<a href=" {{ path('department_delete', {'id': department.id}) }}" class="btn btn-sm btn-danger">Supprimer</a>
 			{% endif %}
+		{% endif %}
+
+		{% if (app.request.attributes.get('_route') == "department_modify") %}
+			<a class="btn btn-sm btn-primary" href="{{ path('department_show',{'id':department.id}) }}">Retour</a>
 		{% endif %}
 	{% endif %}
 </div>

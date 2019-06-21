@@ -21,7 +21,7 @@ class NewUserType extends AbstractType
             // ->add('hash')
             // ->add('slug')
             // ->add('title')
-            ->add('exist', ChoiceType::class, ['choices'  => ['Oui' => true,'Non' => false]])
+            ->add('exist', ChoiceType::class, ['choices'  => ['Oui - Visible par tout le monde' => true,'Non - Non visible par tout le monde' => false,],])
         ;
     }
 

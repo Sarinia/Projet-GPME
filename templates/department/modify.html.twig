@@ -10,7 +10,6 @@
 		{{ form_row(form.name, {'label':'Nom du département :'}) }}
 		{{ form_row(form.exist, {'label':'Activer le département :'}) }}
 
-		<a class="btn btn-primary" href="{{ path('department_show',{'id':department.id}) }}">Retour</a>
 		<button class="btn btn-primary">Mettre à jour</button>
 
 		{{ form_end(form) }}

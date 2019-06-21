@@ -187,7 +187,7 @@ class AdminController extends AbstractController
             $user->setTitle('ROLE_ADMIN');
 
             // on récupére l'établissement
-            $establishment = $request->request->get('establishment');
+            $establishment = $request->request->get('establishment_choice');
             $establishment = $estabRepo->findOneBy(['id' => $establishment]);
 
             // on assigne son role et son établissement
@@ -243,13 +243,14 @@ class AdminController extends AbstractController
 
         // si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()){
-
+dump($user);
             // on récupére l'établissement
-            $establishment = $request->request->get('establishment');
+            $establishment = $request->request->get('establishment_choice');
             $establishment = $estabRepo->findOneBy(['id' => $establishment]);
 
             // on assigne son établissement
             $admin->setEstablishment($establishment);
+            $admin->setUser($user);
             $manager->persist($admin);
 
             // on persiste et on sauvegarde les données du formulaire

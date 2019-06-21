@@ -18,7 +18,7 @@ class NewClassroomType extends AbstractType
             ->add('startDate', TextType::class)
             ->add('endDate', TextType::class)
             // ->add('slug')
-            ->add('exist', ChoiceType::class, ['choices'  => ['Oui' => true,'Non' => false,],])
+            ->add('exist', ChoiceType::class, ['choices'  => ['Oui - Visible par tout le monde' => true,'Non - Non visible par tout le monde' => false,],])
             // ->add('establishment')
         ;
     }
