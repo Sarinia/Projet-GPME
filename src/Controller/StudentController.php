@@ -389,7 +389,7 @@ class StudentController extends AbstractController
                 $classrooms = $classroomRepo->findBy(['id' => $studentCo->getClassroom()->getId()]);
 
                 // on récupère la liste des étudiants
-                $students = $studentRepo->findBy(['classroom' => $studentCo->getClassroom()->getId()]);dump($students);
+                $students = $studentRepo->findBy(['classroom' => $studentCo->getClassroom()->getId()]);
                 foreach ($students as $student) {
                     if ($student->getUser()->getExist() == true) {
                         $result[] = $student;
