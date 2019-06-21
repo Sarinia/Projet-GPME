@@ -3,8 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Classroom;
-use App\Form\ModifyClassroomType;
-use App\Form\NewClassroomType;
+use App\Form\ClassroomType;
 use App\Repository\ClassroomRepository;
 use App\Repository\EstablishmentRepository;
 use Cocur\Slugify\Slugify;
@@ -98,7 +97,7 @@ class ClassroomController extends AbstractController
         $classroom = new Classroom();
 
         // Création du formulaire à partir du fichier NewAdminType
-        $form = $this->createForm(NewClassroomType::class, $classroom);
+        $form = $this->createForm(ClassroomType::class, $classroom);
 
         // récupération des données du formulaire
         $form->handleRequest($request);
@@ -157,7 +156,7 @@ class ClassroomController extends AbstractController
         $establishments = $estabRepo->findAll();
 
         // Création du formulaire à partir du fichier NewAdminType
-        $form = $this->createForm(ModifyClassroomType::class, $classroom);
+        $form = $this->createForm(ClassroomType::class, $classroom);
 
         // récupération des données du formulaire
         $form->handleRequest($request);

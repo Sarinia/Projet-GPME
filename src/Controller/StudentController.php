@@ -442,6 +442,35 @@ class StudentController extends AbstractController
         // si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()){
 
+            // USER
+            $data = $request->request->get('student');
+
+            // lastName
+            $user->setLastName($data["user"]["lastName"]);
+
+            // firstName
+            $user->setFirstName($data["user"]["firstName"]);
+
+            // email
+            $user->setEmail($data["user"]["email"]);
+
+            // hash
+            $passRandom = bin2hex(random_bytes(12));
+            $encoded = $encoder->encodePassword($user, $passRandom);
+            $user->setHash($encoded);
+
+            // slug
+            $slugify = new Slugify();
+            $slug = $slugify->slugify($user->getFirstName()."-".$user->getLastName());
+            $user->setSlug($slug);
+
+            // title
+            $user->setTitle('ROLE_USER');
+
+            // exist
+            $user->setExist($data["user"]["exist"]);
+
+            // STUDENT
             // on regarde si un établissement a été transmis
             $estab_id = $request->request->get('establishment_choice');
             $classrooms = $classroomRepo->findBy(['establishment' => $estab_id]);
@@ -482,8 +511,8 @@ class StudentController extends AbstractController
             $establishment = $estabRepo->findOneBy(['id' => $establishment]);
 
             // on récupère le numero de candidat et la date de naissance
-            $candidateNb = $request->request->get('candidateNb');
-            $birthDate = $request->request->get('birthDate');
+            $candidateNb = $request->request->get('student')['candidateNb'];
+            $birthDate = $request->request->get('student')['birthDate'];
             $birthDate = new \Datetime($birthDate);
 
             // on assigne son role et son établissement et sa classe
@@ -582,10 +611,10 @@ class StudentController extends AbstractController
                     
                 ]);
             }
-
+            
             // on récupère le numero de candidat et la date de naissance
-            $candidateNb = $request->request->get('candidateNb');
-            $date = $request->request->get('birthDate');
+            $candidateNb = $request->request->get('student')['candidateNb'];
+            $date = $request->request->get('student')['birthDate'];
             $birthDate = new \Datetime($date);
 
             // on assigne son établissement

@@ -2,71 +2,54 @@
 
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
-{% block body %}
+	{% block body %}
 
-	{# formulaire de modification d'un etudiant #}
+		{# formulaire de modification d'un etudiant #}
 
-	<form method="post">
-		<label class="form-control-label" for="establishment">Selectionner l'établissement :</label>
-		<div class="row form-group">
-			<select class="form-control col-6 mx-3" id="establishment" name="establishment_choice">
-				{% if app.request.request.get('establishment_choice') != 0 %}
-					{% for establishment in establishments %}
-					{% set selected = "" %}
-					{% if establishment.id == app.request.request.get('establishment_choice') %}
-					{% set selected = "selected" %}
+		<form method="post">
+			<label class="form-control-label" for="establishment">Selectionner l'établissement :</label>
+			<div class="row form-group">
+				<select class="form-control col-6 mx-3" id="establishment" name="establishment_choice">
+					{% if app.request.request.get('establishment_choice') != 0 %}
+						{% for establishment in establishments %}{% set selected = "" %}
+							{% if establishment.id == app.request.request.get('establishment_choice') %}{% set selected = "selected" %}
+							{% endif %}
+							<option value="{{ establishment.id }}" {{ selected }}>{{ establishment.name }}</option>
+						{% endfor %}
+					{% else %}
+						{% for establishment in establishments %}{% set selected = "" %}
+							{% if establishment.id == student.establishment.id %}{% set selected = "selected" %}
+							{% endif %}
+							<option value="{{ establishment.id }}" {{ selected }}>{{ establishment.name }}</option>
+						{% endfor %}
 					{% endif %}
-					<option value="{{ establishment.id }}" {{ selected }}>{{ establishment.name }}</option>
-					{% endfor %}
-				{% else %}
-					{% for establishment in establishments %}
-					{% set selected = "" %}
-					{% if establishment.id == student.establishment.id %}
-					{% set selected = "selected" %}
+				</select>
+				<button type="submit" class="btn btn-primary">Actualiser</button>
+			</div>
+		</form>
+
+		{{ form_start(form) }}
+
+		{% if classrooms is defined and classrooms != 0 %}
+			<label class="form-check-label" for="classroom">Selectionner les classes :</label>
+			<div class="form-inline">
+				{% for classroom in classrooms %}{% set checked = "" %}
+					{% if classroom.id == student.classroom.id %}{% set checked = "checked" %}
 					{% endif %}
-					<option value="{{ establishment.id }}" {{ selected }}>{{ establishment.name }}</option>
-					{% endfor %}
-				{% endif %}
-			</select>
-			<button type="submit" class="btn btn-primary">Actualiser</button>
-		</div>
-	</form>
-
-	{{ form_start(form) }}
-
-	{% if classrooms is defined and classrooms != 0 %}
-	<label class="form-check-label" for="classroom">Selectionner les classes :</label>
-	<div class="form-inline">
-		{% for classroom in classrooms %}
-		{% set checked = "" %}
-		{% if classroom.id == student.classroom.id %}
-		{% set checked = "checked" %}
+					<input class="form-check-input ml-4 mr-1 mt-2 mb-3" type="checkbox" id="classroom{{classroom.id}}" {{ checked }} name="classroom[]" value="{{classroom.id}}"><label class=" mx-1 mt-2 mb-3" for="classroom{{classroom.id}}">{{classroom.degree}}</label>
+				{% endfor %}
+			</div>
 		{% endif %}
-		<input class="form-check-input ml-4 mr-1 mt-2 mb-3" type="checkbox" id="classroom{{classroom.id}}" {{ checked }} name="classroom[]" value="{{classroom.id}}"><label class=" mx-1 mt-2 mb-3" for="classroom{{classroom.id}}">{{classroom.degree}}</label>
-		{% endfor %}
-	</div>
-	{% endif %}
-	<input type="hidden" name="establishment_choice" value="{% if app.request.request.get('establishment_choice') is not null %}{{ app.request.request.get('establishment_choice') }}{% else %}{{student.establishment.id}}{% endif %}">
-	<div class="form-group">
-		<label class="form-label" for="candidateNb">Numéro de candidat :</label>
-	    <input type="text" class="form-control" id="candidateNb" name="candidateNb" value="{% if student.candidateNb is defined %}{{student.candidateNb}}{% endif %}">
-	</div>
-	{{ form_row(form.lastName, {'label':'Nom :'}) }}
-	{{ form_row(form.firstName, {'label':'Prénom :'}) }}
-	{{ form_row(form.email, {'label':'Email :'}) }}
-	<div class="form-group">
-		<label class="form-label" for="birthDate">Date de naissance :</label>
-	    <input type="date" class="form-control" id="birthDate" name="birthDate" value="{% if student.birthDate is defined %}{{ student.birthDate|date ('Y-m-d') }}{% endif %}">
-	</div>
-	{{ form_row(form.exist, {'label':"Activer l'enseignant :"}) }}
-	{{ form_row(form.exist, {'label':"Activer l'enseignant :"}) }}
+		<input type="hidden" name="establishment_choice" value="{% if app.request.request.get('establishment_choice') is not null %}{{ app.request.request.get('establishment_choice') }}{% else %}{{student.establishment.id}}{% endif %}">
+		{{ form_row(form.candidateNb, {'label':'Numéro de candidat :'}) }}
+		{{ form_row(form.user.lastName, {'label':'Nom :'}) }}
+		{{ form_row(form.user.firstName, {'label':'Prénom :'}) }}
+		{{ form_row(form.user.email, {'label':'Email :'}) }}
+		{{ form_row(form.birthDate, {'label':'Date de naissance :'}) }}
+		{{ form_row(form.user.exist, {'label':"Activer l'enseignant :"}) }}
 
-	<button class="btn btn-primary">Mettre à jour</button>
+		<button class="btn btn-primary">Mettre à jour</button>
 
-	{% if app.user.roles[0] == "ROLE_SADMIN" %}
-	    <a href=" {{ path('student_delete', {'id': student.id}) }}" class="btn btn-danger">Supprimer</a>
-	{% endif %}
+		{{ form_end(form) }}
 
-	{{ form_end(form) }}
-
-{% endblock %}
+	{% endblock %}

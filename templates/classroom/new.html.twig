@@ -2,26 +2,26 @@
 
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
-{% block body %}
+	{% block body %}
 
-{# formulaire de création d'une classe #}
-{{ form_start(form) }}
+		{# formulaire de création d'une classe #}
+		{{ form_start(form) }}
 
-<div class="form-group">
-	<label>Selectionner l'établissement :</label>
-	<select class="form-control" name="classroom_choice">
-		{% for establishment in establishments %}
-		<option value="{{establishment.id}}">{{ establishment.name }}</option>
-		{% endfor %}
-	</select>	
-</div>
-{{ form_row(form.degree, {'label':'Diplome :'}) }}
-{{ form_row(form.startDate, {'label':'Date de début :'}) }}
-{{ form_row(form.endDate, {'label':'Date de fin :'}) }}
-{{ form_row(form.exist, {'label':'Activer la classe :'}) }}
+		<div class="form-group">
+			<label>Selectionner l'établissement :</label>
+			<select class="form-control" name="classroom_choice">
+				{% for establishment in establishments %}
+					<option value="{{establishment.id}}">{{ establishment.name }}</option>
+				{% endfor %}
+			</select>	
+		</div>
+		{{ form_row(form.degree, {'label':'Diplome :'}) }}
+		{{ form_row(form.startDate, {'label':'Date de début :'}) }}
+		{{ form_row(form.endDate, {'label':'Date de fin :'}) }}
+		{{ form_row(form.exist, {'label':'Activer la classe :'}) }}
 
-<button class="btn btn-primary">Enregistrer la classe</button>
+		<button class="btn btn-primary">Enregistrer la classe</button>
 
-{{ form_end(form) }}
+		{{ form_end(form) }}
 
-{% endblock %}
+	{% endblock %}

@@ -2,10 +2,243 @@
 
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
-{% block body %}
+	{% block body %}
 
-{{ form_start(form) }}
-{% include 'partials/fiche_analyse.html.twig' %}
-{{ form_end(form) }}
+		{{ form_start(form) }}
 
-{% endblock %}
+		<!-- CARTOUCHE -->
+		<table class="table table-bordered w-100 mb-3">
+			<tr>
+				<th colspan="2" class="text-center">
+					<h2 class="m-1 p-0">BTS gestion de la PME - Session 2019-2020</h2>
+				</th>
+			</tr>
+			<tr>
+				<th colspan="2" class="text-center">
+					<h3 class="m-1 p-0">E4 - Gérer les relations avec les clients et les fournisseurs</h3>
+				</th>
+			</tr>
+			<tr>
+				<td class="w-50">
+					<p class="m-1 p-0 text-center">{{student.user.lastName}} - {{student.user.firstName}}</p>
+				</td>
+				<td class="w-50">
+					<p class="m-1 p-0 text-center">{{student.candidateNb}}</p>
+				</td>
+			</tr>
+		</table>
+
+		<!-- FICHE -->
+		<table class="table table-bordered w-100 m-0">
+			<tr>
+				<th colspan="3" class="text-center">
+					<h4 class="m-1 p-0">Fiche d'analyse d'une situation professionnelle</h4>
+				</th>
+			</tr>
+			<tr>
+				<td class="text-center m-0 p-1">
+					{{ form_label(form.prob1) }}{{ form_widget(form.prob1) }}
+				</td>
+				<td class="text-center m-0 p-1">
+					{{ form_label(form.prob2) }}{{ form_widget(form.prob2) }}
+				</td>
+				<td class="text-center m-0 p-1">
+					{{ form_label(form.prob3) }}{{ form_widget(form.prob3) }}
+				</td>
+			</tr>
+		</table>
+
+		<table class="table table-bordered w-100 mb-3">
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Identification de la situation professionnelle</p>
+				</td>
+				<td style="width: 15%;" class="text-center m-0 p-1">
+					{{ form_label(form.numbersp) }}{{ form_widget(form.numbersp, {'attr': {'class' : 'form-control-sm'}}) }}
+				</td>
+				<td>
+					<p class="m-1 p-0">Modalité de réalisation</p>
+					{{ form_label(form.mod1) }}{{ form_widget(form.mod1) }}
+					{{ form_label(form.mod2) }}{{ form_widget(form.mod2) }}
+					{{ form_label(form.mod3) }}{{ form_widget(form.mod3) }}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p class="m-1 p-0">Période de réalisation</p>
+				</td>
+				<td class="text-center">
+					<p class="m-1 p-0">Mois SP</p>
+					<p class="m-1 p-0">Années SP</p>
+				</td>
+				<td colspan="3">
+					<p class="m-1 p-0">Condition de réalisation</p>
+					{{ form_label(form.cond1) }}{{ form_widget(form.cond1) }}
+					{{ form_label(form.cond2) }}{{ form_widget(form.cond2) }}
+					{{ form_label(form.cond3) }}{{ form_widget(form.cond3) }}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p class="m-1 p-0">Activités concernées</p>
+				</td>
+				<td colspan="2">
+					<p class="m-1 p-0">Activité 1.1 Recherche de clientèle et contact</p>
+					<p class="m-1 p-0">Activité 1.2 Administration des ventes de la PME</p>
+					<p class="m-1 p-0">Activité 1.3 Maintien et développement de la relation avec les clients de la PME</p>
+					<p class="m-1 p-0">Activité 1.4 Recherche et choix des fournisseurs de la PME</p>
+					<p class="m-1 p-0">Activité 1.5 Suivi et contrôle des opérations d’achats et d'investissement de la PME</p>
+					<p class="m-1 p-0">Activité 1.6 Suivi comptable des opérations avec les clients et les fournisseurs de la PME</p>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p class="m-1 p-0">Intitulé de la situation professionnelle</p>
+				</td>
+				<td colspan="2">
+					<p class="m-1 p-0">{{ form_row(form.entitledsp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p class="m-1 p-0">Lieu, période et durée de réalisation</p>
+				</td>
+				<td colspan="2">
+					<p class="m-1 p-0">{{ form_row(form.infossp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p class="m-1 p-0">Cadre de la situation professionnelle</p>
+				</td>
+				<td colspan="2">
+					<p class="m-1 p-0">{{ form_row(form.framesp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+				</td>
+			</tr>
+		</table>
+
+		<!-- PROBLEME -->
+		<table class="table table-bordered w-100 m-0">
+			<tr>
+				<th colspan="3">
+					<h4 class="m-1 p-0">Problème de gestion soulevé et enjeux de la situation</h4>
+				</th>
+			</tr>
+			<tr>
+				<td class="text-center m-0 p-1">
+					{{ form_row(form.prob1) }}
+				</td>
+				<td class="text-center m-0 p-1">
+					{{ form_row(form.prob2) }}
+				</td>
+				<td class="text-center m-0 p-1">
+					{{ form_row(form.prob3) }}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p class="m-1 p-0">{{ form_row(form.problemmanagsp) }}</p>
+				</td>
+				<td>
+					<p class="m-1 p-0">{{ form_row(form.problemcomosp) }}</p>
+				</td>
+				<td>
+					<p class="m-1 p-0">{{ form_row(form.problemcomwsp) }}</p>
+				</td>
+			</tr>
+		</table>
+		<table class="table table-bordered w-100 mb-3">
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Acteurs et relation entre les acteurs</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.actorssp) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Objectif</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.targetsp) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Conditions de réalisation : contraintes dont le processus et organisation comptable, environnement numérique</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.conditionssp) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Ressources à disposition</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.resourcessp) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Solutions logicielles choisies et fonctionnalités mobilisées</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.answerssp) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Productions réalisées</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.productionssp) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Ecrits professionnels produits</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.writtensp) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Oraux professionnels</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.oralsp) }}</p>
+				</td>
+			</tr>
+		</table>
+
+		<!-- ANALYSE -->
+		<table class="table table-bordered w-100 mb-3">
+			<tr>
+				<th>
+					<h4 class="m-1 p-0">Analyse</h4>
+				</th>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Analyse de la situation</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.analysissp) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Contribution de la situation professionnelle à la professionnalisation</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.contributionsp) }}</p>
+				</td>
+			</tr>
+		</table>
+
+		{{ form_end(form) }}
+
+	{% endblock %}

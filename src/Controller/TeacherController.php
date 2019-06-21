@@ -437,6 +437,35 @@ class TeacherController extends AbstractController
         // si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()){
 
+            // USER
+            $data = $request->request->get('teacher');
+
+            // lastName
+            $user->setLastName($data["user"]["lastName"]);
+
+            // firstName
+            $user->setFirstName($data["user"]["firstName"]);
+
+            // email
+            $user->setEmail($data["user"]["email"]);
+
+            // hash
+            $passRandom = bin2hex(random_bytes(12));
+            $encoded = $encoder->encodePassword($user, $passRandom);
+            $user->setHash($encoded);
+
+            // slug
+            $slugify = new Slugify();
+            $slug = $slugify->slugify($user->getFirstName()."-".$user->getLastName());
+            $user->setSlug($slug);
+
+            // title
+            $user->setTitle('ROLE_TEACHER');
+
+            // exist
+            $user->setExist($data["user"]["exist"]);
+
+            // TEACHER
             // on créé, on le crypte et on transmet le mot de passe
             $passRandom = bin2hex(random_bytes(12));
             $encoded = $encoder->encodePassword($user, $passRandom);
