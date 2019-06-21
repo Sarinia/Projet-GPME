@@ -1,38 +1,28 @@
 <!-- menu principal -->
 <div id="menu_principal" class="my-3 d-flex justify-content-center">
-	<!-- ETUDIANT -->
-	{% if app.user.roles[0] == "ROLE_USER" %}
+
+	<!-- ROLE_USER -->
+	{% if is_granted('ROLE_USER') %}
 		{# <a href="{{ path('passport_show') }}" class="mx-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,8) == "passport") %}success{% else %}primary{% endif %}">Passeport</a> #}
 		<a href="{{ path('card_show_list') }}" class="mx-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,4) == "card") %}success{% else %}primary{% endif %}">Fiches SP</a>
 		<a href="{{ path('student_show_list') }}" class="mx-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,7) == "student") %}success{% else %}primary{% endif %}">Etudiants</a>
 		<a href="{{ path('teacher_show_list') }}" class="mx-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,7) == "teacher") %}success{% else %}primary{% endif %}">Enseignants</a>
 	{% endif %}
 
-	<!-- ENSEIGNANT -->
-	{% if app.user.roles[0] == "ROLE_TEACHER" %}
+	<!-- ROLE_TEACHER -->
+	{% if is_granted('ROLE_TEACHER') %}
 		{# <a href="{{ path('passport_show') }}" class="mx-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,8) == "passport") %}success{% else %}primary{% endif %}">Passeport</a> #}
-		<a href="{{ path('card_show_list') }}" class="mx-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,4) == "card") %}success{% else %}primary{% endif %}">Fiches SP</a>
-		<a href="{{ path('student_show_list') }}" class="mx-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,7) == "student") %}success{% else %}primary{% endif %}">Etudiants</a>
-		<a href="{{ path('teacher_show_list') }}" class="mx-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,7) == "teacher") %}success{% else %}primary{% endif %}">Enseignants</a>
 		<a href="{{ path('classroom_show_list') }}" class="mx-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,9) == "classroom") %}success{% else %}primary{% endif %}">Classes</a>
 	{% endif %}
 
-	<!-- ADMIN -->
-	{% if app.user.roles[0] == "ROLE_ADMIN" %}
+	<!-- ROLE_ADMIN -->
+	{% if is_granted('ROLE_ADMIN') %}
 		{# <a href="{{ path('passport_show') }}" class="mx-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,8) == "passport") %}success{% else %}primary{% endif %}">Passeport</a> #}
-		<a href="{{ path('card_show_list') }}" class="mx-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,4) == "card") %}success{% else %}primary{% endif %}">Fiches SP</a>
-		<a href="{{ path('student_show_list') }}" class="mx-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,7) == "student") %}success{% else %}primary{% endif %}">Etudiants</a>
-		<a href="{{ path('teacher_show_list') }}" class="mx-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,7) == "teacher") %}success{% else %}primary{% endif %}">Enseignants</a>
-		<a href="{{ path('classroom_show_list') }}" class="mx-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,9) == "classroom") %}success{% else %}primary{% endif %}">Classes</a>
 	{% endif %}
 
-	<!-- SADMIN -->
-	{% if app.user.roles[0] == "ROLE_SADMIN" %}
+	<!-- ROLE_SADMIN -->
+	{% if is_granted('ROLE_SADMIN') %}
 		{# <a href="{{ path('passport_show') }}" class="mx-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,8) == "passport") %}success{% else %}primary{% endif %}">Passeport</a> #}
-		<a href="{{ path('card_show_list') }}" class="mx-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,4) == "card") %}success{% else %}primary{% endif %}">Fiches SP</a>
-		<a href="{{ path('student_show_list') }}" class="mx-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,7) == "student") %}success{% else %}primary{% endif %}">Etudiants</a>
-		<a href="{{ path('teacher_show_list') }}" class="mx-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,7) == "teacher") %}success{% else %}primary{% endif %}">Enseignants</a>
-		<a href="{{ path('classroom_show_list') }}" class="mx-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,9) == "classroom") %}success{% else %}primary{% endif %}">Classes</a>
 		<a href="{{ path('admin_show_list') }}" class="mx-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,5) == "admin") %}success{% else %}primary{% endif %}">Administrateurs</a>
 		<a href="{{ path('establishment_show_list') }}" class="mx-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,13) == "establishment") %}success{% else %}primary{% endif %}">Etablissements</a>
 		<a href="{{ path('department_show_list') }}" class="mx-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,10) == "department") %}success{% else %}primary{% endif %}">Départements</a>
@@ -43,261 +33,280 @@
 
 <!-- menu secondaire -->
 <div id="menu_secondaire" class="my-3">
+	
+	<!-- ROLE_USER -->
+	{% if is_granted('ROLE_USER') %}
 
-	<!-- account -->
-	{% if (app.request.attributes.get('_route') | slice(0,7) == "account") %}
-		<a href="{{ path('account_profile') }}" class="btn btn-{% if app.request.attributes.get('_route') == "account_profile" %}success{% else %}primary{% endif %}">Modification du profil</a>
-	{% endif %}
-	{% if (app.request.attributes.get('_route') | slice(0,7) == "account") %}
-		<a href="{{ path('account_password') }}" class="btn btn-{% if app.request.attributes.get('_route') == "account_password" %}success{% else %}primary{% endif %}">Modification du mot de passe</a>
-	{% endif %}
+		<!-- account -->
+		{% if (app.request.attributes.get('_route') | slice(0,7) == "account") %}
+			<a href="{{ path('account_profile') }}" class="btn btn-{% if app.request.attributes.get('_route') == "account_profile" %}success{% else %}primary{% endif %}">Modification du profil</a>
+			<a href="{{ path('account_password') }}" class="btn btn-{% if app.request.attributes.get('_route') == "account_password" %}success{% else %}primary{% endif %}">Modification du mot de passe</a>
+		{% endif %}
 
-	<!-- passport -->
-	{% if (app.request.attributes.get('_route') == "passport_show") %}
-		<a href="" class="btn btn-sm btn-primary">Imprimer</a>
-	{% endif %}
+		<!-- passport -->
+		{% if (app.request.attributes.get('_route') == "passport_show") %}
+			<a href="" class="btn btn-sm btn-primary">Imprimer</a>
+		{% endif %}
 
-	<!-- cardsp -->
-	{% if (app.request.attributes.get('_route') == "card_show_list") %}
-		{% if app.user.roles[0] == "ROLE_USER" %}
+		<!-- cardsp -->
+		{% if (app.request.attributes.get('_route') == "card_show_list") %}	
 			<a href="{{ path('card_new') }}" class="btn btn-sm btn-primary">Créer une fiche SP</a>
 		{% endif %}
-	{% endif %}
-	{% if (app.request.attributes.get('_route') == "card_show") %}
-		<a href="{{ path('card_modify', {'id': card.id}) }}" class="btn btn-sm btn-primary">Modifier</a>
-	{% endif %}
-	{% if (app.request.attributes.get('_route') == "card_show") %}
-		<a href="" class="btn btn-sm btn-primary">Dupliquer</a>
-	{% endif %}
-	{% if (app.request.attributes.get('_route') == "card_show") %}
-		<a href="" class="btn btn-sm btn-primary">Imprimer</a>
+		{% if (app.request.attributes.get('_route') == "card_show") %}
+			<a href="{{ path('card_show_list') }}" class="btn btn-sm btn-primary">Retour à la liste</a>
+			<a href="{{ path('card_modify', {'id': card.id}) }}" class="btn btn-sm btn-primary">Modifier</a>
+			<a href="" class="btn btn-sm btn-primary">Dupliquer</a>
+			<a href="" class="btn btn-sm btn-primary">Imprimer</a>
+		{% endif %}
+
 	{% endif %}
 
-	<!-- student -->
-	{% if app.user.roles[0] == "ROLE_ADMIN" or app.user.roles[0] == "ROLE_SADMIN" %}
+	<!-- ROLE_TEACHER -->
+	{% if is_granted('ROLE_TEACHER') %}
+
+		
+	{% endif %}
+
+	<!-- ROLE_ADMIN -->
+	{% if is_granted('ROLE_ADMIN') %}
+
+		<!-- student -->
 		{% if (app.request.attributes.get('_route') == "student_show_list") %}
 			<a href="{{ path('student_new') }}" class="btn btn-sm btn-primary">Créer un étudiant</a>
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "student_show") %}
+			<a href="{{ path('student_show_list') }}" class="btn btn-sm btn-primary">Retour à la liste</a>
 			<a href="{{ path('student_modify', {'id': student.id}) }}" class="btn btn-sm btn-primary">Modifier l'étudiant</a>
 		{% endif %}
-	{% endif %}
 
-	<!-- teacher -->
-	{% if app.user.roles[0] == "ROLE_ADMIN" or app.user.roles[0] == "ROLE_SADMIN" %}
+		<!-- teacher -->
 		{% if (app.request.attributes.get('_route') == "teacher_show_list") %}
 			<a href="{{ path('teacher_new') }}" class="btn btn-sm btn-primary">Créer un enseignant</a>
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "teacher_show") %}
+			<a href="{{ path('teacher_show_list') }}" class="btn btn-sm btn-primary">Retour à la liste</a>
 			<a href="{{ path('teacher_modify', {'id': teacher.id}) }}" class="btn btn-sm btn-primary">Modifier l'enseignant</a>
 		{% endif %}
-	{% endif %}
 
-	<!-- classroom -->
-	{% if (app.request.attributes.get('_route') == "classroom_show_list") %}
-		{% if app.user.roles[0] == "ROLE_ADMIN" or app.user.roles[0] == "ROLE_SADMIN" %}
+		<!-- classroom -->
+		{% if (app.request.attributes.get('_route') == "classroom_show_list") %}
 			<a href="{{ path('classroom_new') }}" class="btn btn-sm btn-primary">Créer une classe</a>
 		{% endif %}
-	{% endif %}
-	{% if (app.request.attributes.get('_route') == "classroom_show") %}
-		{% if app.user.roles[0] == "ROLE_ADMIN" or app.user.roles[0] == "ROLE_SADMIN" %}
+		{% if (app.request.attributes.get('_route') == "classroom_show") %}
+			<a href="{{ path('admin_show_list') }}" class="btn btn-sm btn-primary">Retour à la liste</a>
 			<a href="{{ path('classroom_modify', {'id': classroom.id}) }}" class="btn btn-sm btn-primary">Modifier la classe</a>
 		{% endif %}
 	{% endif %}
 
-	<!-- admin -->
-	{% if (app.request.attributes.get('_route') == "admin_show_list") %}
-		<a href="{{ path('admin_new') }}" class="btn btn-sm btn-primary">Créer un administrateur</a>
-	{% endif %}
-	{% if (app.request.attributes.get('_route') == "admin_show") %}
-		<a href="{{ path('admin_modify', {'id': admin.id}) }}" class="btn btn-sm btn-primary">Modifier l'administrateur</a>
-	{% endif %}
+	<!-- ROLE_SADMIN -->
+	{% if is_granted('ROLE_SADMIN') %}
 
-	<!-- establishment -->
-	{% if (app.request.attributes.get('_route') == "establishment_show_list") %}
-		<a href="{{ path('establishment_new') }}" class="btn btn-sm btn-primary">Créer un établissement</a>
-	{% endif %}
-	{% if (app.request.attributes.get('_route') == "establishment_show") %}
-		<a href="{{ path('establishment_modify', {'id': estab.id}) }}" class="btn btn-sm btn-primary">Modifier l'établissement</a>
-	{% endif %}
+		<!-- student -->
+		{% if (app.request.attributes.get('_route') == "student_show") %}
+			{% if student.exist == false %}
+				<a href=" {{ path('student_delete', {'id': student.id}) }}" class="btn btn-sm btn-danger">Supprimer</a>
+			{% endif %}
+		{% endif %}
 
-	<!-- department -->
-	{% if (app.request.attributes.get('_route') == "department_show_list") %}
-		<a href="{{ path('department_new') }}" class="btn btn-sm btn-primary">Créer un département</a>
-	{% endif %}
-	{% if (app.request.attributes.get('_route') == "department_show") %}
-		<a href="{{ path('department_modify', {'id': dept.id}) }}" class="btn btn-sm btn-primary">Modifier le département</a>
+		<!-- teacher -->
+		{% if (app.request.attributes.get('_route') == "teacher_show") %}
+			{% if teacher.exist == false %}
+				<a href=" {{ path('teacher_delete', {'id': teacher.id}) }}" class="btn btn-sm btn-danger">Supprimer</a>
+			{% endif %}
+		{% endif %}
+
+		<!-- classroom -->
+		{% if (app.request.attributes.get('_route') == "classroom_show") %}
+			{% if classroom.exist == false %}
+				<a href=" {{ path('classroom_delete', {'id': classroom.id}) }}" class="btn btn-sm btn-danger">Supprimer</a>
+			{% endif %}
+		{% endif %}
+
+		<!-- admin -->
+		{% if (app.request.attributes.get('_route') == "admin_show_list") %}
+			<a href="{{ path('admin_new') }}" class="btn btn-sm btn-primary">Créer un administrateur</a>
+		{% endif %}
+		{% if (app.request.attributes.get('_route') == "admin_show") %}
+			<a href="{{ path('admin_show_list') }}" class="btn btn-sm btn-primary">Retour à la liste</a>
+			<a href="{{ path('admin_modify', {'id': admin.id}) }}" class="btn btn-sm btn-primary">Modifier l'administrateur</a>
+			{% if admin.exist == false %}
+				<a href=" {{ path('admin_delete', {'id': admin.id}) }}" class="btn btn-sm btn-danger">Supprimer</a>
+			{% endif %}
+		{% endif %}
+
+		<!-- establishment -->
+		{% if (app.request.attributes.get('_route') == "establishment_show_list") %}
+			<a href="{{ path('establishment_new') }}" class="btn btn-sm btn-primary">Créer un établissement</a>
+		{% endif %}
+		{% if (app.request.attributes.get('_route') == "establishment_show") %}
+			<a href="{{ path('establishment_show_list') }}" class="btn btn-sm btn-primary">Retour à la liste</a>
+			<a href="{{ path('establishment_modify', {'id': establishment.id}) }}" class="btn btn-sm btn-primary">Modifier l'établissement</a>
+			{% if establishment.exist == false %}
+				<a href=" {{ path('establishment_delete', {'id': establishment.id}) }}" class="btn btn-sm btn-danger">Supprimer</a>
+			{% endif %}
+		{% endif %}
+
+		<!-- department -->
+		{% if (app.request.attributes.get('_route') == "department_show_list") %}
+			<a href="{{ path('department_new') }}" class="btn btn-sm btn-primary">Créer un département</a>
+		{% endif %}
+		{% if (app.request.attributes.get('_route') == "department_show") %}
+			<a href="{{ path('department_show_list') }}" class="btn btn-sm btn-primary">Retour à la liste</a>
+			<a href="{{ path('department_modify', {'id': department.id}) }}" class="btn btn-sm btn-primary">Modifier le département</a>
+			{% if department.exist == false %}
+				<a href=" {{ path('department_delete', {'id': department.id}) }}" class="btn btn-sm btn-danger">Supprimer</a>
+			{% endif %}
+		{% endif %}
 	{% endif %}
 </div>
 
 {# ---------------------------------------------------------------------------------------------------------------------------------------------- #}
 
 <!-- menu filtre -->
-{% if app.user.roles[0] == "ROLE_TEACHER" or app.user.roles[0] == "ROLE_ADMIN" or app.user.roles[0] == "ROLE_SADMIN" %}
-<div id="menu_filtre" class="my-3">
+{% if is_granted('ROLE_TEACHER') %}
+	<div id="menu_filtre" class="my-3">
 
-	<!-- account -->
+		<!-- account -->
 
-	<!-- passport -->
+		<!-- passport -->
 
-	<!-- cardsp -->
-	{# {% if (app.request.attributes.get('_route') == "cardsp_show_list") %}
-	<div class="row mx-3">
-	<form class="form-group d-inline-flex m-0 ml-auto" method="post">
-	<input class="form-control form-control-sm mx-1" type="text" name="recherche">
-	<button class="btn btn-sm btn-primary mx-1">Rechercher</button>
-	</form>
+		<!-- cardsp -->
+
+		<!-- student -->
+		{% if (app.request.attributes.get('_route') == "student_show_list") %}
+			<div class="row mx-3">
+				<h6 class="mx-2 my-auto">filtres :</h6>
+				<form action="{{ path('student_show_list') }}" class="form-group d-inline-flex m-0 p-0 col-4" method="post">
+					<select class="form-control form-control-sm mx-2" name="establishment_choice">
+						<option value="0">Par établissement</option>
+						{% for establishment in establishments %}{% set selected = "" %}
+							{% if app.request.request.get('establishment_choice') is defined and establishment.id == app.request.request.get('establishment_choice') %}{% set selected = "selected" %}
+							{% endif %}
+							<option value="{{ establishment.id }}" {{ selected }}>{{ establishment.name }}</option>
+						{% endfor %}
+					</select>
+					<select class="form-control form-control-sm" name="classroom_choice">
+						<option value="0">Par classe</option>
+						{% for classroom in classrooms %}{% set selected = "" %}
+							{% if app.request.request.get('classroom_choice') is defined and classroom.id == app.request.request.get('classroom_choice') %}{% set selected = "selected" %}
+							{% endif %}
+							<option value="{{ classroom.id }}" {{ selected }}>{{ classroom.degree }}</option>
+						{% endfor %}
+					</select>
+					<button class="btn btn-sm btn-primary mx-1" name="filtrer" value="oui">Voir</button>
+				</form>
+				<form action="{{ path('student_show_list') }}" class="form-group d-inline-flex m-0 ml-auto" method="post">
+					<input class="form-control form-control-sm mx-1" type="text" name="search" value="{{ app.request.request.get('search') }}">
+					<button class="btn btn-sm btn-primary mx-1" name="rechercher" value="oui">Rechercher</button>
+				</form>
+			</div>
+		{% endif %}
+
+		<!-- teacher -->
+		{% if (app.request.attributes.get('_route') == "teacher_show_list") %}
+			<div class="row mx-3">
+				<h6 class="mx-2 my-auto">filtres :</h6>
+				<form action="{{ path('teacher_show_list') }}" class="form-group d-inline-flex m-0 p-0 col-4" method="post">
+					<select class="form-control form-control-sm mx-2" name="establishment_choice">
+						<option value="0">Par établissement</option>
+						{% for establishment in establishments %}{% set selected = "" %}
+							{% if app.request.request.get('establishment_choice') is defined and establishment.id == app.request.request.get('establishment_choice') %}{% set selected = "selected" %}
+							{% endif %}
+							<option value="{{ establishment.id }}" {{ selected }}>{{ establishment.name }}</option>
+						{% endfor %}
+					</select>
+					<select class="form-control form-control-sm" name="classroom_choice">
+						<option value="0">Par classe</option>
+						{% for classroom in classrooms %}{% set selected = "" %}
+							{% if app.request.request.get('classroom_choice') is defined and classroom.id == app.request.request.get('classroom_choice') %}{% set selected = "selected" %}
+							{% endif %}
+							<option value="{{ classroom.id }}" {{ selected }}>{{ classroom.degree }}</option>
+						{% endfor %}
+					</select>
+					<button class="btn btn-sm btn-primary mx-1" name="filtrer" value="oui">Voir</button>
+				</form>
+				<form action="{{ path('teacher_show_list') }}" class="form-group d-inline-flex m-0 ml-auto" method="post">
+					<input class="form-control form-control-sm mx-1" type="text" name="search" value="{{(app.request.request.get('search'))}}">
+					<button class="btn btn-sm btn-primary mx-1" name="rechercher" value="oui">Rechercher</button>
+				</form>
+			</div>
+		{% endif %}
+
+		<!-- classroom -->
+		{% if (app.request.attributes.get('_route') == "classroom_show_list") %}
+			<div class="row mx-3">
+				<h6 class="mx-2 my-auto">filtres :</h6>
+				<form action="{{ path('classroom_show_list') }}" class="form-group d-inline-flex m-0" method="post">
+					<select class="form-control form-control-sm" name="establishment_choice">
+						<option value="0">Par établissement</option>
+						{% for establishment in establishments %}{% set selected = "" %}
+							{% if app.request.request.get('establishment_choice') is defined and establishment.id == app.request.request.get('establishment_choice') %}{% set selected = "selected" %}
+							{% endif %}
+							<option value="{{ establishment.id }}" {{ selected }}>{{ establishment.name }}</option>
+						{% endfor %}
+					</select>
+					<button class="btn btn-sm btn-primary mx-1" name="" value="">Voir</button>
+				</form>
+				<form action="{{ path('classroom_show_list') }}" class="form-group d-inline-flex m-0 ml-auto" method="post">
+					<input class="form-control form-control-sm mx-1" type="text" name="search" value="{{(app.request.request.get('search'))}}">
+					<button class="btn btn-sm btn-primary mx-1" name="rechercher" value="oui">Rechercher</button>
+				</form>
+			</div>
+		{% endif %}
+
+		<!-- admin -->
+		{% if (app.request.attributes.get('_route') == "admin_show_list") %}
+			<div class="row mx-3">
+				<h6 class="mx-2 my-auto">filtres :</h6>
+				<form action="{{ path('admin_show_list') }}" class="form-group d-inline-flex m-0" method="post">
+					<select class="form-control form-control-sm" name="establishment_choice">
+						<option value="0">Par établissement</option>
+						{% for establishment in establishments %}{% set selected = "" %}
+							{% if app.request.request.get('establishment_choice') is defined and establishment.id == app.request.request.get('establishment_choice') %}{% set selected = "selected" %}
+							{% endif %}
+							<option value="{{ establishment.id }}" {{ selected }}>{{ establishment.name }}</option>
+						{% endfor %}
+					</select>
+					<button class="btn btn-sm btn-primary mx-1" name="filtrer" value="oui">Voir</button>
+				</form>
+				<form action="{{ path('admin_show_list') }}" class="form-group d-inline-flex m-0 ml-auto" method="post">
+					<input class="form-control form-control-sm mx-1" type="text" name="search" value="{{(app.request.request.get('search'))}}">
+					<button class="btn btn-sm btn-primary mx-1" name="rechercher" value="oui">Rechercher</button>
+				</form>
+			</div>
+		{% endif %}
+
+		<!-- establishment -->
+		{% if (app.request.attributes.get('_route') == "establishment_show_list") %}
+			<div class="row mx-3">
+				<h6 class="mx-2 my-auto">filtres :</h6>
+				<form action="{{ path('establishment_show_list') }}" class="form-group d-inline-flex m-0" method="post">
+					<select class="form-control form-control-sm" name="department_choice">
+						<option value="0">Par département</option>
+						{% for department in departments %}{% set selected = "" %}
+							{% if app.request.request.get('department_choice') is defined and department.id == app.request.request.get('department_choice') %}{% set selected = "selected" %}
+							{% endif %}
+							<option value="{{ department.id }}" {{ selected }}>{{ department.name }}</option>
+						{% endfor %}
+					</select>
+					<button class="btn btn-sm btn-primary mx-1" name="filtrer" value="oui">Voir</button>
+				</form>
+				<form action="{{ path('establishment_show_list') }}" class="form-group d-inline-flex m-0 ml-auto" method="post">
+					<input class="form-control form-control-sm mx-1" type="text" name="search" value="{{(app.request.request.get('search'))}}">
+					<button class="btn btn-sm btn-primary mx-1" name="rechercher" value="oui">Rechercher</button>
+				</form>
+			</div>
+		{% endif %}
+
+		<!-- department -->
+		{% if (app.request.attributes.get('_route') == "department_show_list") %}
+			<div class="row mx-3">
+				<form action="{{ path('department_show_list') }}" class="form-group d-inline-flex m-0 ml-auto" method="post">
+					<input class="form-control form-control-sm mx-1" type="text" name="search" value="{{(app.request.request.get('search'))}}">
+					<button class="btn btn-sm btn-primary mx-1" name="rechercher" value="oui">Rechercher</button>
+				</form>
+			</div>
+		{% endif %}
+
 	</div>
-	{% endif %} #}
-
-<!-- student -->
-{% if (app.request.attributes.get('_route') == "student_show_list") %}
-	<div class="row mx-3">
-		<h6 class="mx-2 my-auto">filtres :</h6>
-		<form action="{{ path('student_show_list') }}" class="form-group d-inline-flex m-0 p-0 col-4" method="post">
-			<select class="form-control form-control-sm mx-2" name="establishment_choice">
-				<option value="0">Par établissement</option>
-				{% for establishment in establishments %}
-				{% set selected = "" %}
-				{% if app.request.request.get('establishment_choice') is defined and establishment.id == app.request.request.get('establishment_choice') %}
-				{% set selected = "selected" %}
-				{% endif %}
-				<option value="{{ establishment.id }}" {{ selected }}>{{ establishment.name }}</option>
-				{% endfor %}
-				</select>
-				<select class="form-control form-control-sm" name="classroom_choice">
-				<option value="0">Par classe</option>
-				{% for classroom in classrooms %}
-				{% set selected = "" %}
-				{% if app.request.request.get('classroom_choice') is defined and classroom.id == app.request.request.get('classroom_choice') %}
-				{% set selected = "selected" %}
-				{% endif %}
-				<option value="{{ classroom.id }}" {{ selected }}>{{ classroom.degree }}</option>
-				{% endfor %}
-			</select>
-			<button class="btn btn-sm btn-primary mx-1" name="filtrer" value="oui">Voir</button>
-		</form>
-		<form action="{{ path('student_show_list') }}" class="form-group d-inline-flex m-0 ml-auto" method="post">
-			<input class="form-control form-control-sm mx-1" type="text" name="search" value="{{ app.request.request.get('search') }}">
-			<button class="btn btn-sm btn-primary mx-1" name="rechercher" value="oui">Rechercher</button>
-		</form>
-	</div>
-{% endif %}
-
-<!-- teacher -->
-{% if (app.request.attributes.get('_route') == "teacher_show_list") %}
-	<div class="row mx-3">
-		<h6 class="mx-2 my-auto">filtres :</h6>
-		<form action="{{ path('teacher_show_list') }}" class="form-group d-inline-flex m-0 p-0 col-4" method="post">
-			<select class="form-control form-control-sm mx-2" name="establishment_choice">
-				<option value="0">Par établissement</option>
-				{% for establishment in establishments %}
-				{% set selected = "" %}
-				{% if app.request.request.get('establishment_choice') is defined and establishment.id == app.request.request.get('establishment_choice') %}
-				{% set selected = "selected" %}
-				{% endif %}
-				<option value="{{ establishment.id }}" {{ selected }}>{{ establishment.name }}</option>
-				{% endfor %}
-			</select>
-			<select class="form-control form-control-sm" name="classroom_choice">
-				<option value="0">Par classe</option>
-				{% for classroom in classrooms %}
-				{% set selected = "" %}
-				{% if app.request.request.get('classroom_choice') is defined and classroom.id == app.request.request.get('classroom_choice') %}
-				{% set selected = "selected" %}
-				{% endif %}
-				<option value="{{ classroom.id }}" {{ selected }}>{{ classroom.degree }}</option>
-				{% endfor %}
-			</select>
-			<button class="btn btn-sm btn-primary mx-1" name="filtrer" value="oui">Voir</button>
-		</form>
-		<form action="{{ path('teacher_show_list') }}" class="form-group d-inline-flex m-0 ml-auto" method="post">
-			<input class="form-control form-control-sm mx-1" type="text" name="search" value="{{(app.request.request.get('search'))}}">
-			<button class="btn btn-sm btn-primary mx-1" name="rechercher" value="oui">Rechercher</button>
-		</form>
-	</div>
-{% endif %}
-
-<!-- classroom -->
-{% if (app.request.attributes.get('_route') == "classroom_show_list") %}
-	<div class="row mx-3">
-		<h6 class="mx-2 my-auto">filtres :</h6>
-		<form action="{{ path('classroom_show_list') }}" class="form-group d-inline-flex m-0" method="post">
-			<select class="form-control form-control-sm" name="establishment_choice">
-				<option value="0">Par établissement</option>
-				{% for establishment in establishments %}
-				{% set selected = "" %}
-				{% if app.request.request.get('establishment_choice') is defined and establishment.id == app.request.request.get('establishment_choice') %}
-				{% set selected = "selected" %}
-				{% endif %}
-				<option value="{{ establishment.id }}" {{ selected }}>{{ establishment.name }}</option>
-				{% endfor %}
-			</select>
-			<button class="btn btn-sm btn-primary mx-1" name="" value="">Voir</button>
-		</form>
-		<form action="{{ path('classroom_show_list') }}" class="form-group d-inline-flex m-0 ml-auto" method="post">
-			<input class="form-control form-control-sm mx-1" type="text" name="search" value="{{(app.request.request.get('search'))}}">
-			<button class="btn btn-sm btn-primary mx-1" name="rechercher" value="oui">Rechercher</button>
-		</form>
-	</div>
-{% endif %}
-
-<!-- admin -->
-{% if (app.request.attributes.get('_route') == "admin_show_list") %}
-	<div class="row mx-3">
-		<h6 class="mx-2 my-auto">filtres :</h6>
-		<form action="{{ path('admin_show_list') }}" class="form-group d-inline-flex m-0" method="post">
-			<select class="form-control form-control-sm" name="establishment_choice">
-				<option value="0">Par établissement</option>
-				{% for establishment in establishments %}
-				{% set selected = "" %}
-				{% if app.request.request.get('establishment_choice') is defined and establishment.id == app.request.request.get('establishment_choice') %}
-				{% set selected = "selected" %}
-				{% endif %}
-				<option value="{{ establishment.id }}" {{ selected }}>{{ establishment.name }}</option>
-				{% endfor %}
-			</select>
-			<button class="btn btn-sm btn-primary mx-1" name="filtrer" value="oui">Voir</button>
-		</form>
-		<form action="{{ path('admin_show_list') }}" class="form-group d-inline-flex m-0 ml-auto" method="post">
-			<input class="form-control form-control-sm mx-1" type="text" name="search" value="{{(app.request.request.get('search'))}}">
-			<button class="btn btn-sm btn-primary mx-1" name="rechercher" value="oui">Rechercher</button>
-		</form>
-	</div>
-{% endif %}
-
-<!-- establishment -->
-{% if (app.request.attributes.get('_route') == "establishment_show_list") %}
-	<div class="row mx-3">
-		<h6 class="mx-2 my-auto">filtres :</h6>
-		<form action="{{ path('establishment_show_list') }}" class="form-group d-inline-flex m-0" method="post">
-			<select class="form-control form-control-sm" name="department_choice">
-				<option value="0">Par département</option>
-				{% for dept in depts %}
-				{% set selected = "" %}
-				{% if dept_choice is defined and dept.id == dept_choice %}
-				{% set selected = "selected" %}
-				{% endif %}
-				<option value="{{ dept.id }}" {{ selected }}>{{ dept.name }}</option>
-				{% endfor %}
-			</select>
-			<button class="btn btn-sm btn-primary mx-1" name="" value="">Voir</button>
-		</form>
-		<form action="{{ path('establishment_show_list') }}" class="form-group d-inline-flex m-0 ml-auto" method="post">
-			<input class="form-control form-control-sm mx-1" type="text" name="search" value="{{(app.request.request.get('search'))}}">
-			<button class="btn btn-sm btn-primary mx-1">Rechercher</button>
-		</form>
-	</div>
-{% endif %}
-
-<!-- department -->
-{% if (app.request.attributes.get('_route') == "department_show_list") %}
-	<div class="row mx-3">
-		<form action="{{ path('department_show_list') }}" class="form-group d-inline-flex m-0 ml-auto" method="post">
-			<input class="form-control form-control-sm mx-1" type="text" name="search" value="{{(app.request.request.get('search'))}}">
-			<button class="btn btn-sm btn-primary mx-1">Rechercher</button>
-		</form>
-	</div>
-{% endif %}
-</div>
 {% endif %}

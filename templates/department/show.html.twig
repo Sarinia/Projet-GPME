@@ -3,34 +3,44 @@
 {% block body %}
 
 	{# Affichage du département #}
-	<p>Nom du département : {{ dept.name }}</p>
+	<div class="row">
+		<div class="col-3">
+			<div class="card">
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item">Nom du département : {{ department.name }}</li>
+					<li class="list-group-item">Crée le : {{ department.createdAt | date("d/m/Y") }}</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-9">
+			<h5>Liste des établissements :</h5>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th scope="col">Id</th>
+						<th scope="col">Nom</th>
+						<th scope="col">Adresse</th>
+						<th scope="col">Code postal</th>
+						<th scope="col">Ville</th>
+						<th scope="col">Département</th>
+						<th scope="col">Actif</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for establishment in department.establishment %}
+						<tr>
+							<td><a href="{{ path('establishment_show', {'id': establishment.id,}) }}">{{ establishment.id }}</a></td>
+							<td><a href="{{ path('establishment_show', {'id': establishment.id,}) }}">{{ establishment.name }}</a></td>
+							<td><a href="{{ path('establishment_show', {'id': establishment.id,}) }}">{{ establishment.adress }}</a></td>
+							<td><a href="{{ path('establishment_show', {'id': establishment.id,}) }}">{{ establishment.postalcode }}</a></td>
+							<td><a href="{{ path('establishment_show', {'id': establishment.id,}) }}">{{ establishment.city }}</a></td>
+							<td><a href="{{ path('department_show', {'id': establishment.department.id}) }}">{{ establishment.department.name }}</a></td>
+							<td><a class="{% if establishment.exist == 1 %}text-success{% else %}text-danger{% endif %}" href="{{ path('establishment_show', {'id': establishment.id}) }}">{% if establishment.exist == 1 %} oui {% else %} non {% endif %}</a></td>
+						</tr>  
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
 
-	<h5>Liste des établissements :</h5>
-	<table class="table table-striped">
-		<thead>
-			<tr>
-				<th scope="col">Id</th>
-				<th scope="col">Nom</th>
-				<th scope="col">Adresse</th>
-				<th scope="col">Code postal</th>
-				<th scope="col">Ville</th>
-				<th scope="col">Département</th>
-				<th scope="col">Actif</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for estab in estabs %}
-				<tr>
-					<td><a href="{{ path('establishment_show', {'id': estab.id,}) }}">{{ estab.id }}</a></td>
-					<td><a href="{{ path('establishment_show', {'id': estab.id,}) }}">{{ estab.name }}</a></td>
-					<td><a href="{{ path('establishment_show', {'id': estab.id,}) }}">{{ estab.adress }}</a></td>
-					<td><a href="{{ path('establishment_show', {'id': estab.id,}) }}">{{ estab.postalcode }}</a></td>
-					<td><a href="{{ path('establishment_show', {'id': estab.id,}) }}">{{ estab.city }}</a></td>
-					<td><a href="{{ path('department_show', {'id': estab.department.id}) }}">{{ estab.department.name }}</a></td>
-					<td><a class="{% if estab.exist == 1 %}text-success{% else %}text-danger{% endif %}" href="{{ path('establishment_show', {'id': estab.id}) }}">{% if estab.exist == 1 %} oui {% else %} non {% endif %}</a></td>
-				</tr>  
-			{% endfor %}
-		</tbody>
-	</table>
-	
 {% endblock %}

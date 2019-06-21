@@ -2,30 +2,46 @@
 
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
-{% block body %}
+	{% block body %}
 
-{# formulaire de création d'établissement #}
-{{ form_start(form) }}
+		{# Bulle d'aide #}
+		<div class="card mb-3">
+			<div class="card-header">
+				Infos création d'un établissement
+			</div>
+			<div class="card-body">
+				<blockquote class="mb-0">
+					<p class="m-0">1. Renseigner les champs (latitude et longitude sont facultatifs)</p>
+					<p class="m-0">2. Indiquer si l'établissement doit être visible par les utilisateurs (actif : oui = visible, actif : non = invisible)</p>
+					<p class="m-0">3. Valider avec le bouton "Enregistrer l'établissement"</p><br>
+					<footer>Pour toute autre question ou problème, veuillez utiliser le formulaire de contact</footer>
+				</blockquote>
+			</div>
+		</div>
 
-{{ form_row(form.name, {'label':"Nom de l'établissement :"}) }}
-{{ form_row(form.adress, {'label':'Adresse :'}) }}
-{{ form_row(form.postalcode, {'label':'Code postal :'}) }}
-{{ form_row(form.city, {'label':'Ville :'}) }}
-{{ form_row(form.latitude, {'label':'Latitude :'}) }}
-{{ form_row(form.longitude, {'label':'Longitude :'}) }}
-{{ form_row(form.backgroundurl, {'label':"Url de l'image de l'écran de connexion :"}) }}
-{{ form_row(form.exist, {'label':"Activer l'établissement :"}) }}
-<div class="form-group">
-	<label>Selectionner l'établissement :</label>
-	<select class="form-control" name="id">
-		{% for dept in depts %}
-		<option value="{{dept.id}}">{{ dept.name }}</option>
-		{% endfor %}
-	</select>	
-</div>
+		{# formulaire de création d'établissement #}
+		{{ form_start(form) }}
 
-<button class="btn btn-primary">Enregistrer l'établissement</button>
+		{{ form_row(form.name, {'label':"Nom de l'établissement :"}) }}
+		{{ form_row(form.adress, {'label':'Adresse :'}) }}
+		{{ form_row(form.postalcode, {'label':'Code postal :'}) }}
+		{{ form_row(form.city, {'label':'Ville :'}) }}
+		{{ form_row(form.latitude, {'label':'Latitude :'}) }}
+		{{ form_row(form.longitude, {'label':'Longitude :'}) }}
+		{{ form_row(form.backgroundurl, {'label':"Url de l'image de l'écran de connexion :"}) }}
+		{{ form_row(form.exist, {'label':"Activer l'établissement :"}) }}
+		<div class="form-group">
+			<label>Selectionner l'établissement :</label>
+			<select class="form-control" name="id">
+				{% for department in departments %}
+					<option value="{{department.id}}">{{ department.name }}</option>
+				{% endfor %}
+			</select>	
+		</div>
 
-{{ form_end(form) }}
+		<a class="btn btn-primary" href="{{ path('establishment_show_list') }}">Retour</a>
+		<button class="btn btn-primary">Enregistrer l'établissement</button>
 
-{% endblock %}
+		{{ form_end(form) }}
+
+	{% endblock %}

@@ -15,14 +15,14 @@ class ModifyEstablishmentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class)
-            ->add('adress', TextType::class)
-            ->add('postalcode', TextType::class)
-            ->add('city', TextType::class)
-            ->add('latitude', TextType::class, array('required' => false,))
-            ->add('longitude', TextType::class, array('required' => false,))
-            ->add('backgroundurl', UrlType::class)
-            ->add('exist', ChoiceType::class, ['choices'  => ['Oui' => true,'Non' => false,],])
+        ->add('name', TextType::class)
+        ->add('adress', TextType::class)
+        ->add('postalcode', TextType::class)
+        ->add('city', TextType::class)
+        ->add('latitude', TextType::class, array('required' => false,))
+        ->add('longitude', TextType::class, array('required' => false,))
+        ->add('backgroundurl', UrlType::class)
+        ->add('exist', ChoiceType::class, ['choices'  => ['Oui - Visible par tout le monde' => true,'Non - Non visible par tout le monde' => false,],])
         ;
     }
 

@@ -54,12 +54,12 @@
 
 {# Establishment #}
 {% if (app.request.attributes.get('_route') == "establishment_show_list") %}Liste des établissements{% endif %}
-{% if (app.request.attributes.get('_route') == "establishment_show") %}Page de l'établissement {{ estab.name }}{% endif %}
+{% if (app.request.attributes.get('_route') == "establishment_show") %}Page de l'établissement {{ establishment.name }}{% endif %}
 {% if (app.request.attributes.get('_route') == "establishment_new") %}Création d'un établissement{% endif %}
 {% if (app.request.attributes.get('_route') == "establishment_modify") %}Modification d'un établissement{% endif %}
 
 {# Department #}
 {% if (app.request.attributes.get('_route') == "department_show_list") %}Liste des départements{% endif %}
-{% if (app.request.attributes.get('_route') == "department_show") %}Page du département {{ dept.name }}{% endif %}
+{% if (app.request.attributes.get('_route') == "department_show") %}Page du département {{ department.name }}{% endif %}
 {% if (app.request.attributes.get('_route') == "department_new") %}Création d'un département{% endif %}
 {% if (app.request.attributes.get('_route') == "department_modify") %}Modification d'un département{% endif %}

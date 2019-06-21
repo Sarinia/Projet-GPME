@@ -33,10 +33,10 @@
         {% include 'partials/flash.html.twig' %}
 
         {# affichage de differentes informations pour le développement du site #}
-        <div id="debug" class="container">
+        {# <div id="debug" class="container">
         {% if (app.user.roles) is defined %}{{dump(app.user)}}{% endif %}
         {{dump(app.request.request)}}
-        </div>
+        </div> #}
 
         {# si un utilisateur est connecté alors on affiche le menu #}
         {% if (app.user.roles) is defined %}{% include 'partials/menu.html.twig' %}{% endif %}
