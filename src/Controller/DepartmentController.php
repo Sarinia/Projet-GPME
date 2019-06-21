@@ -3,8 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Department;
-use App\Form\ModifyDepartmentType;
-use App\Form\NewDepartmentType;
+use App\Form\DepartmentType;
 use App\Repository\DepartmentRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -77,7 +76,7 @@ class DepartmentController extends AbstractController
         $department = new Department();
 
         // on crée le formulaire
-        $form = $this->createForm(NewDepartmentType::class, $department);
+        $form = $this->createForm(DepartmentType::class, $department);
 
         // on mémorise les données du formulaire
         $form->handleRequest($request);
@@ -110,7 +109,7 @@ class DepartmentController extends AbstractController
     public function modify(ObjectManager $manager, Request $request, Department $department)
     {
         // on crée le formulaire
-        $form = $this->createForm(ModifyDepartmentType::class, $department);
+        $form = $this->createForm(DepartmentType::class, $department);
 
         // on mémorise les données du formulaire
         $form->handleRequest($request);

@@ -5,8 +5,7 @@ namespace App\Controller;
 use App\Entity\Passport;
 use App\Entity\Student;
 use App\Entity\User;
-use App\Form\ModifyUserType;
-use App\Form\NewUserType;
+use App\Form\StudentType;
 use App\Repository\AdminRepository;
 use App\Repository\CardRepository;
 use App\Repository\ClassroomRepository;
@@ -431,10 +430,11 @@ class StudentController extends AbstractController
         $establishments = $estabRepo->findAll();
 
         // on instancie un nouveau user
+        $student = new Student();
         $user = new User();
 
         // Création du formulaire à partir du fichier NewUserType
-        $form = $this->createForm(NewUserType::class, $user);
+        $form = $this->createForm(StudentType::class, $student);
 
         // récupération des données du formulaire
         $form->handleRequest($request);
@@ -552,7 +552,7 @@ class StudentController extends AbstractController
         $establishments = $estabRepo->findAll();
 
         // Création du formulaire à partir du fichier ModifyUserType
-        $form = $this->createForm(ModifyUserType::class, $user);
+        $form = $this->createForm(StudentType::class, $student);
 
         // récupération des données du formulaire
         $form->handleRequest($request);

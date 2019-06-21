@@ -177,14 +177,18 @@
 			<a class="btn btn-sm btn-primary" href="{{ path('establishment_show',{'id':establishment.id}) }}">Retour</a>
 		{% endif %}
 
-
+		
 		<!-- department -->
 		{% if (app.request.attributes.get('_route') == "department_show_list") %}
 			<a href="{{ path('department_new') }}" class="btn btn-sm btn-primary">Créer un département</a>
 		{% endif %}
 
+		{% if (app.request.attributes.get('_route') == "department_new") %}
+			<a href="{{ path('department_show_list') }}" class="btn btn-sm btn-primary">Retour</a>
+		{% endif %}
+
 		{% if (app.request.attributes.get('_route') == "department_show") %}
-			<a href="{{ path('department_show_list') }}" class="btn btn-sm btn-primary">Retour à la liste</a>
+			<a href="{{ path('department_show_list') }}" class="btn btn-sm btn-primary">Retour</a>
 			<a href="{{ path('department_modify', {'id': department.id}) }}" class="btn btn-sm btn-primary">Modifier le département</a>
 			{% if department.exist == false %}
 				<a href=" {{ path('department_delete', {'id': department.id}) }}" class="btn btn-sm btn-danger">Supprimer</a>

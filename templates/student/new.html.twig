@@ -35,18 +35,12 @@
 	</div>
 	{% endif %}
 	<input type="hidden" name="establishment_choice" value="{{ app.request.request.get('establishment_choice') }}">
-	<div class="form-group">
-		<label class="form-label" for="candidateNb">Numéro de candidat :</label>
-	    <input type="text" class="form-control" id="candidateNb" name="candidateNb">
-	</div>
-	{{ form_row(form.lastName, {'label':'Nom :'}) }}
-	{{ form_row(form.firstName, {'label':'Prénom :'}) }}
-	{{ form_row(form.email, {'label':'Email :'}) }}
-	<div class="form-group">
-		<label class="form-label" for="birthDate">Date de naissance :</label>
-	    <input type="date" class="form-control" id="birthDate" name="birthDate">
-	</div>
-	{{ form_row(form.exist, {'label':"Activer l'enseignant :"}) }}
+	{{ form_row(form.candidateNb, {'label':'Numéro de candidat :'}) }}
+	{{ form_row(form.birthDate, {'label':'Date de naissance :'}) }}
+	{{ form_row(form.user.lastName, {'label':'Nom :'}) }}
+	{{ form_row(form.user.firstName, {'label':'Prénom :'}) }}
+	{{ form_row(form.user.email, {'label':'Email :'}) }}
+	{{ form_row(form.user.exist, {'label':"Activer l'enseignant :"}) }}
 
 	<button class="btn btn-primary">Enregistrer l'étudiant</button>
 

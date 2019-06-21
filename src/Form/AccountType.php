@@ -20,10 +20,10 @@ class AccountType extends AbstractType
             ->add('lastName',TextType::class)
             ->add('firstName',TextType::class)
             ->add('email',EmailType::class)
-            // ->add('hash')
-            ->add('slug',HiddenType::class)
-            // ->add('exist',HiddenType::class)
-            //->add('userRoles')
+            //->add('hash')
+            //->add('slug',HiddenType::class)
+            //->add('exist',HiddenType::class)
+            //->add('title')
         ;
     }
 

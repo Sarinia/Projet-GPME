@@ -4,8 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Admin;
 use App\Entity\User;
-use App\Form\ModifyUserType;
-use App\Form\NewUserType;
+use App\Form\AdminType;
 use App\Repository\AdminRepository;
 use App\Repository\ClassroomRepository;
 use App\Repository\EstablishmentRepository;
@@ -156,16 +155,17 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin/new", name="admin_new")
      */
-    public function create(UserPasswordEncoderInterface $encoder, ObjectManager $manager, Request $request, EstablishmentRepository $estabRepo)
+    public function create(UserPasswordEncoderInterface $encoder, ObjectManager $manager, Request $request, EstablishmentRepository $estabRepo, AdminRepository $adminRepo)
     {
         // on instancie un nouveau user
+        $admin = new Admin();
         $user = new User();
 
         // on récupère la liste des etablissements
         $establishments = $estabRepo->findAll();
 
         // Création du formulaire à partir du fichier NewUserType
-        $form = $this->createForm(NewUserType::class, $user);
+        $form = $this->createForm(AdminType::class, $admin);
 
         // récupération des données du formulaire
         $form->handleRequest($request);
@@ -173,25 +173,53 @@ class AdminController extends AbstractController
         // si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()){
 
-            // on créé, on le crypte et on transmet le mot de passe
+            // USER
+            $data = $request->request->get('admin');
+
+            // lastName
+            $user->setLastName($data["user"]["lastName"]);
+
+            // firstName
+            $user->setFirstName($data["user"]["firstName"]);
+
+            // email
+            $user->setEmail($data["user"]["email"]);
+
+            // hash
             $passRandom = bin2hex(random_bytes(12));
             $encoded = $encoder->encodePassword($user, $passRandom);
             $user->setHash($encoded);
 
-            // on instancie, on crée le slug et on transmet le slug
+            // slug
             $slugify = new Slugify();
             $slug = $slugify->slugify($user->getFirstName()."-".$user->getLastName());
             $user->setSlug($slug);
 
-            // on le transmet le role au user
+            // title
             $user->setTitle('ROLE_ADMIN');
 
-            // on récupére l'établissement
+            // exist
+            $user->setExist($data["user"]["exist"]);
+
+            // ADMIN
+            // etacblishement
             $establishment = $request->request->get('establishment_choice');
             $establishment = $estabRepo->findOneBy(['id' => $establishment]);
+            $admins = $adminRepo->findAll();
+            foreach ($admins as $admin) {
+                if ($admin->getEstablishment()->getId() == $establishment->getId()) {
 
+                    // on stocke un message flash
+                    $this->addFlash('danger','Cet établissement a déjà un administrateur !');
+
+                    // on retourne la vue et les données
+                    return $this->render('admin/new.html.twig', [
+                        'form' => $form->createView(),
+                        'establishments' => $establishments,
+                    ]);
+                }
+            }
             // on assigne son role et son établissement
-            $admin = new Admin();
             $admin->setUser($user);
             $admin->setEstablishment($establishment);
             $admin->setCreatedAt(new \DateTime());
@@ -227,7 +255,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin/modify/{id}", name="admin_modify")
      */
-    public function modify(ObjectManager $manager, Request $request, Admin $admin, EstablishmentRepository $estabRepo)
+    public function modify(ObjectManager $manager, Request $request, Admin $admin, EstablishmentRepository $estabRepo, AdminRepository $adminRepo)
     {
         // on récupére l'utilisateur
         $user = $admin->getUser();
@@ -236,17 +264,32 @@ class AdminController extends AbstractController
         $establishments = $estabRepo->findAll();
 
         // Création du formulaire à partir du fichier ModifyUserType
-        $form = $this->createForm(ModifyUserType::class, $user);
+        $form = $this->createForm(AdminType::class, $admin);
 
         // récupération des données du formulaire
         $form->handleRequest($request);
 
         // si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()){
-dump($user);
+
             // on récupére l'établissement
             $establishment = $request->request->get('establishment_choice');
             $establishment = $estabRepo->findOneBy(['id' => $establishment]);
+            $admins = $adminRepo->findAll();
+            foreach ($admins as $adminBdd) {
+                if ($adminBdd->getEstablishment()->getId() == $establishment->getId() && $admin->getEstablishment()->getId() != $establishment->getId()) {
+
+                    // on stocke un message flash
+                    $this->addFlash('danger','Cet établissement a déjà un administrateur !');
+
+                    // on retourne la vue et les données
+                    return $this->render('admin/new.html.twig', [
+                        'form' => $form->createView(),
+                        'establishments' => $establishments,
+                        'admin' => $admin,
+                    ]);
+                }
+            }
 
             // on assigne son établissement
             $admin->setEstablishment($establishment);

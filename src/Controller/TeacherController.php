@@ -4,8 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Teacher;
 use App\Entity\User;
-use App\Form\ModifyUserType;
-use App\Form\NewUserType;
+use App\Form\TeacherType;
 use App\Repository\AdminRepository;
 use App\Repository\ClassroomRepository;
 use App\Repository\EstablishmentRepository;
@@ -426,10 +425,11 @@ class TeacherController extends AbstractController
         }
 
         // on instancie un nouveau user
+        $teacher = new Teacher();
         $user = new User();
 
         // Création du formulaire à partir du fichier NewUserType
-        $form = $this->createForm(NewUserType::class, $user);
+        $form = $this->createForm(TeacherType::class, $teacher);
 
         // récupération des données du formulaire
         $form->handleRequest($request);
@@ -508,7 +508,7 @@ class TeacherController extends AbstractController
         $establishments = $estabRepo->findAll();
 
         // Création du formulaire à partir du fichier ModifyUserType
-        $form = $this->createForm(ModifyUserType::class, $user);
+        $form = $this->createForm(TeacherType::class, $teacher);
 
         // récupération des données du formulaire
         $form->handleRequest($request);

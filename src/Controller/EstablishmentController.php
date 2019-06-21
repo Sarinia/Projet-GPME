@@ -4,8 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Department;
 use App\Entity\Establishment;
-use App\Form\ModifyEstablishmentType;
-use App\Form\NewEstablishmentType;
+use App\Form\EstablishmentType;
 use App\Repository\AdminRepository;
 use App\Repository\ClassroomRepository;
 use App\Repository\DepartmentRepository;
@@ -110,7 +109,7 @@ class EstablishmentController extends AbstractController
         
         $establishment = new Establishment();
 
-        $form = $this->createForm(NewEstablishmentType::class, $establishment);
+        $form = $this->createForm(EstablishmentType::class, $establishment);
 
         $form->handleRequest($request);
 
@@ -150,16 +149,14 @@ class EstablishmentController extends AbstractController
 
         $departments = $deptRepo->findAll();
 
-        $form = $this->createForm(ModifyEstablishmentType::class, $establishment);
+        $form = $this->createForm(EstablishmentType::class, $establishment);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
 
             $department = $request->request->get('department_choice');
-            
             $department = $deptRepo->findOneBy(['id' => $department]);
-
             $establishment->setDepartment($department);
 
             $slugify = new Slugify();
