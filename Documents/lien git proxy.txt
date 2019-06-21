@@ -1,1 +1,0 @@
-https://stackoverflow.com/questions/38615168/how-can-i-configure-github-desktop-windows-to-work-with-a-proxy
