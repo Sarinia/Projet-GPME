@@ -17,54 +17,9 @@ class Card
     private $id;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $prob1;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $prob2;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $prob3;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $numbersp;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $mod1;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $mod2;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $mod3;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $cond1;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $cond2;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $cond3;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -163,45 +118,44 @@ class Card
      */
     private $passport;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Problem", inversedBy="card")
+     */
+    private $problem;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Modality", inversedBy="card")
+     */
+    private $modality;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Term", inversedBy="card")
+     */
+    private $term;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Activity", inversedBy="card")
+     */
+    private $activity;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $monthsp;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $yearsp;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getProb1(): ?bool
-    {
-        return $this->prob1;
-    }
-
-    public function setProb1(?bool $prob1): self
-    {
-        $this->prob1 = $prob1;
-
-        return $this;
-    }
-
-    public function getProb2(): ?bool
-    {
-        return $this->prob2;
-    }
-
-    public function setProb2(?bool $prob2): self
-    {
-        $this->prob2 = $prob2;
-
-        return $this;
-    }
-
-    public function getProb3(): ?bool
-    {
-        return $this->prob3;
-    }
-
-    public function setProb3(?bool $prob3): self
-    {
-        $this->prob3 = $prob3;
-
-        return $this;
     }
 
     public function getNumbersp(): ?int
@@ -212,78 +166,6 @@ class Card
     public function setNumbersp(int $numbersp): self
     {
         $this->numbersp = $numbersp;
-
-        return $this;
-    }
-
-    public function getMod1(): ?bool
-    {
-        return $this->mod1;
-    }
-
-    public function setMod1(?bool $mod1): self
-    {
-        $this->mod1 = $mod1;
-
-        return $this;
-    }
-
-    public function getMod2(): ?bool
-    {
-        return $this->mod2;
-    }
-
-    public function setMod2(?bool $mod2): self
-    {
-        $this->mod2 = $mod2;
-
-        return $this;
-    }
-
-    public function getMod3(): ?bool
-    {
-        return $this->mod3;
-    }
-
-    public function setMod3(?bool $mod3): self
-    {
-        $this->mod3 = $mod3;
-
-        return $this;
-    }
-
-    public function getCond1(): ?bool
-    {
-        return $this->cond1;
-    }
-
-    public function setCond1(?bool $cond1): self
-    {
-        $this->cond1 = $cond1;
-
-        return $this;
-    }
-
-    public function getCond2(): ?bool
-    {
-        return $this->cond2;
-    }
-
-    public function setCond2(?bool $cond2): self
-    {
-        $this->cond2 = $cond2;
-
-        return $this;
-    }
-
-    public function getCond3(): ?bool
-    {
-        return $this->cond3;
-    }
-
-    public function setCond3(?bool $cond3): self
-    {
-        $this->cond3 = $cond3;
 
         return $this;
     }
@@ -512,6 +394,90 @@ class Card
     public function setPassport(?Passport $passport): self
     {
         $this->passport = $passport;
+
+        return $this;
+    }
+
+    public function getProblem(): ?Problem
+    {
+        return $this->problem;
+    }
+
+    public function setProblem(?Problem $problem): self
+    {
+        $this->problem = $problem;
+
+        return $this;
+    }
+
+    public function getModality(): ?Modality
+    {
+        return $this->modality;
+    }
+
+    public function setModality(?Modality $modality): self
+    {
+        $this->modality = $modality;
+
+        return $this;
+    }
+
+    public function getTerm(): ?Term
+    {
+        return $this->term;
+    }
+
+    public function setTerm(?Term $term): self
+    {
+        $this->term = $term;
+
+        return $this;
+    }
+
+    public function getActivity(): ?Activity
+    {
+        return $this->activity;
+    }
+
+    public function setActivity(?Activity $activity): self
+    {
+        $this->activity = $activity;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getMonthsp(): ?string
+    {
+        return $this->monthsp;
+    }
+
+    public function setMonthsp(string $monthsp): self
+    {
+        $this->monthsp = $monthsp;
+
+        return $this;
+    }
+
+    public function getYearsp(): ?string
+    {
+        return $this->yearsp;
+    }
+
+    public function setYearsp(string $yearsp): self
+    {
+        $this->yearsp = $yearsp;
 
         return $this;
     }

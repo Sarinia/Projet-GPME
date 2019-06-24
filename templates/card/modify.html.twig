@@ -2,10 +2,232 @@
 
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
-{% block body %}
+	{% block body %}
 
-{{ form_start(form) }}
-{% include 'partials/fiche_analyse.html.twig' %}
-{{ form_end(form) }}
+		{{ form_start(form) }}
 
-{% endblock %}
+		{{ form_row(form.exist, {'label':"Activer la fiche de situation professionnelle :"}) }}
+
+		<!-- CARTOUCHE -->
+		<table class="table table-bordered w-100 mb-3">
+			<tr>
+				<th colspan="2" class="text-center">
+					<h2 class="m-1 p-0">BTS gestion de la PME - Session 2019-2020</h2>
+				</th>
+			</tr>
+			<tr>
+				<th colspan="2" class="text-center">
+					<h3 class="m-1 p-0">E4 - Gérer les relations avec les clients et les fournisseurs</h3>
+				</th>
+			</tr>
+			<tr>
+				<td class="w-50">
+					<p class="m-1 p-0 text-center">{{student.user.lastName}} - {{student.user.firstName}}</p>
+				</td>
+				<td class="w-50">
+					<p class="m-1 p-0 text-center">{{student.candidateNb}}</p>
+				</td>
+			</tr>
+		</table>
+
+		<!-- FICHE -->
+		<table class="table table-bordered w-100 m-0">
+			<tr>
+				<th colspan="3" class="text-center">
+					<h4 class="m-1 p-0">Fiche d'analyse d'une situation professionnelle</h4>
+				</th>
+			</tr>
+			{# <tr>
+				<td class="text-center m-0 p-1">
+					{{ form_label(form.prob1) }}{{ form_widget(form.prob1) }}
+				</td>
+				<td class="text-center m-0 p-1">
+					{{ form_label(form.prob2) }}{{ form_widget(form.prob2) }}
+				</td>
+				<td class="text-center m-0 p-1">
+					{{ form_label(form.prob3) }}{{ form_widget(form.prob3) }}
+				</td>
+			</tr> #}
+		</table>
+
+		<table class="table table-bordered w-100 mb-3">
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Identification de la situation professionnelle</p>
+				</td>
+				<td style="width: 15%;" class="text-center m-0 p-1">
+					{# {{ form_label(form.numbersp) }}{{ form_widget(form.numbersp, {'attr': {'class' : 'form-control-sm'}}) }} #}
+				</td>
+				<td>
+					<p class="m-1 p-0">Modalité de réalisation</p>
+					{{ form_label(form.modality) }}{{ form_widget(form.modality, {'attr': {'class' : 'form-control-sm'}}) }}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p class="m-1 p-0">Période de réalisation</p>
+				</td>
+				<td class="text-center">
+					<p class="m-1 p-0">Mois SP</p>{{ form_label(form.monthsp) }}{{ form_widget(form.monthsp, {'attr': {'class' : 'form-control-sm'}}) }}
+					<p class="m-1 p-0">Années SP</p>{{ form_label(form.yearsp) }}{{ form_widget(form.yearsp, {'attr': {'class' : 'form-control-sm'}}) }}
+				</td>
+				<td colspan="3">
+					<p class="m-1 p-0">Condition de réalisation</p>
+					{{ form_label(form.term) }}{{ form_widget(form.term, {'attr': {'class' : 'form-control-sm'}}) }}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p class="m-1 p-0">Activités concernées</p>
+				</td>
+				<td colspan="2">
+					{{ form_label(form.activity) }}{{ form_widget(form.activity, {'attr': {'class' : 'form-control-sm'}}) }}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p class="m-1 p-0">Intitulé de la situation professionnelle</p>
+				</td>
+				<td colspan="2">
+					<p class="m-1 p-0">{{ form_row(form.entitledsp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p class="m-1 p-0">Lieu, période et durée de réalisation</p>
+				</td>
+				<td colspan="2">
+					<p class="m-1 p-0">{{ form_row(form.infossp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p class="m-1 p-0">Cadre de la situation professionnelle</p>
+				</td>
+				<td colspan="2">
+					<p class="m-1 p-0">{{ form_row(form.framesp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+				</td>
+			</tr>
+		</table>
+
+		<!-- PROBLEME -->
+		<table class="table table-bordered w-100 m-0">
+			<tr>
+				<th colspan="3" class="text-center">
+					<h4 class="m-1 p-0">Problème de gestion soulevé et enjeux de la situation</h4>
+				</th>
+			</tr>
+			<tr>
+				<td colspan="3" class="text-center m-0 p-1">
+					{{ form_label(form.problem) }}{{ form_widget(form.problem, {'attr': {'class' : 'form-control-sm'}}) }}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p class="m-1 p-0">{{ form_row(form.problemmanagsp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+				</td>
+				<td>
+					<p class="m-1 p-0">{{ form_row(form.problemcomosp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+				</td>
+				<td>
+					<p class="m-1 p-0">{{ form_row(form.problemcomwsp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+				</td>
+			</tr>
+		</table>
+		<table class="table table-bordered w-100 mb-3">
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Acteurs et relation entre les acteurs</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.actorssp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Objectif</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.targetsp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Conditions de réalisation : contraintes dans le processus et organisation comptable, environnement numérique</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.conditionssp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Ressources à disposition</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.resourcessp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Solutions logicielles choisies et fonctionnalités mobilisées</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.answerssp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Productions réalisées</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.productionssp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Ecrits professionnels produits</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.writtensp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Oraux professionnels</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.oralsp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+				</td>
+			</tr>
+		</table>
+
+		<!-- ANALYSE -->
+		<table class="table table-bordered w-100 mb-3">
+			<tr>
+				<th colspan="2" class="text-center">
+					<h4 class="m-1 p-0">Analyse</h4>
+				</th>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Analyse de la situation</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.analysissp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Contribution de la situation professionnelle à la professionnalisation</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.contributionsp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+				</td>
+			</tr>
+		</table>
+
+		<button class="btn btn-primary">Sauvegarder la fiche</button>
+
+		{{ form_end(form) }}
+
+	{% endblock %}

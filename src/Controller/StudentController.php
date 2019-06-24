@@ -413,7 +413,7 @@ class StudentController extends AbstractController
     /**
      * @Route("/student/show/{id}", name="student_show")
      */
-    public function show(Student $student)
+    public function show(Student $student, CardRepository $cardRepo)
     {
         // on retourne la vue et les données
         return $this->render('student/show.html.twig', [

@@ -5,10 +5,11 @@
 	h4{font-size: 12pt !important;margin: 0pt;text-align: center;}
 	span{font-size: 10pt !important;margin: 0pt;text-align: center;}
 	p{font-size: 10pt !important;margin: 0pt;widows: 2; orphans: 2;}
+	input{font-size: 10pt !important;margin: 0pt;}
+	label{font-size: 10pt !important;margin: 0pt;}
 	body{color: black !important;}
 	#block{margin-bottom: 0.1rem;}
 	.border{border: solid black 0.1rem;}
-	p {}
 	nav,h1,#menu_principal,#menu_secondaire,#menu_filtre,#debug{display: none;}
 	.page{break-before: always;}
 	.d-flex{display: flex;}

@@ -25,15 +25,11 @@
 			<h4 class="text-center m-2">Fiche d'analyse d'une situation professionnelle</h4>
 		</div>
 		<div class="d-flex">
-			<div class="col-4 border">
-				<p class="text-center m-1">{{card.prob1}}</p>
-			</div>
-			<div class="col-4 border">
-				<p class="text-center m-1">{{card.prob2}}</p>
-			</div>
-			<div class="col-4 border">
-				<p class="text-center m-1">{{card.prob3}}</p>
-			</div>
+			{% for problem in problems %}
+				<div class="col-4 border text-center">
+					<input class="mr-2" type="checkbox" name="" {% if card.problem == problem %}checked="checked"{% endif %} disabled="disabled"><label class="m-0 p-0" for="">{{problem.title}}</label>
+				</div>
+			{% endfor %}
 		</div>
 		<div class="d-flex">
 			<div class="col-2 border">
@@ -44,9 +40,9 @@
 			</div>
 			<div class="col-8 border">
 				<p class="m-1">Modalité de réalisation</p>
-				<p class="m-1">{{card.mod1}}</p>
-				<p class="m-1">{{card.mod2}}</p>
-				<p class="m-1">{{card.mod3}}</p>
+				{% for modality in modalities %}
+					<input class="mr-2" type="checkbox" name="" {% if card.modality.title is defined and card.modality.title == modality.title %}checked="checked"{% else %}{% endif %} disabled="disabled"><label class="m-0 p-0" for="">{{modality.title}}</label><br>
+				{% endfor %}
 			</div>
 		</div>
 		<div class="d-flex">
@@ -54,14 +50,14 @@
 				<p class="m-1">Période de réalisation</p>
 			</div>
 			<div class="col-2 border">
-				<p class="text-center m-1">Mois SP</p>
-				<p class="text-center m-1">Années SP</p>
+				<p class="text-center m-1">{{card.monthsp}}</p>
+				<p class="text-center m-1">{{card.yearsp}}</p>
 			</div>
 			<div class="col-8 border">
 				<p class="m-1">Condition de réalisation</p>
-				<p class="m-1">{{card.cond1}}</p>
-				<p class="m-1">{{card.cond2}}</p>
-				<p class="m-1">{{card.cond3}}</p>
+				{% for term in terms %}
+					<input class="mr-2" type="checkbox" name="" {% if card.term.title is defined and card.term.title == term.title %}checked="checked"{% endif %} disabled="disabled"><label class="m-0 p-0" for="">{{term.title}}</label><br>
+				{% endfor %}
 			</div>
 		</div>
 		<div class="d-flex">
@@ -69,12 +65,9 @@
 				<p class="m-1">Activités concernées</p>
 			</div>
 			<div class="col-10 border">
-				<p class="m-1">Activité 1.1 Recherche de clientèle et contact</p>
-				<p class="m-1">Activité 1.2 Adminisdivation des ventes de la PME</p>
-				<p class="m-1">Activité 1.3 Maintien et développement de la relation avec les clients de la PME</p>
-				<p class="m-1">Activité 1.4 Recherche et choix des fournisseurs de la PME</p>
-				<p class="m-1">Activité 1.5 Suivi et condivôle des opérations d’achats et d'investissement de la PME</p>
-				<p class="m-1">Activité 1.6 Suivi comptable des opérations avec les clients et les fournisseurs de la PME</p>
+				{% for activity in activities %}
+					<input class="mr-2" type="checkbox" name="" {% if card.activity.name is defined and card.activity.name == activity.name %}checked="checked"{% endif %} disabled="disabled"><label class="m-0 p-0" for="">{{activity.number}} {{activity.name}}</label><br>
+				{% endfor %}
 			</div>
 		</div>
 		<div class="d-flex">
@@ -109,15 +102,11 @@
 			<h4 class="text-center m-2">Problème de gestion soulevé et enjeux de la situation</h4>
 		</div>
 		<div class="d-flex">
-			<div class="col-4 border">
-				<p class="text-center m-1">{{card.prob1}}</p>
-			</div>
-			<div class="col-4 border">
-				<p class="text-center m-1">{{card.prob2}}</p>
-			</div>
-			<div class="col-4 border">
-				<p class="text-center m-1">{{card.prob3}}</p>
-			</div>
+			{% for problem in problems %}
+				<div class="col-4 border text-center">
+					<input class="mr-2" type="checkbox" name="" {% if card.problem == problem %}checked="checked"{% endif %} disabled="disabled"><label class="m-0 p-0" for="">{{problem.title}}</label>
+				</div>
+			{% endfor %}
 		</div>
 		<div class="d-flex">
 			<div class="col-4 border">
@@ -132,7 +121,7 @@
 		</div>
 		<div class="d-flex">
 			<div class="col-2 border">
-				<p>Acteurs et relation endive les acteurs</p>
+				<p>Acteurs et relation entre les acteurs</p>
 			</div>
 			<div class="col-10 border">
 				<p>{{card.actorssp}}</p>
@@ -148,7 +137,7 @@
 		</div>
 		<div class="d-flex">
 			<div class="col-2 border">
-				<p>Conditions de réalisation : condivaintes dont le processus et organisation comptable, environnement numérique</p>
+				<p>Conditions de réalisation : contraintes dans le processus et organisation comptable, environnement numérique</p>
 			</div>
 			<div class="col-10 border">
 				<p>{{card.conditionssp}}</p>
@@ -211,7 +200,7 @@
 		</div>
 		<div class="d-flex">
 			<div class="col-2 border">
-				<p>Condivibution de la situation professionnelle à la professionnalisation</p>
+				<p>Contribution de la situation professionnelle à la professionnalisation</p>
 			</div>
 			<div class="col-10 border">
 				<p>{{card.contributionsp}}</p>
