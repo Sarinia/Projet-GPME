@@ -41,7 +41,9 @@ class AccountController extends AbstractController
             if (isset($etb_choice) && !empty($etb_choice)) {
 
                 // on redirige vers la page de login
-                return $this->redirectToRoute('account_login', []);
+                return $this->redirectToRoute('account_login', [
+                    'etb_choice' => $etb_choice,
+                ]);
 
             } else {
 
@@ -152,16 +154,19 @@ class AccountController extends AbstractController
     }
 
     /**
-     * @Route("/login", name="account_login")
+     * @Route("/{etb_choice}/login", name="account_login")
      */
-    public function login(AuthenticationUtils $utils)
+    public function login(AuthenticationUtils $utils, $etb_choice, EstablishmentRepository $estabRepo)
     {
+        $establishment = $estabRepo->findOneBy(['slug' => $etb_choice]);
+
         // on enregistre l'erreur s'il y en a
         $error = $utils->getLastAuthenticationError();
 
         // on retourne la vue et les données
         return $this->render('account/login.html.twig', [
             'hasError' => $error,
+            'establishment' => $establishment,
         ]);
     }
 

@@ -14,9 +14,15 @@
         {% if (app.request.attributes.get('_route') | slice(0,4) == "card") %}<link rel="stylesheet" media="print" href="/css/printA4.css" type="text/css" />{% endif %}
         {% if (app.request.attributes.get('_route') | slice(0,8) == "passport") %}<link rel="stylesheet" media="print" href="/css/printA3.css" type="text/css" />{% endif %}
         {% block stylesheets %}{% endblock %}
+
+        {# background-image #}
+        {% if app.request.attributes.get('etb_choice') is defined and app.request.attributes.get('etb_choice') != "" %}
+            <style>body{background:no-repeat url("{{establishment.backgroundUrl}}");}</style>
+        {% endif %}
     </head>
 
     <body>
+
         {# include du header #}
         {% include 'partials/header.html.twig' %}
 
@@ -35,7 +41,8 @@
         {# affichage de differentes informations pour le développement du site #}
         <div id="debug" class="container">
         {% if (app.user.roles) is defined %}{{dump(app.user)}}{% endif %}
-        {{dump(app.request.request)}}
+        {# {{dump(app.request.request)}} #}
+        {# {{dump(app.request.query)}} #}
         </div>
 
         {# si un utilisateur est connecté alors on affiche le menu #}
