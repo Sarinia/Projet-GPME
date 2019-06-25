@@ -17,12 +17,12 @@
 		<tbody>
 			{% for student in students %}
 			<tr>
-				<td><a href="{{ path('student_modify', {'id': student.id}) }}">{{ student.user.lastName }}</a></td>
-				<td><a href="{{ path('student_modify', {'id': student.id}) }}">{{ student.user.firstName }}</a></td>
-				<td><a href="{{ path('student_modify', {'id': student.id}) }}">{{ student.user.email }}</a></td>
-				<td><a href="{{ path('establishment_modify', {'id': student.establishment.id}) }}">{{ student.establishment.name }}</a></td>
-				<td><a href="{{ path('student_modify', {'id': student.id}) }}">{{ student.createdAt | date }}</a></td>
-                <td><a class="{% if student.user.exist == 1 %}text-success{% else %}text-danger{% endif %}" href="{{ path('student_modify', {'id': student.id}) }}">{% if student.user.exist == 1 %} oui {% else %} non {% endif %}</a></td>
+				<td><a href="{{ path('student_show', {'id': student.id}) }}">{{ student.user.lastName }}</a></td>
+				<td><a href="{{ path('student_show', {'id': student.id}) }}">{{ student.user.firstName }}</a></td>
+				<td><a href="{{ path('student_show', {'id': student.id}) }}">{{ student.user.email }}</a></td>
+				<td><a href="{{ path('establishment_show', {'id': student.establishment.id}) }}">{{ student.establishment.name }}</a></td>
+				<td><a href="{{ path('student_show', {'id': student.id}) }}">{{ student.createdAt | date }}</a></td>
+                <td><a class="{% if student.user.exist == 1 %}text-success{% else %}text-danger{% endif %}" href="{{ path('student_show', {'id': student.id}) }}">{% if student.user.exist == 1 %} oui {% else %} non {% endif %}</a></td>
 			</tr>
 			{% endfor %} 
 		</tbody>
@@ -44,12 +44,12 @@
 		<tbody>
 			{% for teacher in teachers %}
 			<tr>
-				<td><a href="{{ path('teacher_modify', {'id': teacher.id}) }}">{{ teacher.user.lastName }}</a></td>
-				<td><a href="{{ path('teacher_modify', {'id': teacher.id}) }}">{{ teacher.user.firstName }}</a></td>
-				<td><a href="{{ path('teacher_modify', {'id': teacher.id}) }}">{{ teacher.user.email }}</a></td>
-				<td><a href="{{ path('establishment_modify', {'id': teacher.establishment.id}) }}">{{ teacher.establishment.name }}</a></td>
-				<td><a href="{{ path('teacher_modify', {'id': teacher.id}) }}">{{ teacher.createdAt | date }}</a></td>
-                <td><a class="{% if teacher.user.exist == 1 %}text-success{% else %}text-danger{% endif %}" href="{{ path('teacher_modify', {'id': teacher.id}) }}">{% if teacher.user.exist == 1 %} oui {% else %} non {% endif %}</a></td>
+				<td><a href="{{ path('teacher_show', {'id': teacher.id}) }}">{{ teacher.user.lastName }}</a></td>
+				<td><a href="{{ path('teacher_show', {'id': teacher.id}) }}">{{ teacher.user.firstName }}</a></td>
+				<td><a href="{{ path('teacher_show', {'id': teacher.id}) }}">{{ teacher.user.email }}</a></td>
+				<td><a href="{{ path('establishment_show', {'id': teacher.establishment.id}) }}">{{ teacher.establishment.name }}</a></td>
+				<td><a href="{{ path('teacher_show', {'id': teacher.id}) }}">{{ teacher.createdAt | date }}</a></td>
+                <td><a class="{% if teacher.user.exist == 1 %}text-success{% else %}text-danger{% endif %}" href="{{ path('teacher_show', {'id': teacher.id}) }}">{% if teacher.user.exist == 1 %} oui {% else %} non {% endif %}</a></td>
 			</tr>
 			{% endfor %} 
 		</tbody>
@@ -71,12 +71,12 @@
 		<tbody>
 			{% for classroom in classrooms %}
 			<tr>
-				<td><a href="{{ path('classroom_modify', {'id': classroom.id}) }}">{{ classroom.degree }}</a></td>
-				<td><a href="{{ path('classroom_modify', {'id': classroom.id}) }}">{{ classroom.startDate }}</a></td>
-				<td><a href="{{ path('classroom_modify', {'id': classroom.id}) }}">{{ classroom.endDate }}</a></td>
-				<td><a href="{{ path('establishment_modify', {'id': classroom.establishment.id}) }}">{{ classroom.establishment.name }}</a></td>
-				<td><a href="{{ path('classroom_modify', {'id': classroom.id}) }}">{{ classroom.createdAt | date }}</a></td>
-                <td><a class="{% if classroom.exist == 1 %}text-success{% else %}text-danger{% endif %}" href="{{ path('classroom_modify', {'id': classroom.id}) }}">{% if classroom.exist == 1 %} oui {% else %} non {% endif %}</a></td>
+				<td><a href="{{ path('classroom_show', {'id': classroom.id}) }}">{{ classroom.degree }}</a></td>
+				<td><a href="{{ path('classroom_show', {'id': classroom.id}) }}">{{ classroom.startDate }}</a></td>
+				<td><a href="{{ path('classroom_show', {'id': classroom.id}) }}">{{ classroom.endDate }}</a></td>
+				<td><a href="{{ path('establishment_show', {'id': classroom.establishment.id}) }}">{{ classroom.establishment.name }}</a></td>
+				<td><a href="{{ path('classroom_show', {'id': classroom.id}) }}">{{ classroom.createdAt | date }}</a></td>
+                <td><a class="{% if classroom.exist == 1 %}text-success{% else %}text-danger{% endif %}" href="{{ path('classroom_show', {'id': classroom.id}) }}">{% if classroom.exist == 1 %} oui {% else %} non {% endif %}</a></td>
 			</tr>
 			{% endfor %} 
 		</tbody>

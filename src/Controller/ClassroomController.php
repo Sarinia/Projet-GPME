@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Classroom;
 use App\Form\ClassroomType;
+use App\Repository\AdminRepository;
 use App\Repository\ClassroomRepository;
 use App\Repository\EstablishmentRepository;
+use App\Repository\TeacherRepository;
 use Cocur\Slugify\Slugify;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,28 +20,17 @@ class ClassroomController extends AbstractController
     /**
      * @Route("/classroom/show_list", name="classroom_show_list")
      */
-    public function index(ClassroomRepository $classroomRepo, EstablishmentRepository $estabRepo,Request $request)
+    public function index(AdminRepository $adminRepo, TeacherRepository $teacherRepo, ClassroomRepository $classroomRepo, EstablishmentRepository $estabRepo,Request $request)
     {
-        // requete de toutes les classes et tous les établissements de la BDD
-        $classrooms = $classroomRepo->findAll();
-        $establishments = $estabRepo->findAll();
-        
-        // si le champ de recherche != de vide
-        if (!empty($request->request->get('search'))) {
 
-            // on fait une recherche par mot clé
-            $search = $request->request->get('search');
+        if ($this->getUser()) {
 
-            // dans toutes les colonnes de la table
-            $result = $classroomRepo->findBy(['degree' => $search]);
-            $result += $classroomRepo->findBy(['startDate' => $search]);
-            $result += $classroomRepo->findBy(['endDate' => $search]);
+            // liste des classes pour le super-admin
+            if ($this->getUser()->getTitle() == "ROLE_SADMIN") {
 
-            // on compte le nombre de ligne que contient le tableau et si c'est == 0
-            if (Count($result) == 0) {
-
-                // on enregistre un message flash
-                $this->addFlash('warning','Aucun résultat pour votre recherche');
+                // requete de toutes les classes et tous les établissements de la BDD
+                $classrooms = $classroomRepo->findAll();
+                $establishments = $estabRepo->findAll();
 
                 // on retourne la vue et les données
                 return $this->render('classroom/list.html.twig', [
@@ -48,30 +39,38 @@ class ClassroomController extends AbstractController
                 ]);
             }
 
-            // on retourne la vue et les données
-            return $this->render('classroom/list.html.twig', [
-                'classrooms' => $result,
-                'establishments' => $establishments,
-            ]);
+            // liste des classes pour l'admin
+            if ($this->getUser()->getTitle() == "ROLE_ADMIN") {
+
+                $admin = $adminRepo->findOneBy(['user' => $this->getUser()]);
+
+                // requete de toutes les classes et tous les établissements de la BDD
+                $classrooms = $admin->getEstablishment()->getClassrooms();
+                $establishments[] = $admin->getEstablishment();
+
+                // on retourne la vue et les données
+                return $this->render('classroom/list.html.twig', [
+                    'classrooms' => $classrooms,
+                    'establishments' => $establishments,
+                ]);
+            }
+
+            // liste des classes pour le teacher
+            if ($this->getUser()->getTitle() == "ROLE_TEACHER") {
+
+                $teacher = $teacherRepo->findOneBy(['user' => $this->getUser()]);
+
+                // requete de toutes les classes et tous les établissements de la BDD
+                $classrooms = $teacher->getClassrooms();
+                $establishments[] = $teacher->getEstablishment();
+
+                // on retourne la vue et les données
+                return $this->render('classroom/list.html.twig', [
+                    'classrooms' => $classrooms,
+                    'establishments' => $establishments,
+                ]);
+            }
         }
-
-        // si un filtre est selectionné
-        if ($request->request->get('establishment_choice')) {
-            $establishment = $request->request->get('establishment_choice');
-            $classrooms = $classroomRepo->findBy(['establishment' => $establishment]);
-
-            // on retourne la vue et les données
-            return $this->render('classroom/list.html.twig', [
-                'classrooms' => $classrooms,
-                'establishments' => $establishments,
-            ]);
-        }
-
-        // on retourne la vue et les données
-        return $this->render('classroom/list.html.twig', [
-            'classrooms' => $classrooms,
-            'establishments' => $establishments,
-        ]);
     }
 
     /**

@@ -24,31 +24,6 @@ class DepartmentController extends AbstractController
     {
         // on récupère la liste de tous les départements
         $departments = $deptRepo->findAll();
-        
-        // si le champ de recherche != de vide
-        if (!empty($request->request->get('search'))) {
-
-            // on fait une recherche par mot clé
-            $search = $request->request->get('search');
-            $result = $deptRepo->findBy(['name' => $search]);
-
-            // on compte le nombre de ligne que contient le tableau et si c'est == 0
-            if (Count($result) == 0) {
-
-                // on enregistre un message flash
-                $this->addFlash('warning','Aucun résultat pour votre recherche');
-
-                // on retourne la vue et les données
-                return $this->render('department/list.html.twig', [
-                    'departments' => $departments,
-                ]);
-            }
-            
-            // on retourne la vue et les données
-            return $this->render('department/list.html.twig', [
-                'departments' => $result,
-            ]);
-        }
 
         // on retourne la vue et les données
         return $this->render('department/list.html.twig', [

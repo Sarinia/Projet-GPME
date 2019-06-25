@@ -31,54 +31,6 @@ class EstablishmentController extends AbstractController
         $establishments = $estabRepo->findAll();
         $departments = $deptRepo->findAll();        
 
-        // si le champ de recherche != de vide
-        if (!empty($request->request->get('search'))) {
-
-            // on fait une recherche par mot clé
-            $search = $request->request->get('search');
-
-            // dans toutes les colonnes de la table
-            $result = $estabRepo->findBy(['name' => $search]);
-            $result += $estabRepo->findBy(['adress' => $search]);
-            $result += $estabRepo->findBy(['postalCode' => $search]);
-            $result += $estabRepo->findBy(['city' => $search]);
-            $result += $estabRepo->findBy(['latitude' => $search]);
-            $result += $estabRepo->findBy(['longitude' => $search]);
-            $result += $estabRepo->findBy(['backgroundUrl' => $search]);
-            $result += $estabRepo->findBy(['slug' => $search]);
-
-            // on compte le nombre de ligne que contient le tableau et si c'est == 0
-            if (Count($result) == 0) {
-
-                // on enregistre un message flash
-                $this->addFlash('warning','Aucun résultat pour votre recherche');
-
-                return $this->render('department/list.html.twig', [
-                    // on envoie des données à la vue
-                    'establishments' => $establishments,
-                    'departments' => $departments,
-                ]);
-            }
-            
-            return $this->render('establishment/list.html.twig', [
-                    // on envoie des données à la vue
-                'establishments' => $result,
-                'departments' => $departments,
-            ]);
-        }
-
-        // si un filtre est selectionné
-        if ($request->request->get('department_choice')) {
-            $department = $request->request->get('department_choice');
-            $establishments = $estabRepo->findBy(['department' => $department]);
-            
-            return $this->render('establishment/list.html.twig', [
-            // on envoie des données à la vue
-                'establishments' => $establishments,
-                'departments' => $departments,
-            ]);
-        }
-
         return $this->render('establishment/list.html.twig', [
             // on envoie des données à la vue
             'establishments' => $establishments,

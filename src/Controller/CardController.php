@@ -99,7 +99,6 @@ class CardController extends AbstractController
         $terms = $termRepo->findAll();
         $activities = $activityRepo->findAll();
 
-        dump($card);
         return $this->render('card/show.html.twig', [
             "card" => $card,
             "problems" => $problems,
@@ -160,7 +159,7 @@ class CardController extends AbstractController
     {
         // on récupére l'utilisateur
         $user = $this->getUser();
-        $student = $studentRepo->findOneBy(['user' => $user]);dump($card);
+        $student = $studentRepo->findOneBy(['user' => $user]);
 
         // Création du formulaire à partir du fichier card
         $form = $this->createForm(CardType::class, $card);
@@ -180,7 +179,6 @@ class CardController extends AbstractController
         return $this->render('card/modify.html.twig', [
             'form' => $form->createView(),
             "card" => $card,
-            "student" => $student,
         ]);
     }
 
