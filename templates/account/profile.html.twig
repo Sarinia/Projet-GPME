@@ -2,16 +2,27 @@
 
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
-{% block body %}
+	{% block body %}
 
-{{ form_start(form) }}
+		
+		{{ form_start(form) }}
 
-{{ form_row(form.lastName, {'label':'Nom :'}) }}
-{{ form_row(form.firstName, {'label':'Prénom :'}) }}
-{{ form_row(form.email, {'label':'Email :'}) }}
+		{% if app.user.roles[0] == "ROLE_USER" %}
+			<div class="form-group">
+				<label for="account_candidateNb" class="required">Numéro de candidat :</label><input type="text" id="account_candidateNb" name="candidateNb" required="required" class="form-control" value="{{student.candidateNb}}">
+			</div>
+		{% endif %}
+		{{ form_row(form.lastName, {'label':'Nom :'}) }}
+		{{ form_row(form.firstName, {'label':'Prénom :'}) }}
+		{{ form_row(form.email, {'label':'Email :'}) }}
+		{% if app.user.roles[0] == "ROLE_USER" %}
+			<div class="form-group">
+				<label for="account_birthDate" class="required">Date de naissance :</label><input type="datetime" id="account_birthDate" name="birthDate" required="required" class="form-control" value="{{student.birthDate | date('d/m/Y')}}">
+			</div>
+		{% endif %}
 
-<button class="btn btn-primary">Mettre à jour</button>
+		<button type="submit" class="btn btn-primary">Mettre à jour</button>
 
-{{ form_end(form) }}
-
-{% endblock %}
+		{{ form_end(form) }}
+		
+	{% endblock %}

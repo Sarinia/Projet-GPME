@@ -31,7 +31,7 @@ class Department
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Establishment", mappedBy="department")
      */
-    private $establishment;
+    private $establishments;
 
     /**
      * @ORM\Column(type="datetime")
@@ -40,7 +40,7 @@ class Department
 
     public function __construct()
     {
-        $this->establishment = new ArrayCollection();
+        $this->establishments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -77,13 +77,13 @@ class Department
      */
     public function getEstablishment(): Collection
     {
-        return $this->establishment;
+        return $this->establishments;
     }
 
     public function addEstablishment(Establishment $establishment): self
     {
-        if (!$this->establishment->contains($establishment)) {
-            $this->establishment[] = $establishment;
+        if (!$this->establishments->contains($establishment)) {
+            $this->establishments[] = $establishment;
             $establishment->setDepartment($this);
         }
 
@@ -92,8 +92,8 @@ class Department
 
     public function removeEstablishment(Establishment $establishment): self
     {
-        if ($this->establishment->contains($establishment)) {
-            $this->establishment->removeElement($establishment);
+        if ($this->establishments->contains($establishment)) {
+            $this->establishments->removeElement($establishment);
             // set the owning side to null (unless already changed)
             if ($establishment->getDepartment() === $this) {
                 $establishment->setDepartment(null);

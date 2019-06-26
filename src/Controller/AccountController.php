@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Entity\PasswordUpdate;
 use App\Form\AccountType;
 use App\Form\PasswordUpdateType;
+use App\Form\StudentType;
 use App\Repository\DepartmentRepository;
 use App\Repository\EstablishmentRepository;
+use App\Repository\StudentRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +21,7 @@ class AccountController extends AbstractController
     /**
      * @Route("/", name="homepage")
      */
-    public function index(Request $request, DepartmentRepository $dept_repo, EstablishmentRepository $estab_repo)
+    public function index(Request $request, DepartmentRepository $departmentRepo, EstablishmentRepository $estab_repo)
     {
         // si un utilisateur est connecté
         if ($this->getUser() && !empty($this->getUser())) {
@@ -31,59 +33,82 @@ class AccountController extends AbstractController
         } else {
 
             // on récupére tous les départements dans la base de données
-            $depts = $dept_repo->findAll();
+            $departments = $departmentRepo->findAll();
 
             // on récupére les données du formulaire dans des variables
-            $dept_choice = $request->request->get('dept_choice');
-            $etb_choice = $request->request->get('etb_choice');
+            $establishment = $request->request->get('establishment_choice');
 
-            // on vérifie si un établissement a été choisi
-            if (isset($etb_choice) && !empty($etb_choice)) {
+            //on vérifie si un établissement a été choisi
+            if (isset($establishment) && !empty($establishment)) {
 
                 // on redirige vers la page de login
                 return $this->redirectToRoute('account_login', [
-                    'etb_choice' => $etb_choice,
+                    'establishment' => $establishment,
                 ]);
 
             } else {
 
                 // on récupére la liste des établissements en fonction du département choisi
-                $etbs = $estab_repo->findBy(['department' => $dept_choice]);
+                $department = $request->request->get('department_choice');
+                $establishments = $estab_repo->findBy(['department' => $department]);
 
                 // on retourne la vue et les données
                 return $this->render('account/index.html.twig', [
-                    'depts' => $depts,
-                    'etbs' => $etbs,
+                    'departments' => $departments,
+                    'establishments' => $establishments,
                 ]);
             }
 
             // on retourne la vue et les données
             return $this->render('account/index.html.twig', [
-                'depts' => $depts,
+                'departments' => $departments,
             ]);
         }
     }
 
     /**
+     * @Route("/{establishment}/login", name="account_login")
+     */
+    public function login(AuthenticationUtils $utils, $establishment, EstablishmentRepository $estabRepo)
+    {
+        $establishment = $estabRepo->findOneBy(['slug' => $establishment]);
+
+        // on enregistre l'erreur s'il y en a
+        $error = $utils->getLastAuthenticationError();
+
+        // on retourne la vue et les données
+        return $this->render('account/login.html.twig', [
+            'hasError' => $error,
+            'establishment' => $establishment,
+        ]);
+    }
+
+    /**
      * @Route("/account/profile", name="account_profile")
      */
-    public function profile(Request $request, ObjectManager $manager)
+    public function profile(Request $request, ObjectManager $manager, StudentRepository $studentRepo)
     {
         // on récupére l'utilisateur connecté
         $user = $this->getUser();
+        $student = $studentRepo->findOneBy(['id' => $user]);
 
         // on crée le formulaire
         $form = $this->createForm(AccountType::class, $user);
 
         // on récupére les données du formulaire
         $form->handleRequest($request);
-
+        
         // si le formulaire est soumis et est valide
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $student->setCandidateNb($request->request->get('candidateNb'));
+            // $birthDate = $request->request->get('birthDate');dump(date_format("Y-m-d", new \Datetime($birthDate)));exit;
+            // $student->setBirthDate($birthDate = date_format(new \Datetime($birthDate), "Y-m-d"));
+
             // on persiste les données
+            $manager->persist($student);
             $manager->persist($user);
-            
+
             // on enregistre les données
             $manager->flush();
 
@@ -94,6 +119,7 @@ class AccountController extends AbstractController
         // on retourne la vue et les données
         return $this->render('account/profile.html.twig', [
             'form' => $form->createView(),
+            'student' => $student,
         ]);
     }
 
@@ -150,23 +176,6 @@ class AccountController extends AbstractController
         // on retourne la vue et les données
         return $this->render('account/password.html.twig', [
             'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/{etb_choice}/login", name="account_login")
-     */
-    public function login(AuthenticationUtils $utils, $etb_choice, EstablishmentRepository $estabRepo)
-    {
-        $establishment = $estabRepo->findOneBy(['slug' => $etb_choice]);
-
-        // on enregistre l'erreur s'il y en a
-        $error = $utils->getLastAuthenticationError();
-
-        // on retourne la vue et les données
-        return $this->render('account/login.html.twig', [
-            'hasError' => $error,
-            'establishment' => $establishment,
         ]);
     }
 
