@@ -21,7 +21,7 @@ class AccountController extends AbstractController
     /**
      * @Route("/", name="homepage")
      */
-    public function index(Request $request, DepartmentRepository $departmentRepo, EstablishmentRepository $estab_repo)
+    public function index(Request $request, DepartmentRepository $departmentRepo, EstablishmentRepository $establishmentRepo)
     {
         // si un utilisateur est connecté
         if ($this->getUser() && !empty($this->getUser())) {
@@ -50,7 +50,7 @@ class AccountController extends AbstractController
 
                 // on récupére la liste des établissements en fonction du département choisi
                 $department = $request->request->get('department_choice');
-                $establishments = $estab_repo->findBy(['department' => $department]);
+                $establishments = $establishmentRepo->findBy(['department' => $department]);
 
                 // on retourne la vue et les données
                 return $this->render('account/index.html.twig', [
@@ -69,9 +69,9 @@ class AccountController extends AbstractController
     /**
      * @Route("/{establishment}/login", name="account_login")
      */
-    public function login(AuthenticationUtils $utils, $establishment, EstablishmentRepository $estabRepo)
+    public function login(AuthenticationUtils $utils, $establishment, EstablishmentRepository $establishmentRepo)
     {
-        $establishment = $estabRepo->findOneBy(['slug' => $establishment]);
+        $establishment = $establishmentRepo->findOneBy(['slug' => $establishment]);
 
         // on enregistre l'erreur s'il y en a
         $error = $utils->getLastAuthenticationError();
@@ -90,7 +90,6 @@ class AccountController extends AbstractController
     {
         // on récupére l'utilisateur connecté
         $user = $this->getUser();
-        $student = $studentRepo->findOneBy(['id' => $user]);
 
         // on crée le formulaire
         $form = $this->createForm(AccountType::class, $user);
@@ -101,9 +100,12 @@ class AccountController extends AbstractController
         // si le formulaire est soumis et est valide
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $student->setCandidateNb($request->request->get('candidateNb'));
-            // $birthDate = $request->request->get('birthDate');dump(date_format("Y-m-d", new \Datetime($birthDate)));exit;
-            // $student->setBirthDate($birthDate = date_format(new \Datetime($birthDate), "Y-m-d"));
+            if ($user->getTitle() == "ROLE_USER") {
+                $student = $studentRepo->findOneBy(['id' => $user]);
+                $student->setCandidateNb($request->request->get('candidateNb'));
+                $birthDate = $request->request->get('birthDate');dump(date_format("Y-m-d", new \Datetime($birthDate)));exit;
+                $student->setBirthDate($birthDate = date_format(new \Datetime($birthDate), "Y-m-d"));
+            }
 
             // on persiste les données
             $manager->persist($student);
