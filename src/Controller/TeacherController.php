@@ -128,21 +128,13 @@ class TeacherController extends AbstractController
     /**
      * @Route("/teacher/new", name="teacher_new")
      */
-    public function create(UserPasswordEncoderInterface $encoder, ObjectManager $manager, Request $request, EstablishmentRepository $estabRepo, ClassroomRepository $classroomRepo)
+    public function create(UserPasswordEncoderInterface $encoder, ObjectManager $manager, Request $request, EstablishmentRepository $estabRepo)
     {
         // on récupère la liste des etablissements
         $establishments = $estabRepo->findAll();
-        $classrooms = 0;
-
-        // on regarde si un établissement a été transmis
-        if ($request->request->get('establishment_choice')) {
-            $establishment = $request->request->get('establishment_choice');
-            $classrooms = $classroomRepo->findBy(['establishment' => $establishment]);
-        }
 
         // on instancie un nouveau user
         $teacher = new Teacher();
-        $user = new User();
 
         // Création du formulaire à partir du fichier NewUserType
         $form = $this->createForm(TeacherType::class, $teacher);
@@ -154,54 +146,21 @@ class TeacherController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()){
 
             // USER
-            $data = $request->request->get('teacher');
-
-            // lastName
-            $user->setLastName($data["user"]["lastName"]);
-
-            // firstName
-            $user->setFirstName($data["user"]["firstName"]);
-
-            // email
-            $user->setEmail($data["user"]["email"]);
-
             // hash
             $passRandom = bin2hex(random_bytes(12));
-            $encoded = $encoder->encodePassword($user, $passRandom);
-            $user->setHash($encoded);
+            $encoded = $encoder->encodePassword($teacher->getUser(), $passRandom);
+            $teacher->getUser()->setHash($encoded);
 
             // slug
             $slugify = new Slugify();
-            $slug = $slugify->slugify($user->getFirstName()."-".$user->getLastName());
-            $user->setSlug($slug);
+            $slug = $slugify->slugify($teacher->getUser()->getFirstName()."-".$teacher->getUser()->getLastName());
+            $teacher->getUser()->setSlug($slug);
 
             // title
-            $user->setTitle('ROLE_TEACHER');
-
-            // exist
-            $user->setExist($data["user"]["exist"]);
+            $teacher->getUser()->setTitle('ROLE_TEACHER');
 
             // TEACHER
-            // on créé, on le crypte et on transmet le mot de passe
-            $passRandom = bin2hex(random_bytes(12));
-            $encoded = $encoder->encodePassword($user, $passRandom);
-            $user->setHash($encoded);
-
-            // on instancie, on crée le slug et on transmet le slug
-            $slugify = new Slugify();
-            $slug = $slugify->slugify($user->getFirstName()."-".$user->getLastName());
-            $user->setSlug($slug);
-
-            // on le transmet le role au user
-            $user->setTitle('ROLE_TEACHER');
-
-            // on récupére l'établissement
-            $establishment = $estabRepo->findOneBy(['id' => $establishment]);
-
             // on assigne son role et son établissement
-            $teacher = new Teacher();
-            $teacher->setUser($user);
-            $teacher->setEstablishment($establishment);
             $teacher->setCreatedAt(new \DateTime());
 
             // on récupére la classe et on le transmet au teacher
@@ -211,18 +170,16 @@ class TeacherController extends AbstractController
                 $teacher->addClassroom($classroom_id);
             }
 
-            $manager->persist($teacher);
-
             // on persiste et on sauvegarde les données du formulaire
-            $manager->persist($user);
+            $manager->persist($teacher);
             $manager->flush();
 
             // on envoie un email au user pour lui indiquer son mot de passe
             mail(
-                $user->getEmail(),
+                $teacher->getUser()->getEmail(),
                 'Bonjour',
                 'un compte a été créé pour vous sur le site GPME,
-                identifiant : '.$user->getEmail().'
+                identifiant : '.$teacher->getUser()->getEmail().'
                 votre mot de passe : '.$passRandom
             );
 
@@ -236,8 +193,7 @@ class TeacherController extends AbstractController
         // on retourne la vue et les données
         return $this->render('teacher/new.html.twig', [
             'form' => $form->createView(),
-            'establishments' => $establishments,
-            'classrooms' => $classrooms,
+            'establishments' => $estabRepo->findAll(),
         ]);
     }
 
@@ -249,18 +205,11 @@ class TeacherController extends AbstractController
         // on récupére l'utilisateur
         $user = $teacher->getUser();
 
-        // on récupère la liste des etablissements
-        $establishments = $estabRepo->findAll();
-
         // Création du formulaire à partir du fichier ModifyUserType
         $form = $this->createForm(TeacherType::class, $teacher);
 
         // récupération des données du formulaire
         $form->handleRequest($request);
-
-        // on récupére l'établissement choisi
-        $establishment = $request->request->get('establishment_choice');
-        $establishment = $estabRepo->findOneBy(['id' => $establishment]);
 
         // si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()){
@@ -278,17 +227,8 @@ class TeacherController extends AbstractController
                 $teacher->addClassroom($classroom);
             }
 
-            // si l'établissement choisi est différent de l'établissement de l'enseignant
-            if (!$establishment) {
-                $establishment = $teacher->getEstablishment();
-            }
-
-            // on assigne son établissement
-            $teacher->setEstablishment($establishment);
-            $manager->persist($teacher);
-
             // on persiste et on sauvegarde les données du formulaire
-            $manager->persist($user);
+            $manager->persist($teacher);
             $manager->flush();
 
             // on enregistre un message flash
@@ -305,9 +245,8 @@ class TeacherController extends AbstractController
         // on retourne la vue et les données
         return $this->render('teacher/modify.html.twig', [
             'form' => $form->createView(),
+            'establishments' => $estabRepo->findAll(),
             'teacher' => $teacher,
-            'establishments' => $establishments,
-            'classrooms' => $classrooms,
         ]);
     }
 
