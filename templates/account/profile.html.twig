@@ -3,26 +3,41 @@
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
 	{% block body %}
-
-		
-		{{ form_start(form) }}
-
 		{% if app.user.roles[0] == "ROLE_USER" %}
-			<div class="form-group">
-				<label for="account_candidateNb" class="required">Numéro de candidat :</label><input type="text" id="account_candidateNb" name="candidateNb" required="required" class="form-control" value="{{student.candidateNb}}">
-			</div>
-		{% endif %}
-		{{ form_row(form.lastName, {'label':'Nom :'}) }}
-		{{ form_row(form.firstName, {'label':'Prénom :'}) }}
-		{{ form_row(form.email, {'label':'Email :'}) }}
-		{% if app.user.roles[0] == "ROLE_USER" %}
-			<div class="form-group">
-				<label for="account_birthDate" class="required">Date de naissance :</label><input type="datetime" id="account_birthDate" name="birthDate" required="required" class="form-control" value="{{student.birthDate | date('d/m/Y')}}">
-			</div>
+			{{ form_start(form) }}
+			{{ form_row(form.candidateNb, {'label':'Numéro de candidat :'}) }}
+			{{ form_row(form.user.lastName, {'label':'Nom :'}) }}
+			{{ form_row(form.user.firstName, {'label':'Prénom :'}) }}
+			{{ form_row(form.user.email, {'label':'Email :'}) }}
+			{{ form_row(form.birthDate, {'label':'Date de naissance :'}) }}
+			{{ form_row(form.save, {'label':'Mettre à jour'}) }}
+			{{ form_end(form) }}
 		{% endif %}
 
-		<button type="submit" class="btn btn-primary">Mettre à jour</button>
+		{% if app.user.roles[0] == "ROLE_TEACHER" %}
+			{{ form_start(form) }}
+			{{ form_row(form.user.lastName, {'label':'Nom :'}) }}
+			{{ form_row(form.user.firstName, {'label':'Prénom :'}) }}
+			{{ form_row(form.user.email, {'label':'Email :'}) }}
+			{{ form_row(form.save, {'label':'Mettre à jour'}) }}
+			{{ form_end(form) }}
+		{% endif %}
 
-		{{ form_end(form) }}
-		
+		{% if app.user.roles[0] == "ROLE_ADMIN" %}
+			{{ form_start(form) }}
+			{{ form_row(form.user.lastName, {'label':'Nom :'}) }}
+			{{ form_row(form.user.firstName, {'label':'Prénom :'}) }}
+			{{ form_row(form.user.email, {'label':'Email :'}) }}
+			{{ form_row(form.save, {'label':'Mettre à jour'}) }}
+			{{ form_end(form) }}
+		{% endif %}
+
+		{% if app.user.roles[0] == "ROLE_SADMIN" %}
+			{{ form_start(form) }}
+			{{ form_row(form.user.lastName, {'label':'Nom :'}) }}
+			{{ form_row(form.user.firstName, {'label':'Prénom :'}) }}
+			{{ form_row(form.user.email, {'label':'Email :'}) }}
+			{{ form_row(form.save, {'label':'Mettre à jour'}) }}
+			{{ form_end(form) }}
+		{% endif %}
 	{% endblock %}

@@ -4,29 +4,11 @@
 
 	{% block body %}
 
-		{# Bulle d'aide #}
-		<div class="card mb-3">
-			<div class="card-header">
-				Infos création d'un département
-			</div>
-			<div class="card-body">
-				<blockquote class="mb-0">
-					<p class="m-0">1. Renseigner les champs</p>
-					<p class="m-0">2. Indiquer si le département doit être visible par les utilisateurs (actif : oui = visible, actif : non = invisible)</p>
-					<p class="m-0">3. Valider avec le bouton "Enregistrer le département"</p><br>
-					<footer>Pour toute autre question ou problème, veuillez utiliser le formulaire de contact</footer>
-				</blockquote>
-			</div>
-		</div>
-
 		{# formulaire de création de département #}
 		{{ form_start(form) }}
-
 		{{ form_row(form.name, {'label':'Nom du département :'}) }}
 		{{ form_row(form.exist, {'label':'Activer le département :'}) }}
-
-		<button class="btn btn-primary">Enregistrer le département</button>
-
+		{{ form_row(form.save, {'label':'Enregistrer'}) }}
 		{{ form_end(form) }}
 
 	{% endblock %}

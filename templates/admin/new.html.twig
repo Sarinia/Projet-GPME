@@ -6,23 +6,12 @@
 
 		{# formulaire de création d'un administrateur #}
 		{{ form_start(form) }}
-
-		<div class="form-group">
-			<label for="establishment">Selectionner l'établissement :</label>
-			<select class="form-control" id="establishment" name="establishment_choice">
-				{% for establishment in establishments %}
-					<option value="{{establishment.id}}">{{establishment.name}}</option>
-				{% endfor %}
-			</select>
-		</div>
-
+		{{ form_row(form.establishment, {'label':'Selectionner l\'établissement :'}) }}
 		{{ form_row(form.user.lastName, {'label':'Nom :'}) }}
 		{{ form_row(form.user.firstName, {'label':'Prénom :'}) }}
 		{{ form_row(form.user.email, {'label':'Email :'}) }}
 		{{ form_row(form.user.exist, {'label':"Activer l'administrateur :"}) }}
-
-		<button class="btn btn-primary">Enregistrer l'administrateur</button>
-
+		{{ form_row(form.save, {'label':"Enregistrer"}) }}
 		{{ form_end(form) }}
 
 	{% endblock %}

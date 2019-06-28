@@ -6,12 +6,9 @@
 
 		{# formulaire de modification de département #}
 		{{ form_start(form) }}
-
 		{{ form_row(form.name, {'label':'Nom du département :'}) }}
 		{{ form_row(form.exist, {'label':'Activer le département :'}) }}
-
-		<button class="btn btn-primary">Mettre à jour</button>
-
+		{{ form_row(form.save, {'label':'Mettre à jour'}) }}
 		{{ form_end(form) }}
 
 	{% endblock %}

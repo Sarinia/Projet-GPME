@@ -3,12 +3,19 @@
 namespace App\Controller;
 
 use App\Entity\PasswordUpdate;
+use App\Form\AccountAdminType;
+use App\Form\AccountSadminType;
+use App\Form\AccountStudentType;
+use App\Form\AccountTeacherType;
 use App\Form\AccountType;
 use App\Form\PasswordUpdateType;
 use App\Form\StudentType;
+use App\Repository\AdminRepository;
 use App\Repository\DepartmentRepository;
 use App\Repository\EstablishmentRepository;
+use App\Repository\SadminRepository;
 use App\Repository\StudentRepository;
+use App\Repository\TeacherRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -86,43 +93,127 @@ class AccountController extends AbstractController
     /**
      * @Route("/account/profile", name="account_profile")
      */
-    public function profile(Request $request, ObjectManager $manager, StudentRepository $studentRepo)
+    public function profile(Request $request, ObjectManager $manager, StudentRepository $studentRepo, TeacherRepository $teacherRepo, AdminRepository $adminRepo, SadminRepository $sadminRepo)
     {
-        // on récupére l'utilisateur connecté
-        $user = $this->getUser();
+        if ($this->getUser()->getTitle() == "ROLE_SADMIN" ) {
 
-        // on crée le formulaire
-        $form = $this->createForm(AccountType::class, $user);
+            // on récupére l'utilisateur connecté
+            $user = $this->getUser();
+            $sadmin = $sadminRepo->findOneBy(['id' => $user]);
 
-        // on récupére les données du formulaire
-        $form->handleRequest($request);
-        
-        // si le formulaire est soumis et est valide
-        if ($form->isSubmitted() && $form->isValid()) {
+            // on crée le formulaire
+            $form = $this->createForm(AccountSadminType::class, $sadmin);
 
-            if ($user->getTitle() == "ROLE_USER") {
-                $student = $studentRepo->findOneBy(['id' => $user]);
-                $student->setCandidateNb($request->request->get('candidateNb'));
-                $birthDate = $request->request->get('birthDate');dump(date_format("Y-m-d", new \Datetime($birthDate)));exit;
-                $student->setBirthDate($birthDate = date_format(new \Datetime($birthDate), "Y-m-d"));
-            }
+            // on récupére les données du formulaire
+            $form->handleRequest($request);
+
+            // si le formulaire est soumis et est valide
+            if ($form->isSubmitted() && $form->isValid()) {
 
             // on persiste les données
-            $manager->persist($student);
-            $manager->persist($user);
+                $manager->persist($sadmin);
 
             // on enregistre les données
-            $manager->flush();
+                $manager->flush();
 
             // on enregistre un message flash
-            $this->addFlash('success','Votre profil a bien été mis à jour !');
+                $this->addFlash('success','Votre profil a bien été mis à jour !');
+            }
+            // on retourne la vue et les données
+            return $this->render('account/profile.html.twig', [
+                'form' => $form->createView(),
+            ]);
         }
 
-        // on retourne la vue et les données
-        return $this->render('account/profile.html.twig', [
-            'form' => $form->createView(),
-            'student' => $student,
-        ]);
+        if ($this->getUser()->getTitle() == "ROLE_ADMIN" ) {
+            
+            // on récupére l'utilisateur connecté
+            $user = $this->getUser();
+            $admin = $adminRepo->findOneBy(['id' => $user]);
+
+            // on crée le formulaire
+            $form = $this->createForm(AccountAdminType::class, $admin);
+
+            // on récupére les données du formulaire
+            $form->handleRequest($request);
+
+            // si le formulaire est soumis et est valide
+            if ($form->isSubmitted() && $form->isValid()) {
+
+            // on persiste les données
+                $manager->persist($admin);
+
+            // on enregistre les données
+                $manager->flush();
+
+            // on enregistre un message flash
+                $this->addFlash('success','Votre profil a bien été mis à jour !');
+            }
+            // on retourne la vue et les données
+            return $this->render('account/profile.html.twig', [
+                'form' => $form->createView(),
+            ]);
+        }
+
+        if ($this->getUser()->getTitle() == "ROLE_TEACHER" ) {
+            
+            // on récupére l'utilisateur connecté
+            $user = $this->getUser();
+            $teacher = $teacherRepo->findOneBy(['id' => $user]);
+
+            // on crée le formulaire
+            $form = $this->createForm(AccountTeacherType::class, $teacher);
+
+            // on récupére les données du formulaire
+            $form->handleRequest($request);
+
+            // si le formulaire est soumis et est valide
+            if ($form->isSubmitted() && $form->isValid()) {
+
+            // on persiste les données
+                $manager->persist($teacher);
+
+            // on enregistre les données
+                $manager->flush();
+
+            // on enregistre un message flash
+                $this->addFlash('success','Votre profil a bien été mis à jour !');
+            }
+            // on retourne la vue et les données
+            return $this->render('account/profile.html.twig', [
+                'form' => $form->createView(),
+            ]);
+        }
+
+        if ($this->getUser()->getTitle() == "ROLE_USER" ) {
+            
+            // on récupére l'utilisateur connecté
+            $user = $this->getUser();
+            $student = $studentRepo->findOneBy(['id' => $user]);
+
+            // on crée le formulaire
+            $form = $this->createForm(AccountStudentType::class, $student);
+
+            // on récupére les données du formulaire
+            $form->handleRequest($request);
+
+            // si le formulaire est soumis et est valide
+            if ($form->isSubmitted() && $form->isValid()) {
+
+            // on persiste les données
+                $manager->persist($student);
+
+            // on enregistre les données
+                $manager->flush();
+
+            // on enregistre un message flash
+                $this->addFlash('success','Votre profil a bien été mis à jour !');
+            }
+            // on retourne la vue et les données
+            return $this->render('account/profile.html.twig', [
+                'form' => $form->createView(),
+            ]);
+        }
     }
 
     /**

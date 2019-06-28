@@ -87,11 +87,8 @@ class ClassroomController extends AbstractController
     /**
      * @Route("/classroom/new", name="classroom_new")
      */
-    public function create(ObjectManager $manager,Request $request, EstablishmentRepository $estabRepo, ClassroomRepository $classroomRepo)
+    public function create(ObjectManager $manager,Request $request)
     {   
-        // requete de tous les établissements de la BDD
-        $establishments = $estabRepo->findAll();
-
         // on instancie un nouveau Classroom
         $classroom = new Classroom();
 
@@ -104,28 +101,16 @@ class ClassroomController extends AbstractController
         // si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()){
 
-            // on récupére l'établissement et on l'attribut à la classe
-            $establishment = $request->request->get('classroom_choice');
-            $establishment = $estabRepo->findOneBy(['id' => $establishment]);
-            $classroom->setEstablishment($establishment);
-
-            // on instancie Slugify
+            // slug
             $slugify = new Slugify();
-
-            // on récupère le diplome
             $degree = $classroom->getDegree();
-
-            // on récupère l'année des dates
             $startDate = $classroom->getStartDate();
             $endDate = $classroom->getEndDate();
-
-            // on récupère le nombre de ligne qu'il y a dans la table classroom pour l'établissement
             $ligne = $classroom->getId();
-
-            // on construit le slug et on le transmet
             $slug = $slugify->slugify($degree."-".$ligne."-".$startDate."-".$endDate);
             $classroom->setSlug($slug);
 
+            // createdAt
             $classroom->setCreatedAt(new \DateTime());
 
             // on persiste et on sauvegarde les données du formulaire
@@ -141,7 +126,6 @@ class ClassroomController extends AbstractController
 
         // on retourne la vue et les données
         return $this->render('classroom/new.html.twig', [
-            'establishments' => $establishments,
             'form' => $form->createView(),
         ]);
     }
@@ -151,8 +135,7 @@ class ClassroomController extends AbstractController
      */
     public function modify(ObjectManager $manager, Request $request, Classroom $classroom, EstablishmentRepository $estabRepo, ClassroomRepository $classroomRepo)
     {        
-        // requete de tous les établissements de la BDD
-        $establishments = $estabRepo->findAll();
+
 
         // Création du formulaire à partir du fichier NewAdminType
         $form = $this->createForm(ClassroomType::class, $classroom);
@@ -163,25 +146,12 @@ class ClassroomController extends AbstractController
         // si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()){
 
-            // on récupére l'établissement et on l'attribut à la classe
-            $establishment = $request->request->get('establishment_choice');
-            $establishment = $estabRepo->findOneBy(['id' => $establishment]);
-            $classroom->setEstablishment($establishment);
-
-            // on instancie
+            // slug
             $slugify = new Slugify();
-
-            // on récupère le diplome
             $degree = $classroom->getDegree();
-
-            // on récupère l'année des dates
             $startDate = $classroom->getStartDate();
             $endDate = $classroom->getEndDate();
-
-            // on récupère le nombre de ligne qu'il y a dans la table classroom pour l'établissement
             $ligne = $classroom->getId();
-
-            // on construit le slug et on le transmet
             $slug = $slugify->slugify($degree."-".$ligne."-".$startDate."-".$endDate);
             $classroom->setSlug($slug);
             
@@ -199,7 +169,6 @@ class ClassroomController extends AbstractController
         // on retourne la vue et les données
         return $this->render('classroom/modify.html.twig', [
             'form' => $form->createView(),
-            'establishments' => $establishments,
             'classroom' => $classroom,
         ]);
     }

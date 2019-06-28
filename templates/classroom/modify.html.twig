@@ -6,24 +6,12 @@
 
 		{# formulaire de modification d'une classe #}
 		{{ form_start(form) }}
-
-		<div class="form-group">
-			<label>Selectionner l'établissement :</label>
-			<select class="form-control" name="establishment_choice">
-				{% for establishment in establishments %}{% set selected = "" %}
-					{% if app.request.request.get('establishment_choice') is defined and establishment.id == app.request.request.get('establishment_choice') %}{% set selected = "selected" %}
-					{% endif %}
-					<option value="{{ establishment.id }}" {{ selected }}>{{ establishment.name }}</option>
-				{% endfor %}
-			</select>	
-		</div>
+		{{ form_row(form.establishment, {'label':'Selectionner l\'établissement :'}) }}
 		{{ form_row(form.degree, {'label':'Diplome :'}) }}
 		{{ form_row(form.startDate, {'label':'Date de début :'}) }}
 		{{ form_row(form.endDate, {'label':'Date de fin :'}) }}
 		{{ form_row(form.exist, {'label':'Activer la classe :'}) }}
-
-		<button class="btn btn-primary">Mettre à jour</button>
-
+		{{ form_row(form.save, {'label':'Mettre à jour'}) }}
 		{{ form_end(form) }}
 
 	{% endblock %}

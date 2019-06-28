@@ -100,7 +100,9 @@ class DepartmentController extends AbstractController
             $this->addFlash('success','Le département a bien été mis à jour !');
 
             // on redirige vers la liste des départements
-            return $this->redirectToRoute('department_show_list');
+            return $this->redirectToRoute('department_show', [
+                'id' => $department->getId(),
+            ]);
         }
 
         // on retourne la vue et les données

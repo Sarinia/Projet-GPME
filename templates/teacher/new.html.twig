@@ -4,41 +4,44 @@
 
 	{% block body %}
 
-		<form method="post">
-			<label class="form-control-label" for="establishment">Selectionner l'établissement :</label>
-			<div class="row form-group">
-				<select class="form-control col-6 mx-3" id="establishment" name="establishment_choice">
-					{% for establishment in establishments %}
-						{% if app.request.request.get('establishment_choice') != 0 %}{% set selected = "" %}
-							{% if establishment.id == app.request.request.get('establishment_choice') %}{% set selected = "selected" %}
-							{% endif %}
-						{% endif %}
-						<option value="{{ establishment.id }}" {% if app.request.request.get('establishment_choice') != 0 %}{{ selected }}{% endif %}>{{ establishment.name }}</option>
-					{% endfor %}
-				</select>
-				<button type="submit" class="btn btn-primary">Actualiser</button>
-			</div>
-		</form>
-
 		{# formulaire de création d'un administrateur #}
 		{{ form_start(form) }}
+		{{ form_row(form.establishment, {'label':'Selectionner l\'établissement :', 'attr':{'onchange':"alert(this.options[selectedIndex].value)"}}) }}
+		
 
-		{% if classrooms is defined and classrooms != 0 %}
-			<label class="form-check-label" for="classroom">Selectionner les classes :</label>
-			<div class="form-inline">
-				{% for classroom in classrooms %}
+
+
+
+
+		<label class="form-check-label" id="classes" for="classroom">Selectionner les classes :</label>
+		{% for establishment in establishments %}
+			<div class="form-inline" id="{{establishment.id}}">establishment {{establishment.id}}
+				{% for classroom in establishment.classrooms %}
 					<input class="form-check-input ml-4 mr-1 mt-2 mb-3" type="checkbox" id="classroom{{classroom.id}}" name="classroom[]" value="{{classroom.id}}"><label class=" mx-1 mt-2 mb-3" for="classroom{{classroom.id}}">{{classroom.degree}}</label>
 				{% endfor %}
 			</div>
-		{% endif %}
-		<input type="hidden" name="establishment_choice" value="{{ app.request.request.get('establishment_choice') }}">
+		{% endfor %}
+
+
+
 		{{ form_row(form.user.lastName, {'label':'Nom :'}) }}
 		{{ form_row(form.user.firstName, {'label':'Prénom :'}) }}
 		{{ form_row(form.user.email, {'label':'Email :'}) }}
 		{{ form_row(form.user.exist, {'label':"Activer l'enseignant :"}) }}
-
-		<button class="btn btn-primary">Enregistrer l'enseignant</button>
-
+		{{ form_row(form.save, {'label':"Enregistrer"}) }}
 		{{ form_end(form) }}
+		
 
+		<script>
+
+		var select = document.getElementById("teacher_establishment" );
+		var valeur = select.options[select.selectedIndex].value;
+
+		teacher_establishment.addEventListener('onchange',recup);
+		function recup(){
+			document.write(valeur);
+			alert(valeur);
+		};
+		</script>
 	{% endblock %}
+	

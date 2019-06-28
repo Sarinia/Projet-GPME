@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20190624114250 extends AbstractMigration
+final class Version20190628111431 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,8 +22,8 @@ final class Version20190624114250 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('CREATE TABLE card (id INT AUTO_INCREMENT NOT NULL, student_id INT NOT NULL, passport_id INT NOT NULL, problem_id INT DEFAULT NULL, modality_id INT DEFAULT NULL, term_id INT DEFAULT NULL, activity_id INT DEFAULT NULL, numbersp INT NOT NULL, entitledsp VARCHAR(255) DEFAULT NULL, infossp VARCHAR(255) DEFAULT NULL, framesp VARCHAR(255) DEFAULT NULL, problemmanagsp VARCHAR(255) DEFAULT NULL, problemcomosp VARCHAR(255) DEFAULT NULL, problemcomwsp VARCHAR(255) DEFAULT NULL, actorssp VARCHAR(255) DEFAULT NULL, targetsp VARCHAR(255) DEFAULT NULL, conditionssp VARCHAR(255) DEFAULT NULL, resourcessp VARCHAR(255) DEFAULT NULL, answerssp VARCHAR(255) DEFAULT NULL, productionssp VARCHAR(255) DEFAULT NULL, writtensp VARCHAR(255) DEFAULT NULL, oralsp VARCHAR(255) DEFAULT NULL, contributionsp LONGTEXT DEFAULT NULL, analysissp LONGTEXT DEFAULT NULL, exist TINYINT(1) NOT NULL, created_at DATETIME NOT NULL, monthsp VARCHAR(255) NOT NULL, yearsp VARCHAR(255) NOT NULL, INDEX IDX_161498D3CB944F1A (student_id), INDEX IDX_161498D3ABF410D0 (passport_id), INDEX IDX_161498D3A0DCED86 (problem_id), INDEX IDX_161498D32D6D889B (modality_id), INDEX IDX_161498D3E2C35FC (term_id), INDEX IDX_161498D381C06096 (activity_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE admin (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, establishment_id INT NOT NULL, created_at DATETIME NOT NULL, UNIQUE INDEX UNIQ_880E0D76A76ED395 (user_id), UNIQUE INDEX UNIQ_880E0D768565851 (establishment_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE admin (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, establishment_id INT DEFAULT NULL, created_at DATETIME NOT NULL, UNIQUE INDEX UNIQ_880E0D76A76ED395 (user_id), UNIQUE INDEX UNIQ_880E0D768565851 (establishment_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE card (id INT AUTO_INCREMENT NOT NULL, student_id INT NOT NULL, passport_id INT NOT NULL, problem_id INT DEFAULT NULL, modality_id INT DEFAULT NULL, term_id INT DEFAULT NULL, activity_id INT DEFAULT NULL, numbersp INT NOT NULL, entitledsp VARCHAR(255) DEFAULT NULL, infossp VARCHAR(255) DEFAULT NULL, framesp VARCHAR(255) DEFAULT NULL, problemmanagsp VARCHAR(255) DEFAULT NULL, problemcomosp VARCHAR(255) DEFAULT NULL, problemcomwsp VARCHAR(255) DEFAULT NULL, actorssp VARCHAR(255) DEFAULT NULL, targetsp VARCHAR(255) DEFAULT NULL, conditionssp VARCHAR(255) DEFAULT NULL, resourcessp VARCHAR(255) DEFAULT NULL, answerssp VARCHAR(255) DEFAULT NULL, productionssp VARCHAR(255) DEFAULT NULL, writtensp VARCHAR(255) DEFAULT NULL, oralsp VARCHAR(255) DEFAULT NULL, contributionsp LONGTEXT DEFAULT NULL, analysissp LONGTEXT DEFAULT NULL, exist TINYINT(1) NOT NULL, created_at DATETIME NOT NULL, monthsp VARCHAR(255) DEFAULT NULL, yearsp VARCHAR(255) DEFAULT NULL, INDEX IDX_161498D3CB944F1A (student_id), INDEX IDX_161498D3ABF410D0 (passport_id), INDEX IDX_161498D3A0DCED86 (problem_id), INDEX IDX_161498D32D6D889B (modality_id), INDEX IDX_161498D3E2C35FC (term_id), INDEX IDX_161498D381C06096 (activity_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE classroom (id INT AUTO_INCREMENT NOT NULL, establishment_id INT NOT NULL, degree VARCHAR(255) NOT NULL, start_date VARCHAR(255) NOT NULL, end_date VARCHAR(255) NOT NULL, slug VARCHAR(255) NOT NULL, exist TINYINT(1) NOT NULL, created_at DATETIME NOT NULL, INDEX IDX_497D309D8565851 (establishment_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE user (id INT AUTO_INCREMENT NOT NULL, last_name VARCHAR(255) NOT NULL, first_name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, hash VARCHAR(255) NOT NULL, slug VARCHAR(255) NOT NULL, title VARCHAR(255) NOT NULL, exist TINYINT(1) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE department (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, exist TINYINT(1) NOT NULL, created_at DATETIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
@@ -38,14 +38,14 @@ final class Version20190624114250 extends AbstractMigration
         $this->addSql('CREATE TABLE problem (id INT AUTO_INCREMENT NOT NULL, number VARCHAR(255) NOT NULL, title VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE sadmin (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, created_at DATETIME NOT NULL, UNIQUE INDEX UNIQ_725824A7A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE term (id INT AUTO_INCREMENT NOT NULL, title VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE admin ADD CONSTRAINT FK_880E0D76A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE admin ADD CONSTRAINT FK_880E0D768565851 FOREIGN KEY (establishment_id) REFERENCES establishment (id)');
         $this->addSql('ALTER TABLE card ADD CONSTRAINT FK_161498D3CB944F1A FOREIGN KEY (student_id) REFERENCES student (id)');
         $this->addSql('ALTER TABLE card ADD CONSTRAINT FK_161498D3ABF410D0 FOREIGN KEY (passport_id) REFERENCES passport (id)');
         $this->addSql('ALTER TABLE card ADD CONSTRAINT FK_161498D3A0DCED86 FOREIGN KEY (problem_id) REFERENCES problem (id)');
         $this->addSql('ALTER TABLE card ADD CONSTRAINT FK_161498D32D6D889B FOREIGN KEY (modality_id) REFERENCES modality (id)');
         $this->addSql('ALTER TABLE card ADD CONSTRAINT FK_161498D3E2C35FC FOREIGN KEY (term_id) REFERENCES term (id)');
         $this->addSql('ALTER TABLE card ADD CONSTRAINT FK_161498D381C06096 FOREIGN KEY (activity_id) REFERENCES activity (id)');
-        $this->addSql('ALTER TABLE admin ADD CONSTRAINT FK_880E0D76A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
-        $this->addSql('ALTER TABLE admin ADD CONSTRAINT FK_880E0D768565851 FOREIGN KEY (establishment_id) REFERENCES establishment (id)');
         $this->addSql('ALTER TABLE classroom ADD CONSTRAINT FK_497D309D8565851 FOREIGN KEY (establishment_id) REFERENCES establishment (id)');
         $this->addSql('ALTER TABLE establishment ADD CONSTRAINT FK_DBEFB1EEAE80F5DF FOREIGN KEY (department_id) REFERENCES department (id)');
         $this->addSql('ALTER TABLE passport ADD CONSTRAINT FK_B5A26E08CB944F1A FOREIGN KEY (student_id) REFERENCES student (id)');
@@ -83,8 +83,8 @@ final class Version20190624114250 extends AbstractMigration
         $this->addSql('ALTER TABLE card DROP FOREIGN KEY FK_161498D32D6D889B');
         $this->addSql('ALTER TABLE card DROP FOREIGN KEY FK_161498D3A0DCED86');
         $this->addSql('ALTER TABLE card DROP FOREIGN KEY FK_161498D3E2C35FC');
-        $this->addSql('DROP TABLE card');
         $this->addSql('DROP TABLE admin');
+        $this->addSql('DROP TABLE card');
         $this->addSql('DROP TABLE classroom');
         $this->addSql('DROP TABLE user');
         $this->addSql('DROP TABLE department');

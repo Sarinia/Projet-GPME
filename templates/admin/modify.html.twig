@@ -6,33 +6,12 @@
 
 		{# formulaire de modification d'un administrateur #}
 		{{ form_start(form) }}
-
-		<div class="form-group">
-			<label for="establishment">Selectionner l'établissement :</label>
-			<select class="form-control" id="establishment" name="establishment_choice">
-				{% if app.request.request.get('establishment_choice') != 0 %}
-					{% for establishment in establishments %}{% set selected = "" %}
-						{% if app.request.request.get('establishment_choice') is defined and establishment.id == app.request.request.get('establishment_choice') %}
-						{% endif %}
-						<option value="{{ establishment.id }}" {{ selected }}>{{ establishment.name }}</option>
-					{% endfor %}
-				{% else %}
-					{% for establishment in establishments %}{% set selected = "" %}
-						{% if establishment.id == admin.establishment.id %}{% set selected = "selected" %}
-						{% endif %}
-						<option value="{{ establishment.id }}" {{ selected }}>{{ establishment.name }}</option>
-					{% endfor %}
-				{% endif %}
-			</select>
-		</div>
-
+		{{ form_row(form.establishment, {'label':'Selectionner l\'établissement :'}) }}
 		{{ form_row(form.user.lastName, {'label':'Nom :'}) }}
 		{{ form_row(form.user.firstName, {'label':'Prénom :'}) }}
 		{{ form_row(form.user.email, {'label':'Email :'}) }}
 		{{ form_row(form.user.exist, {'label':"Activer l'administrateur :"}) }}
-
-		<button type="submit" class="btn btn-primary">Mettre à jour</button>
-
+		{{ form_row(form.save, {'label':"Mettre à jour"}) }}
 		{{ form_end(form) }}
 
 	{% endblock %}

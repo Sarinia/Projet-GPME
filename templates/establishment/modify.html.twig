@@ -6,7 +6,7 @@
 
 		{# formulaire de modification d'établissement #}
 		{{ form_start(form) }}
-
+		{{ form_row(form.department, {'label':"Selectionner le département :"}) }}
 		{{ form_row(form.name, {'label':"Nom de l'établissement :"}) }}
 		{{ form_row(form.adress, {'label':'Adresse :'}) }}
 		{{ form_row(form.postalcode, {'label':'Code postal :'}) }}
@@ -15,19 +15,7 @@
 		{{ form_row(form.longitude, {'label':'Longitude :'}) }}
 		{{ form_row(form.backgroundurl, {'label':"Url de l'image de l'écran de connexion :"}) }}
 		{{ form_row(form.exist, {'label':"Activer l'établissement :"}) }}
-		<div class="form-group">
-			<label>Selectionner le département :</label>
-			<select class="form-control" name="department_choice">
-				{% for department in departments %}{% set selected = "" %}
-					{% if department.id == app.request.request.get('department_choice') %}{% set selected = "selected" %}
-					{% endif %}
-					<option value="{{ department.id }}" {{ selected }}>{{ department.name }}</option>
-				{% endfor %}
-			</select>	
-		</div>
-
-		<button type="submit" class="btn btn-primary">Mettre à jour</button>
-
+		{{ form_row(form.save, {'label':"Mettre à jour"}) }}
 		{{ form_end(form) }}
 
 	{% endblock %}

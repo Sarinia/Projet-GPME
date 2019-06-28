@@ -55,10 +55,8 @@ class EstablishmentController extends AbstractController
     /**
      * @Route("/establishment/new", name="establishment_new")
      */
-    public function create(ObjectManager $manager, Request $request, DepartmentRepository $deptRepo)
+    public function create(ObjectManager $manager, Request $request)
     {        
-        $departments = $deptRepo->findAll();
-        
         $establishment = new Establishment();
 
         $form = $this->createForm(EstablishmentType::class, $establishment);
@@ -67,17 +65,11 @@ class EstablishmentController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()){
 
-            $dept_id = $request->request->get('id');
-            
-            $department = $deptRepo->findOneBy(['id' => $dept_id]);
-
-            $establishment->setDepartment($department);
             $establishment->setCreatedAt(new \DateTime());
 
-            if (!$establishment->getSlug()) {
-                $slugify = new Slugify();
-                $establishment->setSlug($slugify->slugify($establishment->getName()));
-            }
+            $slugify = new Slugify();
+            $slug = $slugify->slugify($establishment->getName());
+            $establishment->setSlug();
             
             $manager->persist($establishment);
             $manager->flush();
@@ -89,17 +81,15 @@ class EstablishmentController extends AbstractController
 
         return $this->render('establishment/new.html.twig', [
             'form' => $form->createView(),
-            'departments' => $departments,
         ]);
     }
 
     /** 
      * @Route("/establishment/modify/{id}", name="establishment_modify")
      */
-    public function modify(ObjectManager $manager, Request $request, Establishment $establishment, DepartmentRepository $deptRepo)
-    {        
-
-        $departments = $deptRepo->findAll();
+    public function modify(ObjectManager $manager, Request $request, Establishment $establishment)
+    {
+        $oldName = $establishment->getName();
 
         $form = $this->createForm(EstablishmentType::class, $establishment);
 
@@ -107,24 +97,22 @@ class EstablishmentController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()){
 
-            $department = $request->request->get('department_choice');
-            $department = $deptRepo->findOneBy(['id' => $department]);
-            $establishment->setDepartment($department);
-
             $slugify = new Slugify();
-            $establishment->setSlug($slugify->slugify($establishment->getName()));
+            $slug = $slugify->slugify($establishment->getName());
+            $establishment->setSlug($slug);
 
             $manager->persist($establishment);
             $manager->flush();
 
             $this->addFlash('success','L\'établissement a bien été mis à jour !');
 
-            return $this->redirectToRoute('establishment_show_list');
+            return $this->redirectToRoute('establishment_show', [
+                'id' => $establishment->getId(),
+            ]);
         }
 
         return $this->render('establishment/modify.html.twig', [
             'form' => $form->createView(),
-            'departments' => $departments,
             'establishment' => $establishment,
         ]);
     }
