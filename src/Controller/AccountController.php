@@ -110,13 +110,13 @@ class AccountController extends AbstractController
             // si le formulaire est soumis et est valide
             if ($form->isSubmitted() && $form->isValid()) {
 
-            // on persiste les données
+                // on persiste les données
                 $manager->persist($sadmin);
 
-            // on enregistre les données
+                // on enregistre les données
                 $manager->flush();
 
-            // on enregistre un message flash
+                // on enregistre un message flash
                 $this->addFlash('success','Votre profil a bien été mis à jour !');
             }
             // on retourne la vue et les données
@@ -126,7 +126,7 @@ class AccountController extends AbstractController
         }
 
         if ($this->getUser()->getTitle() == "ROLE_ADMIN" ) {
-            
+
             // on récupére l'utilisateur connecté
             $user = $this->getUser();
             $admin = $adminRepo->findOneBy(['id' => $user]);
@@ -140,13 +140,13 @@ class AccountController extends AbstractController
             // si le formulaire est soumis et est valide
             if ($form->isSubmitted() && $form->isValid()) {
 
-            // on persiste les données
+                // on persiste les données
                 $manager->persist($admin);
 
-            // on enregistre les données
+                // on enregistre les données
                 $manager->flush();
 
-            // on enregistre un message flash
+                // on enregistre un message flash
                 $this->addFlash('success','Votre profil a bien été mis à jour !');
             }
             // on retourne la vue et les données
@@ -156,7 +156,7 @@ class AccountController extends AbstractController
         }
 
         if ($this->getUser()->getTitle() == "ROLE_TEACHER" ) {
-            
+
             // on récupére l'utilisateur connecté
             $user = $this->getUser();
             $teacher = $teacherRepo->findOneBy(['id' => $user]);
@@ -170,13 +170,13 @@ class AccountController extends AbstractController
             // si le formulaire est soumis et est valide
             if ($form->isSubmitted() && $form->isValid()) {
 
-            // on persiste les données
+                // on persiste les données
                 $manager->persist($teacher);
 
-            // on enregistre les données
+                // on enregistre les données
                 $manager->flush();
 
-            // on enregistre un message flash
+                // on enregistre un message flash
                 $this->addFlash('success','Votre profil a bien été mis à jour !');
             }
             // on retourne la vue et les données
@@ -186,7 +186,7 @@ class AccountController extends AbstractController
         }
 
         if ($this->getUser()->getTitle() == "ROLE_USER" ) {
-            
+
             // on récupére l'utilisateur connecté
             $user = $this->getUser();
             $student = $studentRepo->findOneBy(['id' => $user]);
@@ -200,13 +200,13 @@ class AccountController extends AbstractController
             // si le formulaire est soumis et est valide
             if ($form->isSubmitted() && $form->isValid()) {
 
-            // on persiste les données
+                // on persiste les données
                 $manager->persist($student);
 
-            // on enregistre les données
+                // on enregistre les données
                 $manager->flush();
 
-            // on enregistre un message flash
+                // on enregistre un message flash
                 $this->addFlash('success','Votre profil a bien été mis à jour !');
             }
             // on retourne la vue et les données
@@ -275,5 +275,7 @@ class AccountController extends AbstractController
     /**
      * @Route("/logout", name="account_logout")
      */
-    public function logout(){}
+    public function logout(){
+        
+    }
 }

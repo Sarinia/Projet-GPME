@@ -23,7 +23,7 @@ class TeacherController extends AbstractController
     /**
      * @Route("/teacher/show_list", name="teacher_show_list")
      */
-    public function index(StudentRepository $studentRepo, TeacherRepository $teacherRepo, AdminRepository $adminRepo, EstablishmentRepository $estabRepo, ClassroomRepository $classroomRepo, Request $request)
+    public function index(StudentRepository $studentRepo, TeacherRepository $teacherRepo, AdminRepository $adminRepo, ClassroomRepository $classroomRepo)
     {
         // liste des enseignants pour le super-admin
         if ($this->getUser()->getTitle() == "ROLE_SADMIN") {
@@ -81,8 +81,6 @@ class TeacherController extends AbstractController
                 'classrooms' => $classrooms,
             ]);
         }
-
-        
     }
 
     /**
@@ -101,9 +99,6 @@ class TeacherController extends AbstractController
      */
     public function create(UserPasswordEncoderInterface $encoder, ObjectManager $manager, Request $request, EstablishmentRepository $estabRepo, ClassroomRepository $classroomRepo)
     {
-        // on récupère la liste des etablissements
-        $establishments = $estabRepo->findAll();
-
         // on instancie un nouveau user
         $teacher = new Teacher();
 

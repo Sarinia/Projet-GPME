@@ -163,7 +163,9 @@ class ClassroomController extends AbstractController
             $this->addFlash('success','Le département a bien été mis à jour !');
 
             // on redirige vers la liste des administrateurs
-            return $this->redirectToRoute('classroom_show_list');
+            return $this->redirectToRoute('classroom_show', [
+                'id' => $classroom->getId(),
+            ]);
         }
 
         // on retourne la vue et les données

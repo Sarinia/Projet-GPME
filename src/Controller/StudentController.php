@@ -27,107 +27,61 @@ class StudentController extends AbstractController
      */
     public function index(UserRepository $userRepo, StudentRepository $studentRepo, TeacherRepository $teacherRepo, AdminRepository $adminRepo, EstablishmentRepository $estabRepo, ClassroomRepository $classroomRepo, Request $request)
     {
-        if ($this->getUser()) {
+        // liste des enseignants pour le super-admin
+        if ($this->getUser()->getTitle() == "ROLE_SADMIN") {
 
-            // liste des étudiants pour le super-admin
-            if ($this->getUser()->getTitle() == "ROLE_SADMIN") {
+            // on récupère la liste des classes
+            $classrooms = $classroomRepo->findAll();
 
-                // on récupère la liste des établissements pour le menu filtre
-                $establishments = $estabRepo->findAll();
+            // on retourne la vue et les données
+            return $this->render('student/list.html.twig', [
+                'classrooms' => $classrooms,
+            ]);
+        }
 
-                // on récupère la liste des classes pour le menu filtre
-                $classrooms = $classroomRepo->findAll();
+        // liste des enseignants pour l'admin
+        if ($this->getUser()->getTitle() == "ROLE_ADMIN") {
 
-                // on récupère la liste des étudiants
-                $students = $studentRepo->findAll();
+            // on récupère les infos de l'admin connecté
+            $adminCo = $adminRepo->findOneBy(['user' => $this->getUser()]);
 
-                // on retourne la vue et les données
-                return $this->render('student/list.html.twig', [
-                    'students' => $students,
-                    'establishments' => $establishments,
-                    'classrooms' => $classrooms,
-                ]);
-            } 
+            // on récupère la liste des enseignants
+            $classrooms = $classroomRepo->findBy(['establishment' => $adminCo->getEstablishment()->getId()]);
 
-            // liste des étudiants pour l'admin
-            if ($this->getUser()->getTitle() == "ROLE_ADMIN") {
+            // on retourne la vue et les données
+            return $this->render('student/list.html.twig', [
+                'classrooms' => $classrooms,
+            ]);
+        }
 
-                // on récupère les infos de l'admin connecté
-                $adminCo = $adminRepo->findOneBy(['user' => $this->getUser()]);
+        // liste des enseignants pour l'enseignant
+        if ($this->getUser()->getTitle() == "ROLE_TEACHER") {
 
-                // on récupère la liste des établissements pour le menu filtre
-                $establishments = $estabRepo->findBy(['id' => $adminCo->getEstablishment()->getId()]);
+            // on récupère les infos de l'enseignant connecté
+            $teacherCo = $teacherRepo->findOneBy(['user' => $this->getUser()]);
 
-                // on récupère la liste des classes pour le menu filtre
-                $classrooms = $classroomRepo->findBy(['establishment' => $adminCo->getEstablishment()->getId()]);
+            // on récupère la liste des enseignants
+            $classrooms = $teacherCo->getClassrooms();
 
-                // on récupère la liste des étudiants
-                $students = $studentRepo->findBy(['establishment' => $adminCo->getEstablishment()->getId()]);
+            // on retourne la vue et les données
+            return $this->render('student/list.html.twig', [
+                'classrooms' => $classrooms,
+            ]);
+        }
 
-                // on retourne la vue et les données
-                return $this->render('student/list.html.twig', [
-                    'students' => $students,
-                    'establishments' => $establishments,
-                    'classrooms' => $classrooms,
-                ]);
-            }
+        // liste des enseignants pour l'étudiant
+        if ($this->getUser()->getTitle() == "ROLE_USER") {
 
-            // liste des étudiants pour l'enseigant
-            if ($this->getUser()->getTitle() == "ROLE_TEACHER") {
+            // on récupère les infos de l'étudiant connecté
+            $studentCo = $studentRepo->findOneBy(['user' => $this->getUser()]);
 
-                // on récupère les infos de l'enseignant connecté
-                $teacherCo = $teacherRepo->findOneBy(['user' => $this->getUser()]);
+            // on récupère la liste des enseignants
+            $classrooms = $classroomRepo->findBy(['id' => $studentCo->getClassroom()->getId()]);
 
-                // on récupère la liste des établissements pour le menu filtre
-                $establishments = $estabRepo->findBy(['id' => $teacherCo->getEstablishment()->getId()]);
-
-                // on récupère la liste des classes pour le menu filtre
-                $classrooms = $teacherCo->getClassrooms();
-
-                // on récupère la liste des étudiants
-                $students = [];
-                foreach ($teacherCo->getClassrooms() as $classroom) {
-                    $students = array_merge($students,$studentRepo->findBy(['classroom' => $classroom]));
-                }
-
-                // on retourne la vue et les données
-                return $this->render('student/list.html.twig', [
-                    'students' => $students,
-                    'establishments' => $establishments,
-                    'classrooms' => $classrooms,
-                ]);
-            }
-
-            // liste des étudiants pour l'étudiant
-            if ($this->getUser()->getTitle() == "ROLE_USER") {
-                // on récupère les infos de l'étudiant connecté
-                $studentCo = $studentRepo->findOneBy(['user' => $this->getUser()]);
-
-                // on récupère la liste des établissements pour le menu filtre
-                $establishments = $estabRepo->findBy(['id' => $studentCo->getEstablishment()->getId()]);
-
-                // on récupère la liste des classes pour le menu filtre
-                $classrooms = $classroomRepo->findBy(['id' => $studentCo->getClassroom()->getId()]);
-
-                // on récupère la liste des étudiants
-                $students = $studentRepo->findBy(['classroom' => $studentCo->getClassroom()->getId()]);
-                foreach ($students as $student) {
-                    if ($student->getUser()->getExist() == true) {
-                        $result[] = $student;
-                    }
-                }
-                // on retourne la vue et les données
-                return $this->render('student/list.html.twig', [
-                    'students' => $result,
-                    'establishments' => $establishments,
-                    'classrooms' => $classrooms,
-                ]);
-            }
-
-        } else {
-            
-            // on redirige vers la page de login
-            return $this->redirectToRoute('account_login', []);
+            // on retourne la vue et les données
+            return $this->render('student/list.html.twig', [
+                'classrooms' => $classrooms,
+            ]);
         }
     }
 
@@ -147,12 +101,8 @@ class StudentController extends AbstractController
      */
     public function create(UserPasswordEncoderInterface $encoder, ObjectManager $manager, Request $request, EstablishmentRepository $estabRepo, ClassroomRepository $classroomRepo)
     {
-        // on récupère la liste des etablissements
-        $establishments = $estabRepo->findAll();
-
         // on instancie un nouveau user
         $student = new Student();
-        $user = new User();
 
         // Création du formulaire à partir du fichier NewUserType
         $form = $this->createForm(StudentType::class, $student);
@@ -164,53 +114,36 @@ class StudentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()){
 
             // USER
-            $data = $request->request->get('student');
-
-            // lastName
-            $user->setLastName($data["user"]["lastName"]);
-
-            // firstName
-            $user->setFirstName($data["user"]["firstName"]);
-
-            // email
-            $user->setEmail($data["user"]["email"]);
-
             // hash
             $passRandom = bin2hex(random_bytes(12));
-            $encoded = $encoder->encodePassword($user, $passRandom);
-            $user->setHash($encoded);
+            $encoded = $encoder->encodePassword($student->getUser(), $passRandom);
+            $student->getUser()->setHash($encoded);
 
             // slug
             $slugify = new Slugify();
-            $slug = $slugify->slugify($user->getFirstName()."-".$user->getLastName());
-            $user->setSlug($slug);
+            $slug = $slugify->slugify($student->getUser()->getFirstName()."-".$student->getUser()->getLastName());
+            $student->getUser()->setSlug($slug);
 
             // title
-            $user->setTitle('ROLE_USER');
-
-            // exist
-            $user->setExist($data["user"]["exist"]);
+            $student->getUser()->setTitle('ROLE_USER');
 
             // STUDENT
-            // on regarde si un établissement a été transmis
-            $estab_id = $request->request->get('establishment_choice');
-            $classrooms = $classroomRepo->findBy(['establishment' => $estab_id]);
-
-            // on créé, on le crypte et on transmet le mot de passe
-            $passRandom = bin2hex(random_bytes(12));
-            $encoded = $encoder->encodePassword($user, $passRandom);
-            $user->setHash($encoded);
-
-            // on instancie, on crée le slug et on transmet le slug
-            $slugify = new Slugify();
-            $slug = $slugify->slugify($user->getFirstName()."-".$user->getLastName());
-            $user->setSlug($slug);
-
-            // on le transmet le role au user
-            $user->setTitle('ROLE_USER');
-
             // on vérifie si une seule classe a été coché
+            if (Count($request->request->get('classroom')) == "") {
+
+                // on stocke un message flash
+                $this->addFlash('warning',"Aucene classe n'a été sélectionnée !");
+
+                // on redirige vers la liste des administrateurs
+                return $this->render('student/new.html.twig', [
+                    // on envoie le formulaire à la vue
+                    'form' => $form->createView(),
+                    'establishments' => $estabRepo->findAll(),
+                ]);
+            }
+
             if (Count($request->request->get('classroom')) == 1) {
+
                 // on récupére la classe
                 $classroom_id = $request->request->get('classroom');
                 $classroom = $classroomRepo->findOneBy(['id' => $classroom_id]);
@@ -222,27 +155,14 @@ class StudentController extends AbstractController
                 return $this->render('student/new.html.twig', [
                     // on envoie le formulaire à la vue
                     'form' => $form->createView(),
-                    'establishments' => $establishments,
-                    'classrooms' => $classrooms,
+                    'establishments' => $estabRepo->findAll(),
                 ]);
             }
 
-            // on récupére l'établissement
-            $establishment = $request->request->get('establishment_choice');
-            $establishment = $estabRepo->findOneBy(['id' => $establishment]);
-
-            // on récupère le numero de candidat et la date de naissance
-            $candidateNb = $request->request->get('student')['candidateNb'];
-            $birthDate = $request->request->get('student')['birthDate'];
-            $birthDate = new \Datetime($birthDate);
-
-            // on assigne son role et son établissement et sa classe
-            $student = new Student();
-            $student->setUser($user);
-            $student->setEstablishment($establishment);
+            // classroom
             $student->setClassroom($classroom);
-            $student->setCandidateNb($candidateNb);
-            $student->setBirthDate($birthDate);
+
+            // CreatedAt
             $student->setCreatedAt(new \DateTime());
             
             $passport = new Passport();
@@ -252,15 +172,14 @@ class StudentController extends AbstractController
             // on persiste et on sauvegarde les données du formulaire
             $manager->persist($passport);
             $manager->persist($student);
-            $manager->persist($user);
             $manager->flush();
 
             // on envoie un email au user pour lui indiquer son mot de passe
             mail(
-                $user->getEmail(),
+                $student->getUser()->getEmail(),
                 'Bonjour',
                 'un compte a été créé pour vous sur le site GPME,
-                identifiant : '.$user->getEmail().'
+                identifiant : '.$student->getUser()->getEmail().'
                 votre mot de passe : '.$passRandom
             );
 
@@ -279,14 +198,13 @@ class StudentController extends AbstractController
             // on retourne la vue et les données
             return $this->render('student/new.html.twig', [
                 'form' => $form->createView(),
-                'establishments' => $establishments,
-                'classrooms' => $classrooms,
+                'establishments' => $estabRepo->findAll(),
             ]);
         }
 
         return $this->render('student/new.html.twig', [
             'form' => $form->createView(),
-            'establishments' => $establishments,
+            'establishments' => $estabRepo->findAll(),
         ]);
     }
 
@@ -295,26 +213,30 @@ class StudentController extends AbstractController
      */
     public function modify(ObjectManager $manager, Request $request, Student $student, EstablishmentRepository $estabRepo, ClassroomRepository $classroomRepo)
     {
-        // on récupére l'utilisateur
-        $user = $student->getUser();
-
-        // on récupère la liste des etablissements
-        $establishments = $estabRepo->findAll();
-
         // Création du formulaire à partir du fichier ModifyUserType
         $form = $this->createForm(StudentType::class, $student);
 
         // récupération des données du formulaire
         $form->handleRequest($request);
 
-        // on récupére l'établissement
-        $establishment = $request->request->get('establishment_choice');
-        $establishment = $estabRepo->findOneBy(['id' => $establishment]);
-
         // si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()){
-
+dump($request->request->get('classroom'));
             // on vérifie si une seule classe a été coché
+            if (Count($request->request->get('classroom')) == "") {
+
+                // on stocke un message flash
+                $this->addFlash('warning',"Aucene classe n'a été sélectionnée !");
+
+                // on redirige vers la liste des administrateurs
+                return $this->render('student/new.html.twig', [
+                    // on envoie le formulaire à la vue
+                    'form' => $form->createView(),
+                    'establishments' => $estabRepo->findAll(),
+                    'student' => $student,
+                ]);
+            }
+
             if (Count($request->request->get('classroom')) == 1) {
 
                 // on récupére la classe
@@ -324,29 +246,20 @@ class StudentController extends AbstractController
                 // on stocke un message flash
                 $this->addFlash('warning',"L'étudiant ne peut avoir qu'une seule classe !");
 
-                // on retourne la vue et les données
+                // on redirige vers la liste des administrateurs
                 return $this->render('student/new.html.twig', [
+                    // on envoie le formulaire à la vue
                     'form' => $form->createView(),
-                    'establishments' => $establishments,
-                    'classrooms' => $classrooms,
-                    
+                    'establishments' => $estabRepo->findAll(),
+                    'student' => $student,
                 ]);
             }
-            
-            // on récupère le numero de candidat et la date de naissance
-            $candidateNb = $request->request->get('student')['candidateNb'];
-            $date = $request->request->get('student')['birthDate'];
-            $birthDate = new \Datetime($date);
 
-            // on assigne son établissement
-            $student->setCandidateNb($candidateNb);
-            $student->setBirthDate($birthDate);
+            // on assigne sa classe
             $student->setClassroom($classroom);
-            $student->setEstablishment($establishment);
-            $manager->persist($student);
 
             // on persiste et on sauvegarde les données du formulaire
-            $manager->persist($user);
+            $manager->persist($student);
             $manager->flush();
 
             // on stocke un message flash
@@ -356,15 +269,10 @@ class StudentController extends AbstractController
             return $this->redirectToRoute('student_show_list');
         }
 
-        // on récupére la classe d'étudiant dans la BDD
-        $establishment = $student->getEstablishment();
-        $classrooms = $classroomRepo->findBy(['establishment' => $establishment]);
-
         // on retourne la vue et les données
         return $this->render('student/modify.html.twig', [
             'form' => $form->createView(),
-            'establishments' => $establishments,
-            'classrooms' => $classrooms,
+            'establishments' => $estabRepo->findAll(),
             'student' => $student,
         ]);
     }
