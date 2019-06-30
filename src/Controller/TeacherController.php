@@ -235,7 +235,9 @@ class TeacherController extends AbstractController
             $this->addFlash('success','l\'enseignant a bien été mis à jour !');
 
             // on redirige vers la liste des administrateurs
-            return $this->redirectToRoute('teacher_show_list');
+            return $this->redirectToRoute('teacher_show', [
+                'id' => $teacher->getId(),
+            ]);
         }
 
         // on récupére la ou les classes de l'enseignants dans la BDD
@@ -255,15 +257,11 @@ class TeacherController extends AbstractController
      */
     public function delete(ObjectManager $manager, Teacher $teacher)
     {
-        // on récupére l'utilisateur
-        $user = $teacher->getUser();
-
         // on vérifie que son compte est inactif
-        if ($user->getExist() == false){
+        if ($teacher->getUser()->getExist() == false){
 
             // on supprime la ligne de la table Teacher et de la table User
             $manager->remove($teacher);
-            $manager->remove($user);
             $manager->flush();
 
             // on enregistre un message flash
