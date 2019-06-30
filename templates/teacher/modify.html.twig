@@ -4,50 +4,41 @@
 
 	{% block body %}
 
-		<form method="post">
-			<label class="form-control-label" for="establishment">Selectionner l'établissement :</label>
-			<div class="row form-group">
-				<select class="form-control col-6 mx-3" id="establishment" name="establishment_choice">
-					{% if app.request.request.get('establishment_choice') != 0 %}
-						{% for establishment in establishments %}{% set selected = "" %}
-							{% if establishment.id == app.request.request.get('establishment_choice') %}{% set selected = "selected" %}
-							{% endif %}
-							<option value="{{ establishment.id }}" {{ selected }}>{{ establishment.name }}</option>
-						{% endfor %}
-					{% else %}
-						{% for establishment in establishments %}{% set selected = "" %}
-							{% if establishment.id == teacher.establishment.id %}{% set selected = "selected" %}
-							{% endif %}
-							<option value="{{ establishment.id }}" {{ selected }}>{{ establishment.name }}</option>
-						{% endfor %}
-					{% endif %}
-				</select>
-				<button type="submit" class="btn btn-primary">Actualiser</button>
-			</div>
-		</form>
-
 		{# formulaire de modification d'un administrateur #}
 		{{ form_start(form) }}
-
+		{{ form_row(form.establishment, {'label':'Selectionner l\'établissement :', 'attr':{'onchange':"recup();"}}) }}
 		<label class="form-check-label" for="classroom">Selectionner les classes :</label>
-		<div class="form-inline">
-			{% for classroom in classrooms %}{% set checked = "" %}
-				{% for classroom_checked in teacher.classrooms %}
-					{% if classroom.id == classroom_checked.id %}{% set checked = "checked" %}
-					{% endif %}
+		{% for establishment in establishments %}
+			<div class="form-inline establishment d-none" id="establishment_{{establishment.id}}">
+				{% for classroom in establishment.classrooms %}{% set checked = "" %}
+					{% for classroom_checked in teacher.classrooms %}
+						{% if classroom.id == classroom_checked.id %}{% set checked = "checked" %}
+						{% endif %}
+					{% endfor %}
+					<input class="form-check-input ml-4 mr-1 mt-2 mb-3" type="checkbox" id="classroom{{classroom.id}}" {{ checked }} name="classroom[]" value="{{classroom.id}}"><label class=" mx-1 mt-2 mb-3" for="classroom{{classroom.id}}">{{classroom.degree}}</label>
 				{% endfor %}
-				<input class="form-check-input ml-4 mr-1 mt-2 mb-3" type="checkbox" id="classroom{{classroom.id}}" {{ checked }} name="classroom[]" value="{{classroom.id}}"><label class=" mx-1 mt-2 mb-3" for="classroom{{classroom.id}}">{{classroom.degree}}</label>
-			{% endfor %}
-		</div>
-
-		<input type="hidden" name="establishment" value="{% if app.request.request.get('establishment_choice') is not null %}{{ app.request.request.get('establishment_choice') }}{% else %}{{app.request.request.get('establishment_choice')}}{% endif %}">
+			</div>
+		{% endfor %}
 		{{ form_row(form.user.lastName, {'label':'Nom :'}) }}
 		{{ form_row(form.user.firstName, {'label':'Prénom :'}) }}
 		{{ form_row(form.user.email, {'label':'Email :'}) }}
 		{{ form_row(form.user.exist, {'label':"Activer l'enseignant :"}) }}
-
-		<button class="btn btn-primary">Mettre à jour</button>
-
+		{{ form_row(form.save, {'label':"mettre à jour"}) }}
 		{{ form_end(form) }}
 
+	{% endblock %}
+	{% block javascripts %}
+		<script>
+		var select = document.getElementById("teacher_establishment" );
+		teacher_establishment.addEventListener('onchange',recup);
+		function recup(){
+			var valeur = select.options[select.selectedIndex].value;
+			$(".establishment").addClass("d-none");
+			$("#establishment_"+valeur).removeClass("d-none");
+			// console.log(valeur);
+		};
+		$(document).ready(function(){
+			recup();
+		});
+		</script>
 	{% endblock %}

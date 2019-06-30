@@ -17,9 +17,10 @@ class StudentType extends AbstractType
             ->add('candidateNb')
             ->add('birthDate', DateType::class, ['widget'=> 'single_text'])
             // ->add('createdAt')
-            // ->add('establishment')
+            ->add('establishment', EntityType::class, ['class' => Establishment::class, 'label' => false, 'choice_label' => function ($establishment) { return $establishment->getName()." (".$establishment->getDepartment()->getName().")"; }])
             // ->add('classroom')
-            ->add('user', UserType::class);
+            ->add('user', UserType::class, ['label' => false])
+            ->add('save', SubmitType::class, ['attr' => ['class' => 'btn btn-primary']]);
         ;
     }
 

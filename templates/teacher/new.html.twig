@@ -7,7 +7,7 @@
 		{# formulaire de création d'un administrateur #}
 		{{ form_start(form) }}
 		{{ form_row(form.establishment, {'label':'Selectionner l\'établissement :', 'attr':{'onchange':"recup();"}}) }}
-		<label class="form-check-label" id="classes" for="classroom">Selectionner les classes :</label>
+		<label class="form-check-label" for="classroom">Selectionner les classes :</label>
 		{% for establishment in establishments %}
 			<div class="form-inline establishment d-none" id="establishment_{{establishment.id}}">
 				{% for classroom in establishment.classrooms %}
@@ -34,11 +34,8 @@
 			$(".establishment").addClass("d-none");
 			$("#establishment_"+valeur).removeClass("d-none");
 			// console.log(valeur);
-
 		};
 		$(document).ready(function(){
-			
-			
 			recup();
 		});
 		</script>

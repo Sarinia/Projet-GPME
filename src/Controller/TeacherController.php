@@ -28,19 +28,11 @@ class TeacherController extends AbstractController
         // liste des enseignants pour le super-admin
         if ($this->getUser()->getTitle() == "ROLE_SADMIN") {
 
-            // on récupère la liste des établissements pour le menu filtre
-            $establishments = $estabRepo->findAll();
-
-            // on récupère la liste des classes pour le menu filtre
+            // on récupère la liste des classes
             $classrooms = $classroomRepo->findAll();
-
-            // on récupère la liste des enseignants
-            $teachers = $teacherRepo->findAll();
 
             // on retourne la vue et les données
             return $this->render('teacher/list.html.twig', [
-                'teachers' => $teachers,
-                'establishments' => $establishments,
                 'classrooms' => $classrooms,
             ]);
         }
@@ -51,19 +43,11 @@ class TeacherController extends AbstractController
             // on récupère les infos de l'admin connecté
             $adminCo = $adminRepo->findOneBy(['user' => $this->getUser()]);
 
-            // on récupère la liste des établissements pour le menu filtre
-            $establishments = $estabRepo->findBy(['id' => $adminCo->getEstablishment()->getId()]);
-
-            // on récupère la liste des classes pour le menu filtre
+            // on récupère la liste des enseignants
             $classrooms = $classroomRepo->findBy(['establishment' => $adminCo->getEstablishment()->getId()]);
-
-            // on récupère la liste des étudiants
-            $teachers = $teacherRepo->findBy(['establishment' => $adminCo->getEstablishment()->getId()]);
 
             // on retourne la vue et les données
             return $this->render('teacher/list.html.twig', [
-                'teachers' => $teachers,
-                'establishments' => $establishments,
                 'classrooms' => $classrooms,
             ]);
         }
@@ -74,44 +58,31 @@ class TeacherController extends AbstractController
             // on récupère les infos de l'enseignant connecté
             $teacherCo = $teacherRepo->findOneBy(['user' => $this->getUser()]);
 
-             // on récupère la liste des établissements pour le menu filtre
-            $establishments = $estabRepo->findBy(['id' => $teacherCo->getEstablishment()->getId()]);
-
-            // on récupère la liste des classes pour le menu filtre
-            $classrooms = $classroomRepo->findBy(['establishment' => $teacherCo->getEstablishment()->getId()]);
-
-            // on récupère la liste des enseigants
-            $teachers = $teacherRepo->findBy(['establishment' => $establishments]);
+            // on récupère la liste des enseignants
+            $classrooms = $teacherCo->getClassrooms();
 
             // on retourne la vue et les données
             return $this->render('teacher/list.html.twig', [
-                'teachers' => $teachers,
-                'establishments' => $establishments,
                 'classrooms' => $classrooms,
             ]);
         }
 
         // liste des enseignants pour l'étudiant
         if ($this->getUser()->getTitle() == "ROLE_USER") {
+
             // on récupère les infos de l'étudiant connecté
             $studentCo = $studentRepo->findOneBy(['user' => $this->getUser()]);
 
-            // on récupère la liste des établissements pour le menu filtre
-            $establishments = $estabRepo->findBy(['id' => $studentCo->getEstablishment()->getId()]);
-
-            // on récupère la liste des classes pour le menu filtre
+            // on récupère la liste des enseignants
             $classrooms = $classroomRepo->findBy(['id' => $studentCo->getClassroom()->getId()]);
-
-            // on récupère la liste des étudiants
-            $teachers = $studentCo->getClassroom()->getTeachers();
 
             // on retourne la vue et les données
             return $this->render('teacher/list.html.twig', [
-                'teachers' => $teachers,
-                'establishments' => $establishments,
                 'classrooms' => $classrooms,
             ]);
         }
+
+        
     }
 
     /**
@@ -128,7 +99,7 @@ class TeacherController extends AbstractController
     /**
      * @Route("/teacher/new", name="teacher_new")
      */
-    public function create(UserPasswordEncoderInterface $encoder, ObjectManager $manager, Request $request, EstablishmentRepository $estabRepo)
+    public function create(UserPasswordEncoderInterface $encoder, ObjectManager $manager, Request $request, EstablishmentRepository $estabRepo, ClassroomRepository $classroomRepo)
     {
         // on récupère la liste des etablissements
         $establishments = $estabRepo->findAll();
