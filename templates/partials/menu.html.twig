@@ -202,7 +202,26 @@
 
 		<!-- referentiel -->
 		{% if (app.request.attributes.get('_route') == "referentiel_list") %}
-			<a href="{# {{ path('referentiel_modify') }} #}" class="btn btn-sm btn-primary">Modifier</a>
+			<a href="{{ path('referentiel_activity_new') }}" class="m-1 btn btn-sm btn-primary">Nouvelle activité</a>
+			<a href="{{ path('referentiel_task_new') }}" class="m-1 btn btn-sm btn-primary">Nouvelle tâche</a>
+			<a href="{{ path('referentiel_problem_new') }}" class="m-1 btn btn-sm btn-primary">Nouvelle problèmatique</a>
+			<a href="{{ path('referentiel_modality_new') }}" class="m-1 btn btn-sm btn-primary">Nouvelle modalité</a>
+			<a href="{{ path('referentiel_term_new') }}" class="m-1 btn btn-sm btn-primary">Nouvelle condition</a>
+		{% endif %}
+		{% if (app.request.attributes.get('_route') == "referentiel_activity_new") %}
+			<a href="{{ path('referentiel_list') }}" class="btn btn-sm btn-primary">Retour</a>
+		{% endif %}
+		{% if (app.request.attributes.get('_route') == "referentiel_task_new") %}
+			<a href="{{ path('referentiel_list') }}" class="btn btn-sm btn-primary">Retour</a>
+		{% endif %}
+		{% if (app.request.attributes.get('_route') == "referentiel_problem_new") %}
+			<a href="{{ path('referentiel_list') }}" class="btn btn-sm btn-primary">Retour</a>
+		{% endif %}
+		{% if (app.request.attributes.get('_route') == "referentiel_modality_new") %}
+			<a href="{{ path('referentiel_list') }}" class="btn btn-sm btn-primary">Retour</a>
+		{% endif %}
+		{% if (app.request.attributes.get('_route') == "referentiel_term_new") %}
+			<a href="{{ path('referentiel_list') }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
 		{# {% if (app.request.attributes.get('_route') == "referentiel_modify") %}
 			<a href="{{ path('referentiel_list') }}" class="btn btn-sm btn-primary">Retour</a>
@@ -297,7 +316,26 @@
 
 		<!-- referentiel -->
 		{% if (app.request.attributes.get('_route') == "referentiel_list") %}
-			<a href="{# {{ path('referentiel_modify') }} #}" class="btn btn-sm btn-primary">Modifier</a>
+			<a href="{{ path('referentiel_activity_new') }}" class="m-1 btn btn-sm btn-primary">Nouvelle activité</a>
+			<a href="{{ path('referentiel_task_new') }}" class="m-1 btn btn-sm btn-primary">Nouvelle tâche</a>
+			<a href="{{ path('referentiel_problem_new') }}" class="m-1 btn btn-sm btn-primary">Nouvelle problèmatique</a>
+			<a href="{{ path('referentiel_modality_new') }}" class="m-1 btn btn-sm btn-primary">Nouvelle modalité</a>
+			<a href="{{ path('referentiel_term_new') }}" class="m-1 btn btn-sm btn-primary">Nouvelle condition</a>
+		{% endif %}
+		{% if (app.request.attributes.get('_route') == "referentiel_activity_new") %}
+			<a href="{{ path('referentiel_list') }}" class="btn btn-sm btn-primary">Retour</a>
+		{% endif %}
+		{% if (app.request.attributes.get('_route') == "referentiel_task_new") %}
+			<a href="{{ path('referentiel_list') }}" class="btn btn-sm btn-primary">Retour</a>
+		{% endif %}
+		{% if (app.request.attributes.get('_route') == "referentiel_problem_new") %}
+			<a href="{{ path('referentiel_list') }}" class="btn btn-sm btn-primary">Retour</a>
+		{% endif %}
+		{% if (app.request.attributes.get('_route') == "referentiel_modality_new") %}
+			<a href="{{ path('referentiel_list') }}" class="btn btn-sm btn-primary">Retour</a>
+		{% endif %}
+		{% if (app.request.attributes.get('_route') == "referentiel_term_new") %}
+			<a href="{{ path('referentiel_list') }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
 		{# {% if (app.request.attributes.get('_route') == "referentiel_modify") %}
 			<a href="{{ path('referentiel_list') }}" class="btn btn-sm btn-primary">Retour</a>
