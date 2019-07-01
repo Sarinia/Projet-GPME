@@ -10,7 +10,6 @@ use App\Entity\Term;
 use App\Form\ActivityType;
 use App\Form\ModalityType;
 use App\Form\ProblemType;
-use App\Form\ReferentielType;
 use App\Form\TaskType;
 use App\Form\TermType;
 use App\Repository\ActivityRepository;
