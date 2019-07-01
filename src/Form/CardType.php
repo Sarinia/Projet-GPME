@@ -10,6 +10,7 @@ use App\Entity\Term;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,7 +23,8 @@ class CardType extends AbstractType
             // ->add('createdAt')
             // ->add('student')
             // ->add('passport')
-            ->add('problem', EntityType::class, ['class' => Problem::class, 'label' => false, 'choice_label' => function ($problem) { return $problem->getTitle();}])
+            ->add('associate', ChoiceType::class, ['choices'  => ['Oui' => true,'Non' => false,],])
+            ->add('problem', EntityType::class, ['class' => Problem::class, 'label' => false, 'choice_value' => function (Problem $value = null) { return $value ? $value->getNumber() : '';}, 'choice_label' => function ($problem) { return $problem->getTitle();}])
             // ->add('numbersp', TextType::class, ['label' => false, 'required' => false])
             ->add('modality', EntityType::class, ['class' => Modality::class, 'label' => false, 'choice_label' => function ($modality) { return $modality->getTitle();}])
             ->add('term', EntityType::class, ['class' => Term::class, 'label' => false, 'choice_label' => function ($term) { return $term->getTitle();}])
@@ -46,6 +48,7 @@ class CardType extends AbstractType
             ->add('monthsp', TextType::class, ['label' => false, 'required' => false])
             ->add('yearsp', TextType::class, ['label' => false, 'required' => false])
             ->add('exist', ChoiceType::class, ['choices'  => ['Oui - Visible par tout le monde' => true,'Non - Non visible par tout le monde' => false,],])
+            ->add('save', SubmitType::class, ['attr' => ['class' => 'btn btn-primary']]);
         ;
     }
 

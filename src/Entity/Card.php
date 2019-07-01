@@ -153,6 +153,11 @@ class Card
      */
     private $yearsp;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $associate;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -478,6 +483,18 @@ class Card
     public function setYearsp(string $yearsp): self
     {
         $this->yearsp = $yearsp;
+
+        return $this;
+    }
+
+    public function getAssociate(): ?bool
+    {
+        return $this->associate;
+    }
+
+    public function setAssociate(bool $associate): self
+    {
+        $this->associate = $associate;
 
         return $this;
     }

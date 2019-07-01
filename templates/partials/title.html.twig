@@ -30,13 +30,11 @@
 {% if (app.request.attributes.get('_route') == "student_new") %}Création d'un étudiant{% endif %}
 {% if (app.request.attributes.get('_route') == "student_modify") %}Modification d'un étudiant{% endif %}
 
-
 {# Teacher #}
 {% if (app.request.attributes.get('_route') == "teacher_show_list") %}Liste des enseignants{% endif %}
 {% if (app.request.attributes.get('_route') == "teacher_show") %}Page de l'enseignant {{ teacher.user.lastName }}{% endif %}
 {% if (app.request.attributes.get('_route') == "teacher_new") %}Création d'un enseignant{% endif %}
 {% if (app.request.attributes.get('_route') == "teacher_modify") %}Modification d'un enseignant{% endif %}
-
 
 {# Admin #}
 {% if (app.request.attributes.get('_route') == "admin_show_list") %}Liste des administrateurs{% endif %}
@@ -44,13 +42,15 @@
 {% if (app.request.attributes.get('_route') == "admin_new") %}Création d'un administrateur{% endif %}
 {% if (app.request.attributes.get('_route') == "admin_modify") %}Modification d'un administrateur{% endif %}
 
-
 {# Classroom #}
 {% if (app.request.attributes.get('_route') == "classroom_show_list") %}Liste des classes{% endif %}
 {% if (app.request.attributes.get('_route') == "classroom_show") %}Page de la classe {{ classroom.degree }}{% endif %}
 {% if (app.request.attributes.get('_route') == "classroom_new") %}Création d'une classe{% endif %}
 {% if (app.request.attributes.get('_route') == "classroom_modify") %}Modification d'une classe{% endif %}
 
+{# referentiel #}
+{% if (app.request.attributes.get('_route') == "referentiel_list") %}Information du Référentiel{% endif %}
+{% if (app.request.attributes.get('_route') == "referentiel_show") %}Modification du Référentiel{% endif %}
 
 {# Establishment #}
 {% if (app.request.attributes.get('_route') == "establishment_show_list") %}Liste des établissements{% endif %}

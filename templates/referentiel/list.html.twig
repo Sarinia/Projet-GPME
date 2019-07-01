@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+	<h5>Liste des activités :</h5>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Numéro</th>
+				<th>Nom</th>
+				<th>Compétence</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for activity in activities %}
+			<tr>
+				<td>{{activity.number}}</td>
+				<td>{{activity.name}}</td>
+				<td>{{activity.skill}}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<h5>liste des tâches :</h5>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Numéro</th>
+				<th>Nom</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for task in tasks %}
+			<tr>
+				<td>{{task.number}}</td>
+				<td>{{task.name}}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<h5>liste des problèmes :</h5>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Numéro</th>
+				<th>Nom</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for problem in problems %}
+			<tr>
+				<td>{{problem.number}}</td>
+				<td>{{problem.title}}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<h5>liste des modalités :</h5>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Nom</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for modality in modalities %}
+			<tr>
+				<td>{{modality.title}}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<h5>liste des termes :</h5>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Nom</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for term in terms %}
+			<tr>
+				<td>{{term.title}}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+{% endblock %}

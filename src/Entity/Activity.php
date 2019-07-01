@@ -38,9 +38,15 @@ class Activity
      */
     private $card;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Task", mappedBy="activity")
+     */
+    private $tasks;
+
     public function __construct()
     {
         $this->card = new ArrayCollection();
+        $this->tasks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -109,6 +115,37 @@ class Activity
             // set the owning side to null (unless already changed)
             if ($card->getActivity() === $this) {
                 $card->setActivity(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Task[]
+     */
+    public function getTasks(): Collection
+    {
+        return $this->tasks;
+    }
+
+    public function addTask(Task $task): self
+    {
+        if (!$this->tasks->contains($task)) {
+            $this->tasks[] = $task;
+            $task->setActivity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTask(Task $task): self
+    {
+        if ($this->tasks->contains($task)) {
+            $this->tasks->removeElement($task);
+            // set the owning side to null (unless already changed)
+            if ($task->getActivity() === $this) {
+                $task->setActivity(null);
             }
         }
 

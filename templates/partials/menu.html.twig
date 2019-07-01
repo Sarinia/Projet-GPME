@@ -25,6 +25,7 @@
 		<a href="{{ path('student_show_list') }}" class="m-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,7) == "student") %}success{% else %}primary{% endif %}">Etudiants</a>
 		<a href="{{ path('teacher_show_list') }}" class="m-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,7) == "teacher") %}success{% else %}primary{% endif %}">Enseignants</a>
 		<a href="{{ path('classroom_show_list') }}" class="m-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,9) == "classroom") %}success{% else %}primary{% endif %}">Classes</a>
+		<a href="{{ path('referentiel_list') }}" class="m-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,11) == "referentiel") %}success{% else %}primary{% endif %}">Référentiel</a>
 	{% endif %}
 
 	<!-- ROLE_SADMIN -->
@@ -34,6 +35,7 @@
 		<a href="{{ path('student_show_list') }}" class="m-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,7) == "student") %}success{% else %}primary{% endif %}">Etudiants</a>
 		<a href="{{ path('teacher_show_list') }}" class="m-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,7) == "teacher") %}success{% else %}primary{% endif %}">Enseignants</a>
 		<a href="{{ path('classroom_show_list') }}" class="m-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,9) == "classroom") %}success{% else %}primary{% endif %}">Classes</a>
+		<a href="{{ path('referentiel_list') }}" class="m-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,11) == "referentiel") %}success{% else %}primary{% endif %}">Référentiel</a>
 		<a href="{{ path('admin_show_list') }}" class="m-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,5) == "admin") %}success{% else %}primary{% endif %}">Administrateurs</a>
 		<a href="{{ path('establishment_show_list') }}" class="m-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,13) == "establishment") %}success{% else %}primary{% endif %}">Etablissements</a>
 		<a href="{{ path('department_show_list') }}" class="m-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,10) == "department") %}success{% else %}primary{% endif %}">Départements</a>
@@ -55,11 +57,12 @@
 
 		<!-- passport -->
 		{% if (app.request.attributes.get('_route') == "passport_show") %}
+			<a href="{{ path('student_show',{'id':student.id}) }}" class="btn btn-sm btn-primary">retour</a>
 			<a href="" class="btn btn-sm btn-primary">Imprimer</a>
 		{% endif %}
 
 		<!-- cardsp -->
-		{% if (app.request.attributes.get('_route') == "card_show_list") and app.user.roles[0] == "ROLE_USER" %}	
+		{% if (app.request.attributes.get('_route') == "card_show_list") %}	
 			<a href="{{ path('card_new') }}" class="btn btn-sm btn-primary">Créer une fiche SP</a>
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "card_show") %}
@@ -69,13 +72,13 @@
 			<a href="" class="btn btn-sm btn-primary">Imprimer</a>
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "card_new") %}
-			<a class="btn btn-sm btn-primary" href="{{ path('card_show_list') }}">Retour</a>
+			<a href="{{ path('card_show_list') }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "card_modify") %}
-			<a class="btn btn-sm btn-primary" href="{{ path('card_show', {'id': card.id}) }}">Retour</a>
+			<a href="{{ path('card_show', {'id': card.id}) }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "card_duplicate") %}
-			<a class="btn btn-sm btn-primary" href="{{ path('card_show', {'id': card.id}) }}">Retour</a>
+			<a href="{{ path('card_show', {'id': card.id}) }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
 
 		<!-- student -->
@@ -95,27 +98,23 @@
 
 		<!-- passport -->
 		{% if (app.request.attributes.get('_route') == "passport_show") %}
+			<a href="{{ path('student_show',{'id':student.id}) }}" class="btn btn-sm btn-primary">retour</a>
 			<a href="" class="btn btn-sm btn-primary">Imprimer</a>
 		{% endif %}
 
 		<!-- cardsp -->
-		{% if (app.request.attributes.get('_route') == "card_show_list") and app.user.roles[0] == "ROLE_USER" %}	
-			<a href="{{ path('card_new') }}" class="btn btn-sm btn-primary">Créer une fiche SP</a>
-		{% endif %}
 		{% if (app.request.attributes.get('_route') == "card_show") %}
 			<a href="{{ path('card_show_list') }}" class="btn btn-sm btn-primary">Retour à la liste</a>
-			<a href="{{ path('card_modify', {'id': card.id}) }}" class="btn btn-sm btn-primary">Modifier</a>
-			<a href="{{ path('card_duplicate', {'id': card.id}) }}" class="btn btn-sm btn-primary">Dupliquer</a>
 			<a href="" class="btn btn-sm btn-primary">Imprimer</a>
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "card_new") %}
-			<a class="btn btn-sm btn-primary" href="{{ path('card_show_list') }}">Retour</a>
+			<a href="{{ path('card_show_list') }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "card_modify") %}
-			<a class="btn btn-sm btn-primary" href="{{ path('card_show', {'id': card.id}) }}">Retour</a>
+			<a href="{{ path('card_show', {'id': card.id}) }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "card_duplicate") %}
-			<a class="btn btn-sm btn-primary" href="{{ path('card_show', {'id': card.id}) }}">Retour</a>
+			<a href="{{ path('card_show', {'id': card.id}) }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
 
 		<!-- student -->
@@ -135,13 +134,11 @@
 
 		<!-- passport -->
 		{% if (app.request.attributes.get('_route') == "passport_show") %}
+			<a href="{{ path('student_show',{'id':student.id}) }}" class="btn btn-sm btn-primary">retour</a>
 			<a href="" class="btn btn-sm btn-primary">Imprimer</a>
 		{% endif %}
 
 		<!-- cardsp -->
-		{% if (app.request.attributes.get('_route') == "card_show_list") and app.user.roles[0] == "ROLE_USER" %}	
-			<a href="{{ path('card_new') }}" class="btn btn-sm btn-primary">Créer une fiche SP</a>
-		{% endif %}
 		{% if (app.request.attributes.get('_route') == "card_show") %}
 			<a href="{{ path('card_show_list') }}" class="btn btn-sm btn-primary">Retour à la liste</a>
 			<a href="{{ path('card_modify', {'id': card.id}) }}" class="btn btn-sm btn-primary">Modifier</a>
@@ -149,27 +146,28 @@
 			<a href="" class="btn btn-sm btn-primary">Imprimer</a>
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "card_new") %}
-			<a class="btn btn-sm btn-primary" href="{{ path('card_show_list') }}">Retour</a>
+			<a href="{{ path('card_show_list') }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "card_modify") %}
-			<a class="btn btn-sm btn-primary" href="{{ path('card_show', {'id': card.id}) }}">Retour</a>
+			<a href="{{ path('card_show', {'id': card.id}) }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "card_duplicate") %}
-			<a class="btn btn-sm btn-primary" href="{{ path('card_show', {'id': card.id}) }}">Retour</a>
+			<a href="{{ path('card_show', {'id': card.id}) }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
 
 		<!-- student -->
-		{% if (app.request.attributes.get('_route') == "student_show") %}
-			<a href="{{ path('student_show_list') }}" class="btn btn-sm btn-primary">Retour à la liste</a>
-		{% endif %}
 		{% if (app.request.attributes.get('_route') == "student_show_list") %}
 			<a href="{{ path('student_new') }}" class="btn btn-sm btn-primary">Créer un étudiant</a>
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "student_show") %}
+			<a href="{{ path('student_show_list') }}" class="btn btn-sm btn-primary">Retour à la liste</a>
 			<a href="{{ path('student_modify', {'id': student.id}) }}" class="btn btn-sm btn-primary">Modifier l'étudiant</a>
 		{% endif %}
+		{% if (app.request.attributes.get('_route') == "student_new") %}
+			<a href="{{ path('student_show_list') }}" class="btn btn-sm btn-primary">Retour</a>
+		{% endif %}
 		{% if (app.request.attributes.get('_route') == "student_modify") %}
-			<a class="btn btn-sm btn-primary" href="{{ path('student_show',{'id':student.id}) }}">Retour</a>
+			<a href="{{ path('student_show',{'id':student.id}) }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
 
 		<!-- teacher -->
@@ -180,8 +178,11 @@
 			<a href="{{ path('teacher_show_list') }}" class="btn btn-sm btn-primary">Retour à la liste</a>
 			<a href="{{ path('teacher_modify', {'id': teacher.id}) }}" class="btn btn-sm btn-primary">Modifier l'enseignant</a>
 		{% endif %}
+		{% if (app.request.attributes.get('_route') == "teacher_new") %}
+			<a href="{{ path('teacher_show_list') }}" class="btn btn-sm btn-primary">Retour</a>
+		{% endif %}
 		{% if (app.request.attributes.get('_route') == "teacher_modify") %}
-			<a class="btn btn-sm btn-primary" href="{{ path('teacher_show',{'id':teacher.id}) }}">Retour</a>
+			<a href="{{ path('teacher_show',{'id':teacher.id}) }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
 
 		<!-- classroom -->
@@ -193,11 +194,19 @@
 			<a href="{{ path('classroom_modify', {'id': classroom.id}) }}" class="btn btn-sm btn-primary">Modifier la classe</a>
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "classroom_new") %}
-			<a class="btn btn-sm btn-primary" href="{{ path('classroom_show_list') }}">Retour</a>
+			<a href="{{ path('classroom_show_list') }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "classroom_modify") %}
-			<a class="btn btn-sm btn-primary" href="{{ path('classroom_show',{'id':classroom.id}) }}">Retour</a>
+			<a href="{{ path('classroom_show',{'id':classroom.id}) }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
+
+		<!-- referentiel -->
+		{% if (app.request.attributes.get('_route') == "referentiel_list") %}
+			<a href="{# {{ path('referentiel_modify') }} #}" class="btn btn-sm btn-primary">Modifier</a>
+		{% endif %}
+		{# {% if (app.request.attributes.get('_route') == "referentiel_modify") %}
+			<a href="{{ path('referentiel_list') }}" class="btn btn-sm btn-primary">Retour</a>
+		{% endif %} #}
 	{% endif %}
 
 
@@ -211,13 +220,11 @@
 
 		<!-- passport -->
 		{% if (app.request.attributes.get('_route') == "passport_show") %}
+			<a href="{{ path('student_show',{'id':student.id}) }}" class="btn btn-sm btn-primary">retour</a>
 			<a href="" class="btn btn-sm btn-primary">Imprimer</a>
 		{% endif %}
 
 		<!-- cardsp -->
-		{% if (app.request.attributes.get('_route') == "card_show_list") and app.user.roles[0] == "ROLE_USER" %}	
-			<a href="{{ path('card_new') }}" class="btn btn-sm btn-primary">Créer une fiche SP</a>
-		{% endif %}
 		{% if (app.request.attributes.get('_route') == "card_show") %}
 			<a href="{{ path('card_show_list') }}" class="btn btn-sm btn-primary">Retour à la liste</a>
 			<a href="{{ path('card_modify', {'id': card.id}) }}" class="btn btn-sm btn-primary">Modifier</a>
@@ -225,13 +232,13 @@
 			<a href="" class="btn btn-sm btn-primary">Imprimer</a>
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "card_new") %}
-			<a class="btn btn-sm btn-primary" href="{{ path('card_show_list') }}">Retour</a>
+			<a href="{{ path('card_show_list') }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "card_modify") %}
-			<a class="btn btn-sm btn-primary" href="{{ path('card_show', {'id': card.id}) }}">Retour</a>
+			<a href="{{ path('card_show', {'id': card.id}) }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "card_duplicate") %}
-			<a class="btn btn-sm btn-primary" href="{{ path('card_show', {'id': card.id}) }}">Retour</a>
+			<a href="{{ path('card_show', {'id': card.id}) }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
 
 		<!-- student -->
@@ -246,10 +253,10 @@
 			{% endif %}
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "student_new") %}
-			<a class="btn btn-sm btn-primary" href="{{ path('student_show_list') }}">Retour</a>
+			<a href="{{ path('student_show_list') }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "student_modify") %}
-			<a class="btn btn-sm btn-primary" href="{{ path('student_show',{'id':student.id}) }}">Retour</a>
+			<a href="{{ path('student_show',{'id':student.id}) }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
 
 		<!-- teacher -->
@@ -264,10 +271,10 @@
 			{% endif %}
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "teacher_new") %}
-			<a class="btn btn-sm btn-primary" href="{{ path('teacher_show_list') }}">Retour</a>
+			<a href="{{ path('teacher_show_list') }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "teacher_modify") %}
-			<a class="btn btn-sm btn-primary" href="{{ path('teacher_show',{'id':teacher.id}) }}">Retour</a>
+			<a href="{{ path('teacher_show',{'id':teacher.id}) }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
 
 		<!-- classroom -->
@@ -282,11 +289,19 @@
 			{% endif %}
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "classroom_new") %}
-			<a class="btn btn-sm btn-primary" href="{{ path('classroom_show_list') }}">Retour</a>
+			<a href="{{ path('classroom_show_list') }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "classroom_modify") %}
-			<a class="btn btn-sm btn-primary" href="{{ path('classroom_show',{'id':classroom.id}) }}">Retour</a>
+			<a href="{{ path('classroom_show',{'id':classroom.id}) }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
+
+		<!-- referentiel -->
+		{% if (app.request.attributes.get('_route') == "referentiel_list") %}
+			<a href="{# {{ path('referentiel_modify') }} #}" class="btn btn-sm btn-primary">Modifier</a>
+		{% endif %}
+		{# {% if (app.request.attributes.get('_route') == "referentiel_modify") %}
+			<a href="{{ path('referentiel_list') }}" class="btn btn-sm btn-primary">Retour</a>
+		{% endif %} #}
 
 		<!-- admin -->
 		{% if (app.request.attributes.get('_route') == "admin_show_list") %}
@@ -300,10 +315,10 @@
 			{% endif %}
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "admin_new") %}
-			<a class="btn btn-sm btn-primary" href="{{ path('admin_show_list') }}">Retour</a>
+			<a href="{{ path('admin_show_list') }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "admin_modify") %}
-			<a class="btn btn-sm btn-primary" href="{{ path('admin_show',{'id':admin.id}) }}">Retour</a>
+			<a href="{{ path('admin_show',{'id':admin.id}) }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
 
 		<!-- establishment -->
@@ -318,10 +333,10 @@
 			{% endif %}
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "establishment_new") %}
-			<a class="btn btn-sm btn-primary" href="{{ path('establishment_show_list') }}">Retour</a>
+			<a href="{{ path('establishment_show_list') }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "establishment_modify") %}
-			<a class="btn btn-sm btn-primary" href="{{ path('establishment_show',{'id':establishment.id}) }}">Retour</a>
+			<a href="{{ path('establishment_show',{'id':establishment.id}) }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
 
 		<!-- department -->
@@ -339,7 +354,7 @@
 			<a href="{{ path('department_show_list') }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
 		{% if (app.request.attributes.get('_route') == "department_modify") %}
-			<a class="btn btn-sm btn-primary" href="{{ path('department_show',{'id':department.id}) }}">Retour</a>
+			<a href="{{ path('department_show',{'id':department.id}) }}" class="btn btn-sm btn-primary">Retour</a>
 		{% endif %}
 	{% endif %}
 	

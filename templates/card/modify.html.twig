@@ -7,6 +7,7 @@
 		{{ form_start(form) }}
 
 		{{ form_row(form.exist, {'label':"Activer la fiche de situation professionnelle :"}) }}
+		{{ form_row(form.associate, {'label':"Associer la fiche au passeport professionnel :"}) }}
 
 		<!-- CARTOUCHE -->
 		<table class="table table-bordered w-100 mb-3">
@@ -37,17 +38,6 @@
 					<h4 class="m-1 p-0">Fiche d'analyse d'une situation professionnelle</h4>
 				</th>
 			</tr>
-			{# <tr>
-				<td class="text-center m-0 p-1">
-					{{ form_label(form.prob1) }}{{ form_widget(form.prob1) }}
-				</td>
-				<td class="text-center m-0 p-1">
-					{{ form_label(form.prob2) }}{{ form_widget(form.prob2) }}
-				</td>
-				<td class="text-center m-0 p-1">
-					{{ form_label(form.prob3) }}{{ form_widget(form.prob3) }}
-				</td>
-			</tr> #}
 		</table>
 
 		<table class="table table-bordered w-100 mb-3">
@@ -56,7 +46,7 @@
 					<p class="m-1 p-0">Identification de la situation professionnelle</p>
 				</td>
 				<td style="width: 15%;" class="text-center m-0 p-1">
-					{# {{ form_label(form.numbersp) }}{{ form_widget(form.numbersp, {'attr': {'class' : 'form-control-sm'}}) }} #}
+					
 				</td>
 				<td>
 					<p class="m-1 p-0">Modalité de réalisation</p>
@@ -118,22 +108,19 @@
 				</th>
 			</tr>
 			<tr>
-				<td colspan="3" class="text-center m-0 p-1">
-					{{ form_label(form.problem) }}{{ form_widget(form.problem, {'attr': {'class' : 'form-control-sm'}}) }}
+				<td colspan="3" class="text-center">
+					{{ form_label(form.problem) }}{{ form_widget(form.problem, {'attr': {'class' : 'form-control-sm','onchange':"recup();"}}) }}
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<p class="m-1 p-0">{{ form_row(form.problemmanagsp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
-				</td>
-				<td>
-					<p class="m-1 p-0">{{ form_row(form.problemcomosp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
-				</td>
-				<td>
-					<p class="m-1 p-0">{{ form_row(form.problemcomwsp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+					<div class="form-group problem d-none" id="problem_1">{{ form_widget(form.problemmanagsp, {'attr': {'class' : 'form-control-sm'}}) }}</div>
+					<div class="form-group problem d-none" id="problem_2">{{ form_widget(form.problemcomosp, {'attr': {'class' : 'form-control-sm'}}) }}</div>
+					<div class="form-group problem d-none" id="problem_3">{{ form_widget(form.problemcomwsp, {'attr': {'class' : 'form-control-sm'}}) }}</div>
 				</td>
 			</tr>
 		</table>
+
 		<table class="table table-bordered w-100 mb-3">
 			<tr>
 				<td style="width: 15%;">
@@ -153,7 +140,7 @@
 			</tr>
 			<tr>
 				<td style="width: 15%;">
-					<p class="m-1 p-0">Conditions de réalisation : contraintes dans le processus et organisation comptable, environnement numérique</p>
+					<p class="m-1 p-0">Conditions de réalisation : contraintes dont le processus et organisation comptable, environnement numérique</p>
 				</td>
 				<td style="width: 85%;">
 					<p class="m-1 p-0">{{ form_row(form.conditionssp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
@@ -226,8 +213,22 @@
 			</tr>
 		</table>
 
-		<button class="btn btn-primary">Sauvegarder la fiche</button>
-
+		{{ form_row(form.save, {'label':"Mettre à jour"}) }}
 		{{ form_end(form) }}
 
+	{% endblock %}
+	{% block javascripts %}
+		<script>
+		var select = document.getElementById("card_problem" );
+		card_problem.addEventListener('onchange',recup);
+		function recup(){
+			var valeur = select.options[select.selectedIndex].value;
+			$(".problem").addClass("d-none");
+			$("#problem_"+valeur).removeClass("d-none");
+			// console.log(valeur);
+		};
+		$(document).ready(function(){
+			recup();
+		});
+		</script>
 	{% endblock %}

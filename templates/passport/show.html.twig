@@ -14,10 +14,10 @@
 				</tr>
 				<tr>
 					<th style="width: 70%;border: 1px solid black; border-collapse: collapse;text-align: center;">
-						<p>NOM et Prénom du titulaire du passport : {{passport.student.user.firstName}} {{passport.student.user.lastName}}</p>
+						<p class="m-1 p-0">NOM et Prénom du titulaire du passport : {{passport.student.user.firstName}} {{passport.student.user.lastName}}</p>
 					</th>
 					<th style="width: 30%;border: 1px solid black; border-collapse: collapse;text-align: center;">
-						<p>Numéro candidat : {{passport.student.candidatenb}}</p>
+						<p class="m-1 p-0">Numéro candidat : {{passport.student.candidatenb}}</p>
 					</th>
 				</tr>
 			</thead>
@@ -26,11 +26,11 @@
 			<thead>
 				<tr>
 					<th style="width: 70%;border: 1px solid black;text-align: center;">
-						<p>L'équipe pédagogique représentée par les enseignants, en lycée ou centre de formation : </p>
-						<p>atteste que le titulaire de ce passeport professionnel a bien effectué, en formation, les activités et missions présentées dans ce tableau.</p>
+						<p class="m-1 p-0">L'équipe pédagogique représentée par les enseignants, en lycée ou centre de formation : </p>
+						<p class="m-1 p-0">atteste que le titulaire de ce passeport professionnel a bien effectué, en formation, les activités et missions présentées dans ce tableau.</p>
 					</th>
 					<th style="width: 30%;border: 1px solid black;text-align: center;">
-						<p>Signatures des enseignants de l'équipe pédagogique et cachet de l'établissement</p>
+						<p class="m-1 p-0">Signatures des enseignants de l'équipe pédagogique et cachet de l'établissement</p>
 					</th>
 				</tr>
 			</thead>
@@ -40,61 +40,61 @@
 		<table style="width: 100%;margin-bottom: 5pt;">
 			<thead>
 				<tr>
-					<th rowspan="2" style="width: 100pt;border: 1px solid black;text-align: center;">
-						<p>Activités</p>
+					<th rowspan="2" style="width: 17.5%;border: 1px solid black;text-align: center;">
+						<p class="m-1 p-0">Activités</p>
 					</th>
-					<th rowspan="2" style="width: 100pt;border: 1px solid black;text-align: center;">
-						<p>Compétences</p>
+					<th rowspan="2" style="width: 17.5%;border: 1px solid black;text-align: center;">
+						<p class="m-1 p-0">Compétences</p>
 					</th>
-					<th colspan="4" style="width: 100pt;border: 1px solid black;text-align: center;">
-						<p>Situation vécues ou observées</p>
-						<p>Périodes (Situations Professionnelles)</p>
+					<th colspan="4" style="width: ;border: 1px solid black;text-align: center;">
+						<p class="m-1 p-0">Situation vécues ou observées</p>
+						<p class="m-1 p-0">Périodes (Situations Professionnelles)</p>
 					</th>
-					<th rowspan="2" style="width: 100pt;border: 1px solid black;text-align: center;">
-						<p>Solutions Logicielles</p>
+					<th rowspan="2" style="width: 15%;border: 1px solid black;text-align: center;">
+						<p class="m-1 p-0">Solutions Logicielles</p>
 					</th>
-					<th rowspan="2" style="width: 100pt;border: 1px solid black;text-align: center;">
-						<p>Tâches des activités</p>
+					<th rowspan="2" style="width: 30%;border: 1px solid black;text-align: center;">
+						<p class="m-1 p-0">Tâches des activités</p>
 					</th>
 				</tr>
 				<tr>
-					<th style="width: 10pt;border: 1px solid black;text-align: center;">
-						<p>Avant la formation</p>
+					<th style="border: 1px solid black;text-align: center;">
+						<p class="m-1 p-0">Avant la formation</p>
 					</th>
-					<th style="width: 10pt;border: 1px solid black;text-align: center;">
-						<p>Pendant la formation en établissement</p>
+					<th style="border: 1px solid black;text-align: center;">
+						<p class="m-1 p-0">Pendant la formation en établissement</p>
 					</th>
-					<th style="width: 10pt;border: 1px solid black;text-align: center;">
-						<p>Pendant la formation dans une PME</p>
+					<th style="border: 1px solid black;text-align: center;">
+						<p class="m-1 p-0">Pendant la formation dans une PME</p>
 					</th>
-					<th style="width: 10pt;border: 1px solid black;text-align: center;">
-						<p>Pendant la formation dans une organisation</p>
+					<th style="border: 1px solid black;text-align: center;">
+						<p class="m-1 p-0">Pendant la formation dans une organisation</p>
 					</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>{{activities[0].number}}</p>
-						<p>{{activities[0].name}}</p>
+						<p class="m-1 p-0">{{activities[0].number}}</p>
+						<p class="m-1 p-0">{{activities[0].name}}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>{{activities[0].skill}}</p>
+						<p class="m-1 p-0">{{activities[0].skill}}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>DATE</p>
+						<p class="m-1 p-0">{% if cardsActivity1 is defined and cardsActivity1 is not empty %}{% if cardsActivity1.modality.title == "Avant la formation" %}{{cardsActivity1.monthsp}}/{{cardsActivity1.yearsp}}{% endif %}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>DATE</p>
+						<p class="m-1 p-0">{% if cardsActivity1 is defined and cardsActivity1 is not empty %}{% if cardsActivity1.modality.title == "Pendant la formation en établissement" %}{{cardsActivity1.monthsp}}/{{cardsActivity1.yearsp}}{% endif %}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>DATE</p>
+						<p class="m-1 p-0">{% if cardsActivity1 is defined and cardsActivity1 is not empty %}{% if cardsActivity1.modality.title == "Pendant la formation dans une PME" %}{{cardsActivity1.monthsp}}/{{cardsActivity1.yearsp}}{% endif %}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>DATE</p>
+						<p class="m-1 p-0">{% if cardsActivity1 is defined and cardsActivity1 is not empty %}{% if cardsActivity1.modality.title == "Pendant la formation dans une organisation" %}{{cardsActivity1.monthsp}}/{{cardsActivity1.yearsp}}{% endif %}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>LOGICIELS</p>
+						<p class="m-1 p-0">{% if cardsActivity1 is defined and cardsActivity1 is not empty %}{{cardsActivity1.answerssp}}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: left;">
 						<input type="checkbox" name="" disabled="disabled"><label>tache1</label><br>
@@ -105,28 +105,29 @@
 						<input type="checkbox" name="" disabled="disabled"><label>tache6</label>
 					</td>
 				</tr>
+
 				<tr>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>{{activities[1].number}}</p>
-						<p>{{activities[1].name}}</p>
+						<p class="m-1 p-0">{{activities[1].number}}</p>
+						<p class="m-1 p-0">{{activities[1].name}}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>{{activities[1].skill}}</p>
+						<p class="m-1 p-0">{{activities[1].skill}}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>DATE</p>
+						<p class="m-1 p-0">{% if cardsActivity2 is defined and cardsActivity2 is not empty %}{% if cardsActivity2.modality.title == "Avant la formation" %}{{cardsActivity2.monthsp}}/{{cardsActivity2.yearsp}}{% endif %}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>DATE</p>
+						<p class="m-1 p-0">{% if cardsActivity2 is defined and cardsActivity2 is not empty %}{% if cardsActivity2.modality.title == "Pendant la formation en établissement" %}{{cardsActivity2.monthsp}}/{{cardsActivity2.yearsp}}{% endif %}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>DATE</p>
+						<p class="m-1 p-0">{% if cardsActivity2 is defined and cardsActivity2 is not empty %}{% if cardsActivity2.modality.title == "Pendant la formation dans une PME" %}{{cardsActivity2.monthsp}}/{{cardsActivity2.yearsp}}{% endif %}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>DATE</p>
+						<p class="m-1 p-0">{% if cardsActivity2 is defined and cardsActivity2 is not empty %}{% if cardsActivity2.modality.title == "Pendant la formation dans une organisation" %}{{cardsActivity2.monthsp}}/{{cardsActivity2.yearsp}}{% endif %}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>LOGICIELS</p>
+						<p class="m-1 p-0">{% if cardsActivity2 is defined and cardsActivity2 is not empty %}{{cardsActivity2.answerssp}}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: left;">
 						<input type="checkbox" name="" disabled="disabled"><label>tache1</label><br>
@@ -134,28 +135,29 @@
 						<input type="checkbox" name="" disabled="disabled"><label>tache3</label>
 					</td>
 				</tr>
+
 				<tr>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>{{activities[2].number}}</p>
-						<p>{{activities[2].name}}</p>
+						<p class="m-1 p-0">{{activities[2].number}}</p>
+						<p class="m-1 p-0">{{activities[2].name}}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>{{activities[2].skill}}</p>
+						<p class="m-1 p-0">{{activities[2].skill}}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>DATE</p>
+						<p class="m-1 p-0">{% if cardsActivity3 is defined and cardsActivity3 is not empty %}{% if cardsActivity3.modality.title == "Avant la formation" %}{{cardsActivity3.monthsp}}/{{cardsActivity3.yearsp}}{% endif %}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>DATE</p>
+						<p class="m-1 p-0">{% if cardsActivity3 is defined and cardsActivity3 is not empty %}{% if cardsActivity3.modality.title == "Pendant la formation en établissement" %}{{cardsActivity3.monthsp}}/{{cardsActivity3.yearsp}}{% endif %}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>DATE</p>
+						<p class="m-1 p-0">{% if cardsActivity3 is defined and cardsActivity3 is not empty %}{% if cardsActivity3.modality.title == "Pendant la formation dans une PME" %}{{cardsActivity3.monthsp}}/{{cardsActivity3.yearsp}}{% endif %}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>DATE</p>
+						<p class="m-1 p-0">{% if cardsActivity3 is defined and cardsActivity3 is not empty %}{% if cardsActivity3.modality.title == "Pendant la formation dans une organisation" %}{{cardsActivity3.monthsp}}/{{cardsActivity3.yearsp}}{% endif %}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>LOGICIELS</p>
+						<p class="m-1 p-0">{% if cardsActivity3 is defined and cardsActivity3 is not empty %}{{cardsActivity3.answerssp}}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: left;">
 						<input type="checkbox" name="" disabled="disabled"><label>tache1</label><br>
@@ -166,28 +168,29 @@
 						<input type="checkbox" name="" disabled="disabled"><label>tache6</label>
 					</td>
 				</tr>
+
 				<tr>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>{{activities[3].number}}</p>
-						<p>{{activities[3].name}}</p>
+						<p class="m-1 p-0">{{activities[3].number}}</p>
+						<p class="m-1 p-0">{{activities[3].name}}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>{{activities[3].skill}}</p>
+						<p class="m-1 p-0">{{activities[3].skill}}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>DATE</p>
+						<p class="m-1 p-0">{% if cardsActivity4 is defined and cardsActivity4 is not empty %}{% if cardsActivity4.modality.title == "Avant la formation" %}{{cardsActivity4.monthsp}}/{{cardsActivity4.yearsp}}{% endif %}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>DATE</p>
+						<p class="m-1 p-0">{% if cardsActivity4 is defined and cardsActivity4 is not empty %}{% if cardsActivity4.modality.title == "Pendant la formation en établissement" %}{{cardsActivity4.monthsp}}/{{cardsActivity4.yearsp}}{% endif %}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>DATE</p>
+						<p class="m-1 p-0">{% if cardsActivity4 is defined and cardsActivity4 is not empty %}{% if cardsActivity4.modality.title == "Pendant la formation dans une PME" %}{{cardsActivity4.monthsp}}/{{cardsActivity4.yearsp}}{% endif %}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>DATE</p>
+						<p class="m-1 p-0">{% if cardsActivity4 is defined and cardsActivity4 is not empty %}{% if cardsActivity4.modality.title == "Pendant la formation dans une organisation" %}{{cardsActivity4.monthsp}}/{{cardsActivity4.yearsp}}{% endif %}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>LOGICIELS</p>
+						<p class="m-1 p-0">{% if cardsActivity4 is defined and cardsActivity4 is not empty %}{{cardsActivity4.answerssp}}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: left;">
 						<input type="checkbox" name="" disabled="disabled"><label>tache1</label><br>
@@ -195,28 +198,29 @@
 						<input type="checkbox" name="" disabled="disabled"><label>tache3</label>
 					</td>
 				</tr>
+
 				<tr>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>{{activities[4].number}}</p>
-						<p>{{activities[4].name}}</p>
+						<p class="m-1 p-0">{{activities[4].number}}</p>
+						<p class="m-1 p-0">{{activities[4].name}}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>{{activities[4].skill}}</p>
+						<p class="m-1 p-0">{{activities[4].skill}}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>DATE</p>
+						<p class="m-1 p-0">{% if cardsActivity5 is defined and cardsActivity5 is not empty %}{% if cardsActivity5.modality.title == "Avant la formation" %}{{cardsActivity5.monthsp}}/{{cardsActivity5.yearsp}}{% endif %}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>DATE</p>
+						<p class="m-1 p-0">{% if cardsActivity5 is defined and cardsActivity5 is not empty %}{% if cardsActivity5.modality.title == "Pendant la formation en établissement" %}{{cardsActivity5.monthsp}}/{{cardsActivity5.yearsp}}{% endif %}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>DATE</p>
+						<p class="m-1 p-0">{% if cardsActivity5 is defined and cardsActivity5 is not empty %}{% if cardsActivity5.modality.title == "Pendant la formation dans une PME" %}{{cardsActivity5.monthsp}}/{{cardsActivity5.yearsp}}{% endif %}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>DATE</p>
+						<p class="m-1 p-0">{% if cardsActivity5 is defined and cardsActivity5 is not empty %}{% if cardsActivity5.modality.title == "Pendant la formation dans une organisation" %}{{cardsActivity5.monthsp}}/{{cardsActivity5.yearsp}}{% endif %}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>LOGICIELS</p>
+						<p class="m-1 p-0">{% if cardsActivity5 is defined and cardsActivity5 is not empty %}{{cardsActivity5.answerssp}}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: left;">
 						<input type="checkbox" name="" disabled="disabled"><label>tache1</label><br>
@@ -227,28 +231,29 @@
 						<input type="checkbox" name="" disabled="disabled"><label>tache6</label>
 					</td>
 				</tr>
+
 				<tr>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>{{activities[5].number}}</p>
-						<p>{{activities[5].name}}</p>
+						<p class="m-1 p-0">{{activities[5].number}}</p>
+						<p class="m-1 p-0">{{activities[5].name}}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>{{activities[5].skill}}</p>
+						<p class="m-1 p-0">{{activities[5].skill}}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>DATE</p>
+						<p class="m-1 p-0">{% if cardsActivity6 is defined and cardsActivity6 is not empty %}{% if cardsActivity6.modality.title == "Avant la formation" %}{{cardsActivity6.monthsp}}/{{cardsActivity6.yearsp}}{% endif %}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>DATE</p>
+						<p class="m-1 p-0">{% if cardsActivity6 is defined and cardsActivity6 is not empty %}{% if cardsActivity6.modality.title == "Pendant la formation en établissement" %}{{cardsActivity6.monthsp}}/{{cardsActivity6.yearsp}}{% endif %}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>DATE</p>
+						<p class="m-1 p-0">{% if cardsActivity6 is defined and cardsActivity6 is not empty %}{% if cardsActivity6.modality.title == "Pendant la formation dans une PME" %}{{cardsActivity6.monthsp}}/{{cardsActivity6.yearsp}}{% endif %}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>DATE</p>
+						<p class="m-1 p-0">{% if cardsActivity6 is defined and cardsActivity6 is not empty %}{% if cardsActivity6.modality.title == "Pendant la formation dans une organisation" %}{{cardsActivity6.monthsp}}/{{cardsActivity6.yearsp}}{% endif %}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: center;">
-						<p>LOGICIELS</p>
+						<p class="m-1 p-0">{% if cardsActivity6 is defined and cardsActivity6 is not empty %}{{cardsActivity6.answerssp}}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: left;">
 						<input type="checkbox" name="" disabled="disabled"><label>tache1</label><br>
