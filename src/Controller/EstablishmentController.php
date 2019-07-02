@@ -69,7 +69,7 @@ class EstablishmentController extends AbstractController
 
             $slugify = new Slugify();
             $slug = $slugify->slugify($establishment->getName());
-            $establishment->setSlug();
+            $establishment->setSlug($slug);
             
             $manager->persist($establishment);
             $manager->flush();

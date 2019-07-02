@@ -441,19 +441,23 @@ class UserFixtures extends Fixture
 		$manager->persist($task1_6_5);
 
 		$modality1 = new Modality();
-		$modality1->setTitle("Avant la formation");
+		$modality1->setNumber(1)
+		->setTitle("Avant la formation");
 		$manager->persist($modality1);
 
 		$modality2 = new Modality();
-		$modality2->setTitle("Pendant la formation en établissement");
+		$modality2->setNumber(2)
+		->setTitle("Pendant la formation en établissement");
 		$manager->persist($modality2);
 
 		$modality3 = new Modality();
-		$modality3->setTitle("Pendant la formation dans une PME");
+		$modality3->setNumber(3)
+		->setTitle("Pendant la formation dans une PME");
 		$manager->persist($modality3);
 
 		$modality4 = new Modality();
-		$modality4->setTitle("Pendant la formation dans une organisation");
+		$modality4->setNumber(4)
+		->setTitle("Pendant la formation dans une organisation");
 		$manager->persist($modality4);
 
 		$problem1 = new Problem();
@@ -472,15 +476,18 @@ class UserFixtures extends Fixture
 		$manager->persist($problem3);
 
 		$term1 = new Term();
-		$term1->setTitle("En autonomie");
+		$term1->setNumber(1)
+		->setTitle("En autonomie");
 		$manager->persist($term1);
 
 		$term2 = new Term();
-		$term2->setTitle("Accompagnée");
+		$term2->setNumber(2)
+		->setTitle("Accompagnée");
 		$manager->persist($term2);
 
 		$term3 = new Term();
-		$term3->setTitle("En observation");
+		$term3->setNumber(3)
+		->setTitle("En observation");
 		$manager->persist($term3);
 
 		$manager->flush();

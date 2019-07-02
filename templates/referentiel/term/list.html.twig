@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+	<h5>Liste des conditions :</h5>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Numéro</th>
+				<th>Nom</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for term in terms %}
+			<tr>
+				<td><a href="{{path('referentiel_term_modify', {'id': term.id,})}}">{{term.number}}</a></td>
+				<td><a href="{{path('referentiel_term_modify', {'id': term.id,})}}">{{term.title}}</a></td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+{% endblock %}

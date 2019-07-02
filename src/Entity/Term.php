@@ -28,6 +28,11 @@ class Term
      */
     private $card;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $number;
+
     public function __construct()
     {
         $this->card = new ArrayCollection();
@@ -77,6 +82,18 @@ class Term
                 $card->setTerm(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNumber(): ?string
+    {
+        return $this->number;
+    }
+
+    public function setNumber(string $number): self
+    {
+        $this->number = $number;
 
         return $this;
     }

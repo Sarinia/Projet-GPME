@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+	<h5>Liste des problèmes :</h5>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Numéro</th>
+				<th>Nom</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for problem in problems %}
+			<tr>
+				<td><a href="{{path('referentiel_problem_modify', {'id': problem.id,})}}">{{problem.number}}</a></td>
+				<td><a href="{{path('referentiel_problem_modify', {'id': problem.id,})}}">{{problem.title}}</a></td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+{% endblock %}

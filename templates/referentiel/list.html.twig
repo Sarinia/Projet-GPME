@@ -9,6 +9,7 @@
 				<th>Numéro</th>
 				<th>Nom</th>
 				<th>Compétence</th>
+				<th>Tâches</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -17,30 +18,17 @@
 				<td>{{activity.number}}</td>
 				<td>{{activity.name}}</td>
 				<td>{{activity.skill}}</td>
+				<td>
+					{% for task in activity.tasks %}
+					{{task.number}} {{task.name}}<br>
+					{% endfor %}
+				</td>
 			</tr>
 			{% endfor %}
 		</tbody>
 	</table>
 
-	<h5>liste des tâches :</h5>
-	<table class="table table-striped">
-		<thead>
-			<tr>
-				<th>Numéro</th>
-				<th>Nom</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for task in tasks %}
-			<tr>
-				<td>{{task.number}}</td>
-				<td>{{task.name}}</td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-
-	<h5>liste des problèmes :</h5>
+	<h5>Liste des problèmes :</h5>
 	<table class="table table-striped">
 		<thead>
 			<tr>
@@ -58,32 +46,36 @@
 		</tbody>
 	</table>
 
-	<h5>liste des modalités :</h5>
+	<h5>Liste des modalités :</h5>
 	<table class="table table-striped">
 		<thead>
 			<tr>
+				<th>Numéro</th>
 				<th>Nom</th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for modality in modalities %}
 			<tr>
+				<td>{{modality.number}}</td>
 				<td>{{modality.title}}</td>
 			</tr>
 			{% endfor %}
 		</tbody>
 	</table>
 
-	<h5>liste des termes :</h5>
+	<h5>Liste des conditions :</h5>
 	<table class="table table-striped">
 		<thead>
 			<tr>
+				<th>Numéro</th>
 				<th>Nom</th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for term in terms %}
 			<tr>
+				<td>{{term.number}}</td>
 				<td>{{term.title}}</td>
 			</tr>
 			{% endfor %}
