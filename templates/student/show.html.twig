@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="col-9">
-            <h5>Passeport professionnel</h5>
+            <h5>Tableau synoptique</h5>
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -27,7 +27,7 @@
                         <th scope="col">Nombre de fiches</th>
                         <th scope="col">Progression</th>
                         <th scope="col">Crée le</th>
-                        <th scope="col">Actif</th>
+                        {# <th scope="col">Actif</th> #}
                     </tr>
                 </thead>
                 <tbody>
@@ -37,12 +37,12 @@
                             <td><a href="{{ path('passport_show', {'id': passport.id,}) }}">{{ passport.cards|length }} fiche(s)</a></td>
                             <td><a href="{{ path('passport_show', {'id': passport.id,}) }}"><div class="progress my-1"><div class="progress-bar {% if pourcent >= "99%" %}bg-success{% endif %}" role="progressbar" style="width:{{ pourcent }}%" aria-valuenow="{{ pourcent }}" aria-valuemin="0" aria-valuemax="100">{% if pourcent >= "99%" %}Consulter{% else %}{{ pourcent }}%{% endif %}</div></div></a></td>
                             <td><a href="{{ path('passport_show', {'id': passport.id,}) }}">{{ passport.createdAt|date("d/m/Y") }}</a></td>
-                            <td><a></a></td>
+                            {# <td><a></a></td> #}
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            <h5>Liste des fiches d'analyse de situation professionnel</h5>
+            <h5>Liste des fiches d'analyse de situation professionnelle</h5>
             <table class="table table-striped">
                 <thead>
                     <tr>

@@ -10,7 +10,7 @@
 				<th scope="col">Nombre de fiches</th>
 				<th scope="col">Progression</th>
 				<th scope="col">Crée le</th>
-				<th scope="col">Actif</th>
+				{# <th scope="col">Actif</th> #}
 			</tr>
 		</thead>
 		<tbody>
@@ -20,7 +20,7 @@
 					<td><a href="{{ path('passport_show', {'id': passport.id,}) }}">{{ student.cards|length }} fiche(s)</a></td>
 					<td><a href="{{ path('passport_show', {'id': passport.id,}) }}"><div class="progress my-1"><div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div></div></a></td>
 					<td><a href="{{ path('passport_show', {'id': passport.id,}) }}">{{ passport.createdAt|date("d/m/Y") }}</a></td>
-					<td><a></a></td>
+					{# <td><a></a></td> #}
 				</tr>
 			{% endfor %}
 		</tbody>

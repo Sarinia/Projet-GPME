@@ -101,27 +101,30 @@
 		</table>
 
 		<!-- PROBLEME -->
-		<table class="table table-bordered w-100 m-0">
+		<table class="table table-bordered w-100 mb-3">
 			<tr>
-				<th colspan="3" class="text-center">
+				<th colspan="2" class="text-center">
 					<h4 class="m-1 p-0">Problème de gestion soulevé et enjeux de la situation</h4>
 				</th>
 			</tr>
 			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Type de problème</p>
+				</td>
 				<td colspan="3" class="text-center">
 					{{ form_label(form.problem) }}{{ form_widget(form.problem, {'attr': {'class' : 'form-control-sm','onchange':"recup();"}}) }}
 				</td>
 			</tr>
 			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Descriptif du problème</p>
+				</td>
 				<td>
 					<div class="form-group problem d-none" id="problem_1">{{ form_widget(form.problemmanagsp, {'attr': {'class' : 'form-control-sm'}}) }}</div>
 					<div class="form-group problem d-none" id="problem_2">{{ form_widget(form.problemcomosp, {'attr': {'class' : 'form-control-sm'}}) }}</div>
 					<div class="form-group problem d-none" id="problem_3">{{ form_widget(form.problemcomwsp, {'attr': {'class' : 'form-control-sm'}}) }}</div>
 				</td>
 			</tr>
-		</table>
-		
-		<table class="table table-bordered w-100 mb-3">
 			<tr>
 				<td style="width: 15%;">
 					<p class="m-1 p-0">Acteurs et relation entre les acteurs</p>
