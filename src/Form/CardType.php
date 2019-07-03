@@ -6,9 +6,12 @@ use App\Entity\Activity;
 use App\Entity\Card;
 use App\Entity\Modality;
 use App\Entity\Problem;
+use App\Entity\Task;
 use App\Entity\Term;
+use App\Form\TaskType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -29,6 +32,7 @@ class CardType extends AbstractType
             ->add('modality', EntityType::class, ['class' => Modality::class, 'label' => false, 'choice_label' => function ($modality) { return $modality->getTitle();}])
             ->add('term', EntityType::class, ['class' => Term::class, 'label' => false, 'choice_label' => function ($term) { return $term->getTitle();}])
             ->add('activity', EntityType::class, ['class' => Activity::class, 'label' => false, 'choice_label' => function ($activity) { return $activity->getNumber()." ".$activity->getName();}])
+            // ->add('tasks')
             ->add('entitledsp', TextType::class, ['label' => false, 'required' => false])
             ->add('infossp', TextType::class, ['label' => false, 'required' => false])
             ->add('framesp', TextType::class, ['label' => false, 'required' => false])

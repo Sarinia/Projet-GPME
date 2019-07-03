@@ -71,7 +71,19 @@
 					<p class="m-1 p-0">Activités concernées</p>
 				</td>
 				<td colspan="2">
-					{{ form_label(form.activity) }}{{ form_widget(form.activity, {'attr': {'class' : 'form-control-sm'}}) }}
+					{{ form_label(form.activity) }}{{ form_widget(form.activity, {'attr': {'class' : 'form-control-sm','onchange':"recupActivity();"}}) }}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p class="m-1 p-0">Tâches concernées</p>
+				</td>
+				<td colspan="2">
+					{% for activity in activities %}
+						{% for task in activity.tasks %}
+							<input id="task_{{task.id}}" type="checkbox" name=""><label for="task_{{task.id}}">{{task.number}} {{task.name}}</label><br>
+						{% endfor %}
+					{% endfor %}
 				</td>
 			</tr>
 			<tr>
@@ -109,7 +121,7 @@
 			</tr>
 			<tr>
 				<td colspan="3" class="text-center">
-					{{ form_label(form.problem) }}{{ form_widget(form.problem, {'attr': {'class' : 'form-control-sm','onchange':"recup();"}}) }}
+					{{ form_label(form.problem) }}{{ form_widget(form.problem, {'attr': {'class' : 'form-control-sm','onchange':"recupProblem();"}}) }}
 				</td>
 			</tr>
 			<tr>
@@ -219,16 +231,28 @@
 	{% endblock %}
 	{% block javascripts %}
 		<script>
-		var select = document.getElementById("card_problem" );
-		card_problem.addEventListener('onchange',recup);
-		function recup(){
-			var valeur = select.options[select.selectedIndex].value;
+		var select_problem = document.getElementById("card_problem" );
+		card_problem.addEventListener('onchange',recupProblem);
+		function recupProblem(){
+			var valeur_problem = select_problem.options[select_problem.selectedIndex].value;
 			$(".problem").addClass("d-none");
-			$("#problem_"+valeur).removeClass("d-none");
+			$("#problem_"+valeur_problem).removeClass("d-none");
+			// console.log(valeur_problem);
+		};
+		$(document).ready(function(){
+			recupProblem();
+		});
+
+		var select_activity = document.getElementById("card_activity" );
+		card_activity.addEventListener('onchange',recupActivity);
+		function recupActivity(){
+			var valeur_activity = select_activity.options[select_activity.selectedIndex].value;
+			$(".establishment").addClass("d-none");
+			$("#establishment_"+valeur_activity).removeClass("d-none");
 			// console.log(valeur);
 		};
 		$(document).ready(function(){
-			recup();
+			recupActivity();
 		});
 		</script>
 	{% endblock %}

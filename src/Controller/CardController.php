@@ -111,9 +111,11 @@ class CardController extends AbstractController
     /**
     * @Route("/card/new", name="card_new")
     */
-    public function create(ObjectManager $manager, Request $request, StudentRepository $studentRepo, PassportRepository $passportRepo)
+    public function create(ObjectManager $manager, Request $request, StudentRepository $studentRepo, PassportRepository $passportRepo, ActivityRepository $activityRepo)
     {
         $card = new Card();
+
+        $activities = $activityRepo->findAll();
 
         // on récupére l'utilisateur
         $user = $this->getUser();
@@ -149,6 +151,7 @@ class CardController extends AbstractController
         return $this->render('card/new.html.twig', [
             'form' => $form->createView(),
             'student' => $student,
+            'activities' => $activities,
         ]);
     }
 

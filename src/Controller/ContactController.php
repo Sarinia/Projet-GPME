@@ -17,23 +17,24 @@ class ContactController extends AbstractController
 
     	if (isset($envoyer)) {
 
-    		// on récupère les données du formulaire
-    		$sujet = $request->request->get('sujet');
-    		$message = $request->request->get('message');
+            // on récupère les données du formulaire
+            $to = 'gpme.contact@gmail.com';
+            $sujet = $request->request->get('sujet');
+            $message = $request->request->get('message');
 
-    		if (!empty($sujet) && !empty($message)) {
-    			mail('gpme.contact@gmail.com',$sujet,$message);
+            if (!empty($sujet) && !empty($message)) {
 
-    			$this->addFlash('success','Votre message a bien été envoyé');
+                mail($to,$sujet,$message);
 
-    			return $this->redirectToRoute('dashboard', []);
-    		} else {
-    			$this->addFlash('danger','Tous les champs doivent être remplis');
+                $this->addFlash('success','Votre message a bien été envoyé');
 
-    			return $this->render('contact/index.html.twig', []);
-    		}
-    	}
+                return $this->redirectToRoute('dashboard');
 
-    	return $this->render('contact/index.html.twig', []);
+            } else {
+                $this->addFlash('danger','Tous les champs doivent être remplis');
+                return $this->render('contact/index.html.twig');
+            }
+        }
+        return $this->render('contact/index.html.twig');
     }
 }

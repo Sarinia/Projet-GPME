@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -30,6 +32,16 @@ class Task
      * @ORM\ManyToOne(targetEntity="App\Entity\Activity", inversedBy="tasks")
      */
     private $activity;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Card", inversedBy="tasks")
+     */
+    private $card;
+
+    public function __construct()
+    {
+        $this->card = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -68,6 +80,32 @@ class Task
     public function setActivity(?Activity $activity): self
     {
         $this->activity = $activity;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Card[]
+     */
+    public function getCard(): Collection
+    {
+        return $this->card;
+    }
+
+    public function addCard(Card $card): self
+    {
+        if (!$this->card->contains($card)) {
+            $this->card[] = $card;
+        }
+
+        return $this;
+    }
+
+    public function removeCard(Card $card): self
+    {
+        if ($this->card->contains($card)) {
+            $this->card->removeElement($card);
+        }
 
         return $this;
     }
