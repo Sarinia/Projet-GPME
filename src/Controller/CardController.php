@@ -14,6 +14,7 @@ use App\Repository\PassportRepository;
 use App\Repository\ProblemRepository;
 use App\Repository\SadminRepository;
 use App\Repository\StudentRepository;
+use App\Repository\TaskRepository;
 use App\Repository\TeacherRepository;
 use App\Repository\TermRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -111,7 +112,7 @@ class CardController extends AbstractController
     /**
     * @Route("/card/new", name="card_new")
     */
-    public function create(ObjectManager $manager, Request $request, StudentRepository $studentRepo, PassportRepository $passportRepo, ActivityRepository $activityRepo)
+    public function create(ObjectManager $manager, Request $request, StudentRepository $studentRepo, PassportRepository $passportRepo, ActivityRepository $activityRepo, TaskRepository $taskRepo)
     {
         $card = new Card();
 
@@ -129,6 +130,13 @@ class CardController extends AbstractController
 
         // si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()){
+
+            // taches
+            $tasks = $request->request->get('task');
+            foreach ($tasks as $task) {
+                $task = $taskRepo->findOneBy(['id' => $task]);
+                $card->addTask($task);
+            }
 
             $card->setCreatedAt(new \DateTime());
 
@@ -158,8 +166,10 @@ class CardController extends AbstractController
     /**
     * @Route("/card/modify/{id}", name="card_modify")
     */
-    public function modify(Card $card, ObjectManager $manager, Request $request, StudentRepository $studentRepo)
+    public function modify(Card $card, ObjectManager $manager, Request $request, StudentRepository $studentRepo, ActivityRepository $activityRepo, TaskRepository $taskRepo)
     {
+        $activities = $activityRepo->findAll();
+
         // on récupére l'utilisateur
         $user = $this->getUser();
         $student = $studentRepo->findOneBy(['user' => $user]);
@@ -173,6 +183,19 @@ class CardController extends AbstractController
         // si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()){
 
+            // taches
+            foreach ($card->getTasks() as $task) {
+                $task = $taskRepo->findOneBy(['id' => $task]);
+                $card->removeTask($task);
+            }
+
+            
+            $tasks = $request->request->get('task');
+            foreach ($tasks as $task) {
+                $task = $taskRepo->findOneBy(['id' => $task]);
+                $card->addTask($task);
+            }
+
             $manager->persist($card);
             $manager->flush();
 
@@ -182,6 +205,7 @@ class CardController extends AbstractController
         return $this->render('card/modify.html.twig', [
             'form' => $form->createView(),
             "card" => $card,
+            'activities' => $activities,
         ]);
     }
 

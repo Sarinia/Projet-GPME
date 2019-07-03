@@ -80,9 +80,11 @@
 				</td>
 				<td colspan="2">
 					{% for activity in activities %}
-						{% for task in activity.tasks %}
-							<input id="task_{{task.id}}" type="checkbox" name=""><label for="task_{{task.id}}">{{task.number}} {{task.name}}</label><br>
-						{% endfor %}
+						<div class="form-group activity d-none" id="activity_{{activity.id}}">
+							{% for task in activity.tasks %}
+								<input id="task_{{task.id}}" type="checkbox" name="task[]" value="{{task.id}}"><label for="task_{{task.id}}" class="ml-2">{{task.number}} {{task.name}}</label><br>
+							{% endfor %}
+						</div>
 					{% endfor %}
 				</td>
 			</tr>
@@ -250,9 +252,9 @@
 		card_activity.addEventListener('onchange',recupActivity);
 		function recupActivity(){
 			var valeur_activity = select_activity.options[select_activity.selectedIndex].value;
-			$(".establishment").addClass("d-none");
-			$("#establishment_"+valeur_activity).removeClass("d-none");
-			// console.log(valeur);
+			$(".activity").addClass("d-none");
+			$("#activity_"+valeur_activity).removeClass("d-none");
+			// console.log(valeur_activity);
 		};
 		$(document).ready(function(){
 			recupActivity();
