@@ -36,7 +36,7 @@ class UserFixtures extends Fixture
 		$user = new User();
 
 		$slugify = new Slugify();
-		$lastName = "sadmin";
+		$lastName = "nom";
 		$firstName = "sadmin";
 		$slug = $slugify->Slugify($lastName."-".$firstName);
 
@@ -84,7 +84,7 @@ class UserFixtures extends Fixture
 				$user = new User();
 
 				$slugify = new Slugify();
-				$lastName = "admin$e";
+				$lastName = "nom$e";
 				$firstName = "admin$e";
 				$slug = $slugify->Slugify($lastName."-".$firstName);
 
@@ -127,7 +127,7 @@ class UserFixtures extends Fixture
 						$user = new User();
 
 						$slugify = new Slugify();
-						$lastName = "student$s";
+						$lastName = "nom$s";
 						$firstName = "student$s";
 						$slug = $slugify->Slugify($lastName."-".$firstName);
 
@@ -198,7 +198,7 @@ class UserFixtures extends Fixture
 						$user = new User();
 
 						$slugify = new Slugify();
-						$lastName = "teacher$t";
+						$lastName = "nom$t";
 						$firstName = "teacher$t";
 						$slug = $slugify->Slugify($lastName."-".$firstName);
 

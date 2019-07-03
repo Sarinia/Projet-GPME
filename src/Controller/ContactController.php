@@ -21,10 +21,11 @@ class ContactController extends AbstractController
             $to = 'gpme.contact@gmail.com';
             $sujet = $request->request->get('sujet');
             $message = $request->request->get('message');
+            $headers = 'From: '.$this->getUser()->getLastName().' '.$this->getUser()->getFirstName();
 
             if (!empty($sujet) && !empty($message)) {
 
-                mail($to,$sujet,$message);
+                mail($to,$sujet,$message,$headers);
 
                 $this->addFlash('success','Votre message a bien été envoyé');
 

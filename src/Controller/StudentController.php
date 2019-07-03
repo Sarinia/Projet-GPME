@@ -10,6 +10,7 @@ use App\Repository\AdminRepository;
 use App\Repository\CardRepository;
 use App\Repository\ClassroomRepository;
 use App\Repository\EstablishmentRepository;
+use App\Repository\PassportRepository;
 use App\Repository\StudentRepository;
 use App\Repository\TeacherRepository;
 use App\Repository\UserRepository;
@@ -266,7 +267,9 @@ class StudentController extends AbstractController
             $this->addFlash('success',"L'étudiant a bien été mis à jour !");
 
             // on redirige vers la liste des étudiants
-            return $this->redirectToRoute('student_show_list');
+            return $this->redirectToRoute('student_show', [
+                'id' => $student->getId(),
+            ]);
         }
 
         // on retourne la vue et les données
@@ -280,7 +283,7 @@ class StudentController extends AbstractController
     /**
      * @Route("/student/delete/{id}", name="student_delete")
      */
-    public function delete(ObjectManager $manager, Student $student)
+    public function delete(ObjectManager $manager, Student $student, PassportRepository $passportRepo, CardRepository $cardRepo)
     {
         // on récupére l'utilisateur
         $user = $student->getUser();
@@ -288,9 +291,16 @@ class StudentController extends AbstractController
         // on vérifie que son compte est inactif
         if ($user->getExist() == false){
 
+            // On supprime le passeport
+            $passport = $passportRepo->findOneBy(['student' => $student]);
+            $cards = $cardRepo->findBy(['student' => $student]);
+            foreach ($cards as $card) {
+                $manager->remove($card);
+            }
+
             // on supprime la ligne de la table Student et de la table User
+            $manager->remove($passport);
             $manager->remove($student);
-            $maneger->remove($student->getPassport());
             $manager->flush();
 
             // on enregistre un message flash

@@ -99,7 +99,7 @@ class AccountController extends AbstractController
 
             // on récupére l'utilisateur connecté
             $user = $this->getUser();
-            $sadmin = $sadminRepo->findOneBy(['id' => $user]);
+            $sadmin = $sadminRepo->findOneBy(['user' => $user]);
 
             // on crée le formulaire
             $form = $this->createForm(AccountSadminType::class, $sadmin);
@@ -129,7 +129,7 @@ class AccountController extends AbstractController
 
             // on récupére l'utilisateur connecté
             $user = $this->getUser();
-            $admin = $adminRepo->findOneBy(['id' => $user]);
+            $admin = $adminRepo->findOneBy(['user' => $user]);
 
             // on crée le formulaire
             $form = $this->createForm(AccountAdminType::class, $admin);
@@ -159,7 +159,7 @@ class AccountController extends AbstractController
 
             // on récupére l'utilisateur connecté
             $user = $this->getUser();
-            $teacher = $teacherRepo->findOneBy(['id' => $user]);
+            $teacher = $teacherRepo->findOneBy(['user' => $user]);
 
             // on crée le formulaire
             $form = $this->createForm(AccountTeacherType::class, $teacher);
@@ -189,7 +189,7 @@ class AccountController extends AbstractController
 
             // on récupére l'utilisateur connecté
             $user = $this->getUser();
-            $student = $studentRepo->findOneBy(['id' => $user]);
+            $student = $studentRepo->findOneBy(['user' => $user]);
 
             // on crée le formulaire
             $form = $this->createForm(AccountStudentType::class, $student);
