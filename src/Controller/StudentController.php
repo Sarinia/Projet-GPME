@@ -221,7 +221,7 @@ class StudentController extends AbstractController
 
         // si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()){
-dump($request->request->get('classroom'));
+
             // on vérifie si une seule classe a été coché
             if (Count($request->request->get('classroom')) == "") {
 
@@ -290,7 +290,7 @@ dump($request->request->get('classroom'));
 
             // on supprime la ligne de la table Student et de la table User
             $manager->remove($student);
-            $manager->remove($user);
+            $maneger->remove($student->getPassport());
             $manager->flush();
 
             // on enregistre un message flash

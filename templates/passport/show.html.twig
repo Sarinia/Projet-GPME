@@ -40,10 +40,10 @@
 		<table style="width: 100%;margin-bottom: 5pt;">
 			<thead>
 				<tr>
-					<th rowspan="2" style="width: 17.5%;border: 1px solid black;text-align: center;">
+					<th rowspan="2" style="width: 15%;border: 1px solid black;text-align: center;">
 						<p class="m-1 p-0">Activités</p>
 					</th>
-					<th rowspan="2" style="width: 17.5%;border: 1px solid black;text-align: center;">
+					<th rowspan="2" style="width: 15%;border: 1px solid black;text-align: center;">
 						<p class="m-1 p-0">Compétences</p>
 					</th>
 					<th colspan="4" style="width: ;border: 1px solid black;text-align: center;">
@@ -53,7 +53,7 @@
 					<th rowspan="2" style="width: 15%;border: 1px solid black;text-align: center;">
 						<p class="m-1 p-0">Solutions Logicielles</p>
 					</th>
-					<th rowspan="2" style="width: 30%;border: 1px solid black;text-align: center;">
+					<th rowspan="2" style="width: 35%;border: 1px solid black;text-align: center;">
 						<p class="m-1 p-0">Tâches des activités</p>
 					</th>
 				</tr>
@@ -97,12 +97,9 @@
 						<p class="m-1 p-0">{% if cardsActivity1 is defined and cardsActivity1 is not empty %}{{cardsActivity1.answerssp}}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: left;">
-						<input type="checkbox" name="" disabled="disabled"><label>tache1</label><br>
-						<input type="checkbox" name="" disabled="disabled"><label>tache2</label><br>
-						<input type="checkbox" name="" disabled="disabled"><label>tache3</label><br>
-						<input type="checkbox" name="" disabled="disabled"><label>tache4</label><br>
-						<input type="checkbox" name="" disabled="disabled"><label>tache5</label><br>
-						<input type="checkbox" name="" disabled="disabled"><label>tache6</label>
+						{% for task in activities[0].tasks %}
+							<div class="row m-0"><input class="col-1" id="task_{{task.id}}" type="checkbox" name="" disabled="disabled"><label class="col p-0" for="task_{{task.id}}" class="ml-2">{{task.number}} {{task.name}}</label></div>
+						{% endfor %}
 					</td>
 				</tr>
 
@@ -130,9 +127,9 @@
 						<p class="m-1 p-0">{% if cardsActivity2 is defined and cardsActivity2 is not empty %}{{cardsActivity2.answerssp}}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: left;">
-						<input type="checkbox" name="" disabled="disabled"><label>tache1</label><br>
-						<input type="checkbox" name="" disabled="disabled"><label>tache2</label><br>
-						<input type="checkbox" name="" disabled="disabled"><label>tache3</label>
+						{% for task in activities[1].tasks %}
+							<div class="row m-0"><input class="col-1" id="task_{{task.id}}" type="checkbox" name="" disabled="disabled"><label class="col p-0" for="task_{{task.id}}" class="ml-2">{{task.number}} {{task.name}}</label></div>
+						{% endfor %}
 					</td>
 				</tr>
 
@@ -160,12 +157,9 @@
 						<p class="m-1 p-0">{% if cardsActivity3 is defined and cardsActivity3 is not empty %}{{cardsActivity3.answerssp}}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: left;">
-						<input type="checkbox" name="" disabled="disabled"><label>tache1</label><br>
-						<input type="checkbox" name="" disabled="disabled"><label>tache2</label><br>
-						<input type="checkbox" name="" disabled="disabled"><label>tache3</label><br>
-						<input type="checkbox" name="" disabled="disabled"><label>tache4</label><br>
-						<input type="checkbox" name="" disabled="disabled"><label>tache5</label><br>
-						<input type="checkbox" name="" disabled="disabled"><label>tache6</label>
+						{% for task in activities[2].tasks %}
+							<div class="row m-0"><input class="col-1" id="task_{{task.id}}" type="checkbox" name="" disabled="disabled"><label class="col p-0" for="task_{{task.id}}" class="ml-2">{{task.number}} {{task.name}}</label></div>
+						{% endfor %}
 					</td>
 				</tr>
 
@@ -193,9 +187,9 @@
 						<p class="m-1 p-0">{% if cardsActivity4 is defined and cardsActivity4 is not empty %}{{cardsActivity4.answerssp}}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: left;">
-						<input type="checkbox" name="" disabled="disabled"><label>tache1</label><br>
-						<input type="checkbox" name="" disabled="disabled"><label>tache2</label><br>
-						<input type="checkbox" name="" disabled="disabled"><label>tache3</label>
+						{% for task in activities[3].tasks %}
+							<div class="row m-0"><input class="col-1" id="task_{{task.id}}" type="checkbox" name="" disabled="disabled"><label class="col p-0" for="task_{{task.id}}" class="ml-2">{{task.number}} {{task.name}}</label></div>
+						{% endfor %}
 					</td>
 				</tr>
 
@@ -223,12 +217,9 @@
 						<p class="m-1 p-0">{% if cardsActivity5 is defined and cardsActivity5 is not empty %}{{cardsActivity5.answerssp}}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: left;">
-						<input type="checkbox" name="" disabled="disabled"><label>tache1</label><br>
-						<input type="checkbox" name="" disabled="disabled"><label>tache2</label><br>
-						<input type="checkbox" name="" disabled="disabled"><label>tache3</label><br>
-						<input type="checkbox" name="" disabled="disabled"><label>tache4</label><br>
-						<input type="checkbox" name="" disabled="disabled"><label>tache5</label><br>
-						<input type="checkbox" name="" disabled="disabled"><label>tache6</label>
+						{% for task in activities[4].tasks %}
+							<div class="row m-0"><input class="col-1" id="task_{{task.id}}" type="checkbox" name="" disabled="disabled"><label class="col p-0" for="task_{{task.id}}" class="ml-2">{{task.number}} {{task.name}}</label></div>
+						{% endfor %}
 					</td>
 				</tr>
 
@@ -256,9 +247,9 @@
 						<p class="m-1 p-0">{% if cardsActivity6 is defined and cardsActivity6 is not empty %}{{cardsActivity6.answerssp}}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: left;">
-						<input type="checkbox" name="" disabled="disabled"><label>tache1</label><br>
-						<input type="checkbox" name="" disabled="disabled"><label>tache2</label><br>
-						<input type="checkbox" name="" disabled="disabled"><label>tache3</label>
+						{% for task in activities[5].tasks %}
+							<div class="row m-0"><input class="col-1" id="task_{{task.id}}" type="checkbox" name="" disabled="disabled"><label class="col p-0" for="task_{{task.id}}" class="ml-2">{{task.number}} {{task.name}}</label></div>
+						{% endfor %}
 					</td>
 				</tr>
 			</tbody>

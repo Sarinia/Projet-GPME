@@ -56,8 +56,8 @@
                     {% for student in classroom.students %}
                         <tr>
                             <td><a href="{{ path('student_show', {'id': student.id,}) }}">{{ student.id }}</a></td>
-                            <td><a href="{{ path('student_show', {'id': student.id,}) }}">{{ student.user.firstName }}</a></td>
                             <td><a href="{{ path('student_show', {'id': student.id,}) }}">{{ student.user.lastName }}</a></td>
+                            <td><a href="{{ path('student_show', {'id': student.id,}) }}">{{ student.user.firstName }}</a></td>
                             <td><a href="{{ path('student_show', {'id': student.id,}) }}">{{ student.user.email }}</a></td>
                             <td><a href="{{ path('classroom_show', {'id': student.classroom.id,}) }}">{{ student.classroom.degree }}</a></td>
                             <td><a href="{{ path('establishment_show', {'id': student.establishment.id,}) }}">{{ student.establishment.name }}</a></td>

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20190702193357 extends AbstractMigration
+final class Version20190703090603 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -35,6 +35,7 @@ final class Version20190702193357 extends AbstractMigration
         $this->addSql('CREATE TABLE sadmin (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, created_at DATETIME NOT NULL, UNIQUE INDEX UNIQ_725824A7A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE student (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, establishment_id INT NOT NULL, classroom_id INT NOT NULL, candidate_nb VARCHAR(255) NOT NULL, birth_date DATETIME NOT NULL, created_at DATETIME NOT NULL, UNIQUE INDEX UNIQ_B723AF33A76ED395 (user_id), INDEX IDX_B723AF338565851 (establishment_id), INDEX IDX_B723AF336278D5A8 (classroom_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE task (id INT AUTO_INCREMENT NOT NULL, activity_id INT DEFAULT NULL, number VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, INDEX IDX_527EDB2581C06096 (activity_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE task_card (task_id INT NOT NULL, card_id INT NOT NULL, INDEX IDX_65A70CA88DB60186 (task_id), INDEX IDX_65A70CA84ACC9A20 (card_id), PRIMARY KEY(task_id, card_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE teacher (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, establishment_id INT NOT NULL, created_at DATETIME NOT NULL, UNIQUE INDEX UNIQ_B0F6A6D5A76ED395 (user_id), INDEX IDX_B0F6A6D58565851 (establishment_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE teacher_classroom (teacher_id INT NOT NULL, classroom_id INT NOT NULL, INDEX IDX_33167C8641807E1D (teacher_id), INDEX IDX_33167C866278D5A8 (classroom_id), PRIMARY KEY(teacher_id, classroom_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE term (id INT AUTO_INCREMENT NOT NULL, title VARCHAR(255) NOT NULL, number VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
@@ -55,6 +56,8 @@ final class Version20190702193357 extends AbstractMigration
         $this->addSql('ALTER TABLE student ADD CONSTRAINT FK_B723AF338565851 FOREIGN KEY (establishment_id) REFERENCES establishment (id)');
         $this->addSql('ALTER TABLE student ADD CONSTRAINT FK_B723AF336278D5A8 FOREIGN KEY (classroom_id) REFERENCES classroom (id)');
         $this->addSql('ALTER TABLE task ADD CONSTRAINT FK_527EDB2581C06096 FOREIGN KEY (activity_id) REFERENCES activity (id)');
+        $this->addSql('ALTER TABLE task_card ADD CONSTRAINT FK_65A70CA88DB60186 FOREIGN KEY (task_id) REFERENCES task (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE task_card ADD CONSTRAINT FK_65A70CA84ACC9A20 FOREIGN KEY (card_id) REFERENCES card (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE teacher ADD CONSTRAINT FK_B0F6A6D5A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE teacher ADD CONSTRAINT FK_B0F6A6D58565851 FOREIGN KEY (establishment_id) REFERENCES establishment (id)');
         $this->addSql('ALTER TABLE teacher_classroom ADD CONSTRAINT FK_33167C8641807E1D FOREIGN KEY (teacher_id) REFERENCES teacher (id) ON DELETE CASCADE');
@@ -68,6 +71,7 @@ final class Version20190702193357 extends AbstractMigration
 
         $this->addSql('ALTER TABLE card DROP FOREIGN KEY FK_161498D381C06096');
         $this->addSql('ALTER TABLE task DROP FOREIGN KEY FK_527EDB2581C06096');
+        $this->addSql('ALTER TABLE task_card DROP FOREIGN KEY FK_65A70CA84ACC9A20');
         $this->addSql('ALTER TABLE student DROP FOREIGN KEY FK_B723AF336278D5A8');
         $this->addSql('ALTER TABLE teacher_classroom DROP FOREIGN KEY FK_33167C866278D5A8');
         $this->addSql('ALTER TABLE establishment DROP FOREIGN KEY FK_DBEFB1EEAE80F5DF');
@@ -80,6 +84,7 @@ final class Version20190702193357 extends AbstractMigration
         $this->addSql('ALTER TABLE card DROP FOREIGN KEY FK_161498D3A0DCED86');
         $this->addSql('ALTER TABLE card DROP FOREIGN KEY FK_161498D3CB944F1A');
         $this->addSql('ALTER TABLE passport DROP FOREIGN KEY FK_B5A26E08CB944F1A');
+        $this->addSql('ALTER TABLE task_card DROP FOREIGN KEY FK_65A70CA88DB60186');
         $this->addSql('ALTER TABLE teacher_classroom DROP FOREIGN KEY FK_33167C8641807E1D');
         $this->addSql('ALTER TABLE card DROP FOREIGN KEY FK_161498D3E2C35FC');
         $this->addSql('ALTER TABLE admin DROP FOREIGN KEY FK_880E0D76A76ED395');
@@ -99,6 +104,7 @@ final class Version20190702193357 extends AbstractMigration
         $this->addSql('DROP TABLE sadmin');
         $this->addSql('DROP TABLE student');
         $this->addSql('DROP TABLE task');
+        $this->addSql('DROP TABLE task_card');
         $this->addSql('DROP TABLE teacher');
         $this->addSql('DROP TABLE teacher_classroom');
         $this->addSql('DROP TABLE term');
