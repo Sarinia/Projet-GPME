@@ -86,11 +86,14 @@ class TeacherController extends AbstractController
     /**
      * @Route("/teacher/show/{id}", name="teacher_show")
      */
-    public function show(Teacher $teacher)
+    public function show(Teacher $teacher, AdminRepository $adminRepo)
     {
+        $admin = $adminRepo->findOneBy(['establishment' => $teacher->getEstablishment()]);
+
         // on retourne la vue et les données
         return $this->render('teacher/show.html.twig', [
             'teacher' => $teacher,
+            'admin' => $admin,
         ]);
     }
 

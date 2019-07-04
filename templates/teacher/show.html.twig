@@ -11,6 +11,9 @@
                     <li class="list-group-item">Prénom : {{teacher.user.firstName}}</li>
                     <li class="list-group-item">Email : {{teacher.user.email}}</li>
                     <li class="list-group-item">Etablissement : {{teacher.establishment.name}}</li>
+                    {% if app.user.title != 'ROLE_ADMIN' %}
+                    <li class="list-group-item">Administrateur : {% if admin is not null %}{{admin.user.lastName}} {{admin.user.firstName}}{% else %}non assigné{% endif %}</li>
+                    {% endif %}
                     <li class="list-group-item">Crée le : {{ teacher.createdAt | date("d/m/Y") }}</li>
                 </ul>
             </div>

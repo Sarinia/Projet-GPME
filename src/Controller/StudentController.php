@@ -89,11 +89,14 @@ class StudentController extends AbstractController
     /**
      * @Route("/student/show/{id}", name="student_show")
      */
-    public function show(Student $student, CardRepository $cardRepo)
+    public function show(Student $student, AdminRepository $adminRepo)
     {
+        $admin = $adminRepo->findOneBy(['establishment' => $student->getEstablishment()]);
+        
         // on retourne la vue et les données
         return $this->render('student/show.html.twig', [
             'student' => $student,
+            'admin' => $admin,
         ]);
     }
 

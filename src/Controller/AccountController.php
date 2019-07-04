@@ -91,6 +91,11 @@ class AccountController extends AbstractController
     }
 
     /**
+     * @Route("/logout", name="account_logout")
+     */
+    public function logout(){}
+
+    /**
      * @Route("/account/profile", name="account_profile")
      */
     public function profile(Request $request, ObjectManager $manager, StudentRepository $studentRepo, TeacherRepository $teacherRepo, AdminRepository $adminRepo, SadminRepository $sadminRepo)
@@ -270,12 +275,5 @@ class AccountController extends AbstractController
         return $this->render('account/password.html.twig', [
             'form' => $form->createView(),
         ]);
-    }
-
-    /**
-     * @Route("/logout", name="account_logout")
-     */
-    public function logout(){
-        
     }
 }

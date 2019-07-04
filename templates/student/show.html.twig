@@ -13,6 +13,7 @@
                     <li class="list-group-item">Date de naissance : {{student.birthDate | date("d/m/Y")}}</li>
                     <li class="list-group-item">Etablissement : {{student.establishment.name}}</li>
                     <li class="list-group-item">Classe : {{student.classroom.degree}}</li>
+                    <li class="list-group-item">Administrateur : {{admin.user.firstName}} {{admin.user.lastName}}</li>
                     <li class="list-group-item">Professeurs : <ul>{% for teacher in student.classroom.teachers %}<li>{{teacher.user.lastName}}</li>{% endfor %}</ul></li>
                     <li class="list-group-item">Crée le : {{ student.createdAt | date("d/m/Y") }}</li>
                 </ul>

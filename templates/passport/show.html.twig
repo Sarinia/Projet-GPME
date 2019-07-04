@@ -97,8 +97,12 @@
 						<p class="m-1 p-0">{% if cardsActivity1 is defined and cardsActivity1 is not empty %}{{cardsActivity1.answerssp}}{% endif %}</p>
 					</td>
 					<td style="border: 1px solid black;text-align: left;">
-						{% for task in activities[0].tasks %}
-							<div class="row m-0"><input class="col-1" id="task_{{task.id}}" type="checkbox" name="" disabled="disabled"><label class="col p-0" for="task_{{task.id}}" class="ml-2">{{task.number}} {{task.name}}</label></div>
+						{% for task in activities[0].tasks %}{% set checked = "" %}
+							{% for task_checked in cardsActivity1.tasks %}
+								{% if task.id == task_checked.id %}{% set checked = "checked" %}
+								{% endif %}
+							{% endfor %}
+							<div class="row m-0"><input class="col-1" {{checked}} id="task_{{task.id}}" type="checkbox" name="" disabled="disabled"><label class="col p-0" for="task_{{task.id}}" class="ml-2">{{task.number}} {{task.name}}</label></div>
 						{% endfor %}
 					</td>
 				</tr>

@@ -12,7 +12,7 @@
 					<li class="list-group-item">Code postal : {{establishment.postalcode}}</li>
 					<li class="list-group-item">Ville : {{establishment.city}}</li>
 					<li class="list-group-item">Département : {{establishment.department.name}}</li>
-					<li class="list-group-item">Administrateur : {% if admin is not null %}{{admin.user.lastName}} - {{admin.user.firstName}}{% else %}non assigné{% endif %}</li>
+					<li class="list-group-item">Administrateur : {% if admin is not null %}{{admin.user.lastName}} {{admin.user.firstName}}{% else %}non assigné{% endif %}</li>
 					<li class="list-group-item">Crée le : {{ establishment.createdAt | date("d/m/Y") }}</li>
 				</ul>
 			</div>

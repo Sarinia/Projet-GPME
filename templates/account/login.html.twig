@@ -2,24 +2,24 @@
 
 {% block body %}
 
-{% if (hasError) %}
-<div class="alert alert-danger alert-dismissible fade show" role="alert"> Mauvais identifiant ou mot de passe
-	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-		<span aria-hidden="true">&times;</span>
-	</button>
-</div>
-{% endif %}
-<div class="container">
-	<form class="w-25 mx-auto text-center" action="" method="post">
-		<div class="form-group">
-			<input placeholder="Adresse email" required type="text" name="_username" class="form-control">
+	{% if (hasError) %}
+		<div class="alert alert-danger alert-dismissible fade show" role="alert"> Mauvais identifiant ou mot de passe
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
 		</div>
-		<div class="form-group">
-			<input placeholder="mot de passe" required type="password" name="_password" class="form-control">
-		</div>
-		<div class="form-group">
-			<button type="submit" class="btn btn-success">Connexion !</button>
-		</div>
-	</form>
-</div>
+	{% endif %}
+	<div class="container">
+		<form class="w-25 mx-auto text-center" action="" method="post">
+			<div class="form-group">
+				<input placeholder="Adresse email" required type="text" name="_username" class="form-control">
+			</div>
+			<div class="form-group">
+				<input placeholder="mot de passe" required type="password" name="_password" class="form-control">
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-success">Connexion !</button>
+			</div>
+		</form>
+	</div>
 {% endblock %}

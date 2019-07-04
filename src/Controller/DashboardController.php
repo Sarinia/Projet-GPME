@@ -23,48 +23,35 @@ class DashboardController extends AbstractController
 	public function dashboard()
 	{
 		// si un utilisateur est connecté
-		if ($this->getUser()->getRoles() && $this->getUser()->getExist() == true) {
+		if ($this->getUser() && $this->getUser()->getExist() == true) {
 
-			// on stocke son roles dans une variables
-			$userRoles = $this->getUser()->getRoles();
+			if ($this->getUser()->getTitle() == 'ROLE_USER') {
+				return $this->RedirectToRoute('dashboard_student', [
+					'slug' => $this->getUser()->getSlug(),
+				]);
+			}
 
-			foreach ($userRoles as $value) {
-				switch ($value) {
-					case 'ROLE_USER': //cas ou l'utilisateur est un etudiant
-					return $this->RedirectToRoute('dashboard_student', [
-						'slug' => $this->getUser()->getSlug(),
-					]);
-					break;
+			if ($this->getUser()->getTitle() == 'ROLE_TEACHER') {
+				return $this->RedirectToRoute('dashboard_teacher', [
+					'slug' => $this->getUser()->getSlug(),
+				]);
+			}
 
-					case 'ROLE_TEACHER': //cas ou l'utilisateur est un enseignant
-					return $this->RedirectToRoute('dashboard_teacher', [
-						'slug' => $this->getUser()->getSlug(),
-					]);
-					break;
+			if ($this->getUser()->getTitle() == 'ROLE_ADMIN') {
+				return $this->RedirectToRoute('dashboard_admin', [
+					'slug' => $this->getUser()->getSlug(),
+				]);
+			}
 
-					case 'ROLE_ADMIN': //cas ou l'utilisateur est un admin
-					return $this->RedirectToRoute('dashboard_admin', [
-						'slug' => $this->getUser()->getSlug(),
-					]);
-					break;
-
-					case 'ROLE_SADMIN': //cas ou l'utilisateur est un super-admin
-					return $this->RedirectToRoute('dashboard_sadmin', [
-						'slug' => $this->getUser()->getSlug(),
-					]);
-					break;
-
-					default:
-					# code...
-					break;
-				}
+			if ($this->getUser()->getTitle() == 'ROLE_SADMIN') {
+				return $this->RedirectToRoute('dashboard_sadmin', [
+					'slug' => $this->getUser()->getSlug(),
+				]);
 			}
 		} else {
-
-			return $this->RedirectToRoute('account_logout');
+			return $this->redirectToRoute('homepage');
 		}
 	}
-
 	/**
 	* @Route("/dashboard/etudiant/{slug}", name="dashboard_student")
 	*/

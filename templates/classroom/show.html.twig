@@ -11,6 +11,7 @@
                     <li class="list-group-item">Date de début : {{classroom.startDate}}</li>
                     <li class="list-group-item">Date de fin : {{classroom.endDate}}</li>
                     <li class="list-group-item">Etablissement : {{classroom.establishment.name}}</li>
+                    <li class="list-group-item">Administrateur : {% if admin is not null %}{{admin.user.lastName}} {{admin.user.firstName}}{% else %}non assigné{% endif %}</li>
                     <li class="list-group-item">Crée le : {{ classroom.createdAt | date("d/m/Y") }}</li>
                 </ul>
             </div>
