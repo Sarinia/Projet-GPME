@@ -6,7 +6,7 @@
 
 		{# formulaire de création d'un administrateur #}
 		{{ form_start(form) }}
-		{{ form_row(form.establishment, {'label':'Selectionner l\'établissement :', 'attr':{'onchange':"recup();"}}) }}
+		{{ form_row(form.establishment, {'label':'Sélectionner l\'établissement :', 'attr':{'onchange':"recup();"}}) }}
 		<label class="form-check-label" for="classroom">Selectionner les classes :</label>
 		{% for establishment in establishments %}
 			<div class="form-inline establishment d-none" id="establishment_{{establishment.id}}">
