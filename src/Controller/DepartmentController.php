@@ -62,6 +62,7 @@ class DepartmentController extends AbstractController
         // si le formulaire est soumis et que les champs sont valides
         if ($form->isSubmitted() && $form->isValid()){
 
+            // date de création
             $department->setCreatedAt(new \DateTime());
 
             // on persite l'entité et on la sauvegarde
