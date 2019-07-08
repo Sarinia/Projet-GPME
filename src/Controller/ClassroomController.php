@@ -30,12 +30,10 @@ class ClassroomController extends AbstractController
 
                 // requete de toutes les classes et tous les établissements de la BDD
                 $classrooms = $classroomRepo->findAll();
-                $establishments = $estabRepo->findAll();
 
                 // on retourne la vue et les données
                 return $this->render('classroom/list.html.twig', [
                     'classrooms' => $classrooms,
-                    'establishments' => $establishments,
                 ]);
             }
 
@@ -46,12 +44,10 @@ class ClassroomController extends AbstractController
 
                 // requete de toutes les classes et tous les établissements de la BDD
                 $classrooms = $admin->getEstablishment()->getClassrooms();
-                $establishments[] = $admin->getEstablishment();
 
                 // on retourne la vue et les données
                 return $this->render('classroom/list.html.twig', [
                     'classrooms' => $classrooms,
-                    'establishments' => $establishments,
                 ]);
             }
 
@@ -62,12 +58,10 @@ class ClassroomController extends AbstractController
 
                 // requete de toutes les classes et tous les établissements de la BDD
                 $classrooms = $teacher->getClassrooms();
-                $establishments[] = $teacher->getEstablishment();
 
                 // on retourne la vue et les données
                 return $this->render('classroom/list.html.twig', [
                     'classrooms' => $classrooms,
-                    'establishments' => $establishments,
                 ]);
             }
         }
