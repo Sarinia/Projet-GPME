@@ -7,6 +7,7 @@ use App\Form\ClassroomType;
 use App\Repository\AdminRepository;
 use App\Repository\ClassroomRepository;
 use App\Repository\EstablishmentRepository;
+use App\Repository\SadminRepository;
 use App\Repository\TeacherRepository;
 use Cocur\Slugify\Slugify;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -84,92 +85,211 @@ class ClassroomController extends AbstractController
     /**
      * @Route("/classroom/new", name="classroom_new")
      */
-    public function create(ObjectManager $manager,Request $request)
+    public function create(ObjectManager $manager,Request $request, EstablishmentRepository $establishmentRepo, AdminRepository $adminRepo)
     {   
-        // on instancie un nouveau Classroom
-        $classroom = new Classroom();
+        // liste des classes pour le super-admin
+        if ($this->getUser()->getTitle() == "ROLE_SADMIN") {
 
-        // Création du formulaire à partir du fichier NewAdminType
-        $form = $this->createForm(ClassroomType::class, $classroom);
+            $establishments = $establishmentRepo->findAll();
 
-        // récupération des données du formulaire
-        $form->handleRequest($request);
+            // on instancie un nouveau Classroom
+            $classroom = new Classroom();
 
-        // si le formulaire est soumis et valide
-        if ($form->isSubmitted() && $form->isValid()){
+            // Création du formulaire à partir du fichier NewAdminType
+            $form = $this->createForm(ClassroomType::class, $classroom);
 
-            // slug
-            $slugify = new Slugify();
-            $degree = $classroom->getDegree();
-            $startDate = $classroom->getStartDate();
-            $endDate = $classroom->getEndDate();
-            $ligne = $classroom->getId();
-            $slug = $slugify->slugify($degree."-".$ligne."-".$startDate."-".$endDate);
-            $classroom->setSlug($slug);
+            // récupération des données du formulaire
+            $form->handleRequest($request);
 
-            // createdAt
-            $classroom->setCreatedAt(new \DateTime());
+            // si le formulaire est soumis et valide
+            if ($form->isSubmitted() && $form->isValid()){
 
-            // on persiste et on sauvegarde les données du formulaire
-            $manager->persist($classroom);
-            $manager->flush();
+                // établissement
+                $establishment = $request->request->get('establishment');
+                $establishment = $establishmentRepo->findOneBy(['id' => $establishment]);
+                $classroom->setEstablishment($establishment);
 
-            // on stocke un message flash
-            $this->addFlash('success','La classe a bien été créé');
+                // slug
+                $slugify = new Slugify();
+                $degree = $classroom->getDegree();
+                $startDate = $classroom->getStartDate();
+                $endDate = $classroom->getEndDate();
+                $ligne = $classroom->getId();
+                $slug = $slugify->slugify($degree."-".$ligne."-".$startDate."-".$endDate);
+                $classroom->setSlug($slug);
 
-            // on redirige vers la liste des administrateurs
-            return $this->redirectToRoute('classroom_show_list');
+                // createdAt
+                $classroom->setCreatedAt(new \DateTime());
+
+                // on persiste et on sauvegarde les données du formulaire
+                $manager->persist($classroom);
+                $manager->flush();
+
+                // on stocke un message flash
+                $this->addFlash('success','La classe a bien été créé');
+
+                // on redirige vers la liste des administrateurs
+                return $this->redirectToRoute('classroom_show_list');
+            }
+
+            // on retourne la vue et les données
+            return $this->render('classroom/new.html.twig', [
+                'form' => $form->createView(),
+                'establishments' => $establishments,
+            ]);
         }
 
-        // on retourne la vue et les données
-        return $this->render('classroom/new.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        // liste des classes pour le admin
+        if ($this->getUser()->getTitle() == "ROLE_ADMIN") {
+
+            $user = $this->getUser();
+            $admin = $adminRepo->findOneBy(['id' => $user]);
+
+            // on instancie un nouveau Classroom
+            $classroom = new Classroom();
+
+            // Création du formulaire à partir du fichier NewAdminType
+            $form = $this->createForm(ClassroomType::class, $classroom);
+
+            // récupération des données du formulaire
+            $form->handleRequest($request);
+
+            // si le formulaire est soumis et valide
+            if ($form->isSubmitted() && $form->isValid()){
+
+                // établissement
+                $classroom->setEstablishment($admin->getEstablishment());
+
+                // slug
+                $slugify = new Slugify();
+                $degree = $classroom->getDegree();
+                $startDate = $classroom->getStartDate();
+                $endDate = $classroom->getEndDate();
+                $ligne = $classroom->getId();
+                $slug = $slugify->slugify($degree."-".$ligne."-".$startDate."-".$endDate);
+                $classroom->setSlug($slug);
+
+                // createdAt
+                $classroom->setCreatedAt(new \DateTime());
+
+                // on persiste et on sauvegarde les données du formulaire
+                $manager->persist($classroom);
+                $manager->flush();
+
+                // on stocke un message flash
+                $this->addFlash('success','La classe a bien été créé');
+
+                // on redirige vers la liste des administrateurs
+                return $this->redirectToRoute('classroom_show_list');
+            }
+
+            // on retourne la vue et les données
+            return $this->render('classroom/new.html.twig', [
+                'form' => $form->createView(),
+            ]);
+        }
     }
 
     /**
      * @Route("/classroom/modify/{id}", name="classroom_modify")
      */
-    public function modify(ObjectManager $manager, Request $request, Classroom $classroom, EstablishmentRepository $estabRepo, ClassroomRepository $classroomRepo)
-    {        
+    public function modify(ObjectManager $manager, Request $request, Classroom $classroom, EstablishmentRepository $establishmentRepo, ClassroomRepository $classroomRepo, AdminRepository $adminRepo)
+    {
+        // liste des classes pour le super-admin
+        if ($this->getUser()->getTitle() == "ROLE_SADMIN") {
 
+            $establishments = $establishmentRepo->findAll();
 
-        // Création du formulaire à partir du fichier NewAdminType
-        $form = $this->createForm(ClassroomType::class, $classroom);
+            // Création du formulaire à partir du fichier NewAdminType
+            $form = $this->createForm(ClassroomType::class, $classroom);
 
-        // récupération des données du formulaire
-        $form->handleRequest($request);
+            // récupération des données du formulaire
+            $form->handleRequest($request);
 
-        // si le formulaire est soumis et valide
-        if ($form->isSubmitted() && $form->isValid()){
+            // si le formulaire est soumis et valide
+            if ($form->isSubmitted() && $form->isValid()){
 
-            // slug
-            $slugify = new Slugify();
-            $degree = $classroom->getDegree();
-            $startDate = $classroom->getStartDate();
-            $endDate = $classroom->getEndDate();
-            $ligne = $classroom->getId();
-            $slug = $slugify->slugify($degree."-".$ligne."-".$startDate."-".$endDate);
-            $classroom->setSlug($slug);
-            
-            // on persiste et on sauvegarde les données du formulaire
-            $manager->persist($classroom);
-            $manager->flush();
+                // établissement
+                $establishment = $request->request->get('establishment');
+                $establishment = $establishmentRepo->findOneBy(['id' => $establishment]);
+                $classroom->setEstablishment($establishment);
 
-            // on stocke un message flash
-            $this->addFlash('success','Le département a bien été mis à jour !');
+                // slug
+                $slugify = new Slugify();
+                $degree = $classroom->getDegree();
+                $startDate = $classroom->getStartDate();
+                $endDate = $classroom->getEndDate();
+                $ligne = $classroom->getId();
+                $slug = $slugify->slugify($degree."-".$ligne."-".$startDate."-".$endDate);
+                $classroom->setSlug($slug);
 
-            // on redirige vers la liste des administrateurs
-            return $this->redirectToRoute('classroom_show', [
-                'id' => $classroom->getId(),
+                // on persiste et on sauvegarde les données du formulaire
+                $manager->persist($classroom);
+                $manager->flush();
+
+                // on stocke un message flash
+                $this->addFlash('success','Le département a bien été mis à jour !');
+
+                // on redirige vers la liste des administrateurs
+                return $this->redirectToRoute('classroom_show', [
+                    'id' => $classroom->getId(),
+                ]);
+            }
+
+            // on retourne la vue et les données
+            return $this->render('classroom/modify.html.twig', [
+                'form' => $form->createView(),
+                'establishments' => $establishments,
+                'classroom' => $classroom,
             ]);
         }
 
-        // on retourne la vue et les données
-        return $this->render('classroom/modify.html.twig', [
-            'form' => $form->createView(),
-            'classroom' => $classroom,
-        ]);
+        // liste des classes pour le super-admin
+        if ($this->getUser()->getTitle() == "ROLE_ADMIN") {
+
+            $user = $this->getUser();
+            $admin = $adminRepo->findOneBy(['id' => $user]);
+
+            // Création du formulaire à partir du fichier NewAdminType
+            $form = $this->createForm(ClassroomType::class, $classroom);
+
+            // récupération des données du formulaire
+            $form->handleRequest($request);
+
+            // si le formulaire est soumis et valide
+            if ($form->isSubmitted() && $form->isValid()){
+
+                // établissement
+                $classroom->setEstablishment($admin->getEstablishment());
+
+                // slug
+                $slugify = new Slugify();
+                $degree = $classroom->getDegree();
+                $startDate = $classroom->getStartDate();
+                $endDate = $classroom->getEndDate();
+                $ligne = $classroom->getId();
+                $slug = $slugify->slugify($degree."-".$ligne."-".$startDate."-".$endDate);
+                $classroom->setSlug($slug);
+
+                // on persiste et on sauvegarde les données du formulaire
+                $manager->persist($classroom);
+                $manager->flush();
+
+                // on stocke un message flash
+                $this->addFlash('success','Le département a bien été mis à jour !');
+
+                // on redirige vers la liste des administrateurs
+                return $this->redirectToRoute('classroom_show', [
+                    'id' => $classroom->getId(),
+                ]);
+            }
+
+            // on retourne la vue et les données
+            return $this->render('classroom/modify.html.twig', [
+                'form' => $form->createView(),
+                'classroom' => $classroom,
+            ]);
+        }
     }
 
     /**

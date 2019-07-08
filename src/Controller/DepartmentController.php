@@ -19,11 +19,12 @@ class DepartmentController extends AbstractController
 {
     /**
      * @Route("/department/show_list", name="department_show_list")
+     * @IsGranted("ROLE_SADMIN", message="Vous n'avez pas accès à cette page")
      */
-    public function index(DepartmentRepository $deptRepo, Request $request)
+    public function index(DepartmentRepository $departmentRepo, Request $request)
     {
-        // on récupère la liste de tous les départements
-        $departments = $deptRepo->findAll();
+        // on récupère tous les départements
+        $departments = $departmentRepo->findAll();
 
         // on retourne la vue et les données
         return $this->render('department/list.html.twig', [
@@ -33,6 +34,7 @@ class DepartmentController extends AbstractController
 
     /**
      * @Route("/department/show/{id}", name="department_show")
+     * @IsGranted("ROLE_SADMIN", message="Vous n'avez pas accès à cette page")
      */
     public function show(Department $department)
     {
@@ -44,6 +46,7 @@ class DepartmentController extends AbstractController
 
     /**
      * @Route("/department/new", name="department_new")
+     * @IsGranted("ROLE_SADMIN", message="Vous n'avez pas accès à cette page")
      */
     public function create(ObjectManager $manager,Request $request)
     {   
@@ -80,6 +83,7 @@ class DepartmentController extends AbstractController
 
     /**
      * @Route("/department/modify/{id}", name="department_modify")
+     * @IsGranted("ROLE_SADMIN", message="Vous n'avez pas accès à cette page")
      */
     public function modify(ObjectManager $manager, Request $request, Department $department)
     {
@@ -114,6 +118,7 @@ class DepartmentController extends AbstractController
 
     /**
      * @Route("/department/delete/{id}", name="department_delete")
+     * @IsGranted("ROLE_SADMIN", message="Vous n'avez pas accès à cette page")
      */
     public function delete(ObjectManager $manager, Department $department)
     {
