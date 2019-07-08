@@ -133,10 +133,10 @@ class StudentController extends AbstractController
 
             // STUDENT
             // on vérifie si une seule classe a été coché
-            if (Count($request->request->get('classroom')) == "") {
+            if (Count($request->request->get('classroom')) == 0) {
 
                 // on stocke un message flash
-                $this->addFlash('warning',"Aucene classe n'a été sélectionnée !");
+                $this->addFlash('warning',"Aucune classe n'a été sélectionnée !");
 
                 // on redirige vers la liste des administrateurs
                 return $this->render('student/new.html.twig', [
@@ -179,13 +179,26 @@ class StudentController extends AbstractController
             $manager->flush();
 
             // on envoie un email au user pour lui indiquer son mot de passe
-            mail(
-                $student->getUser()->getEmail(),
-                'Bonjour',
-                'un compte a été créé pour vous sur le site GPME,
-                identifiant : '.$student->getUser()->getEmail().'
-                votre mot de passe : '.$passRandom
-            );
+            $to = $student->getUser()->getEmail();
+            $sujet = 'Compte créé sur passeportgpme.estiennedorves.net';
+            $message =
+            '</body>
+            </html>
+            <html>
+            <head>
+            <title>Compte créé sur passeportgpme.estiennedorves.net</title>
+            </head>
+            <body>
+            <p>Bonjour,</p>
+            <p>Vous trouverez ci-dessous :</p>
+            <p>votre identifiant : '.$student->getUser()->getEmail().'</p>
+            <p>votre mot de passe : '.$passRandom.'</p>
+            </body>
+            </html>';
+            $headers = 
+            '<p>From: gpme.contact@gmail.com</p>
+            <p>Reply-To: gpme.contact@gmail.com</p>';
+            mail($to,$sujet,$message,$headers);
 
             // on stocke un message flash
             $this->addFlash('success',"L'étudiant a bien été créé !");
