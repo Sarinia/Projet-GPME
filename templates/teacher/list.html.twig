@@ -22,8 +22,8 @@
                     {% for teacher in classroom.teachers %}
                         <tr>
                             <td><a href="{{ path('teacher_show', {'id': teacher.id,}) }}">{{ teacher.id }}</a></td>
-                            <td><a href="{{ path('teacher_show', {'id': teacher.id,}) }}">{{ teacher.user.firstName }}</a></td>
                             <td><a href="{{ path('teacher_show', {'id': teacher.id,}) }}">{{ teacher.user.lastName }}</a></td>
+                            <td><a href="{{ path('teacher_show', {'id': teacher.id,}) }}">{{ teacher.user.firstName }}</a></td>
                             <td><a href="{{ path('teacher_show', {'id': teacher.id,}) }}">{{ teacher.user.email }}</a></td>
                             <td>
                                 <ul class="m-0 p-0">
@@ -61,8 +61,8 @@
                     {% for teacher in classroom.teachers %}
                         <tr>
                             <td><a href="{{ path('teacher_show', {'id': teacher.id,}) }}">{{ teacher.id }}</a></td>
-                            <td><a href="{{ path('teacher_show', {'id': teacher.id,}) }}">{{ teacher.user.firstName }}</a></td>
                             <td><a href="{{ path('teacher_show', {'id': teacher.id,}) }}">{{ teacher.user.lastName }}</a></td>
+                            <td><a href="{{ path('teacher_show', {'id': teacher.id,}) }}">{{ teacher.user.firstName }}</a></td>
                             <td><a href="{{ path('teacher_show', {'id': teacher.id,}) }}">{{ teacher.user.email }}</a></td>
                             <td>
                                 <ul class="m-0 p-0">
@@ -101,8 +101,8 @@
                         {% if app.user.id != teacher.user.id %}
                             <tr>
                                 <td><a href="{{ path('teacher_show', {'id': teacher.id,}) }}">{{ teacher.id }}</a></td>
-                                <td><a href="{{ path('teacher_show', {'id': teacher.id,}) }}">{{ teacher.user.firstName }}</a></td>
                                 <td><a href="{{ path('teacher_show', {'id': teacher.id,}) }}">{{ teacher.user.lastName }}</a></td>
+                                <td><a href="{{ path('teacher_show', {'id': teacher.id,}) }}">{{ teacher.user.firstName }}</a></td>
                                 <td><a href="{{ path('teacher_show', {'id': teacher.id,}) }}">{{ teacher.user.email }}</a></td>
                                 <td>
                                     <ul class="m-0 p-0">
@@ -141,8 +141,8 @@
                     {% for teacher in classroom.teachers %}
                         <tr>
                             <td><a href="{{ path('teacher_show', {'id': teacher.id,}) }}">{{ teacher.id }}</a></td>
-                            <td><a href="{{ path('teacher_show', {'id': teacher.id,}) }}">{{ teacher.user.firstName }}</a></td>
                             <td><a href="{{ path('teacher_show', {'id': teacher.id,}) }}">{{ teacher.user.lastName }}</a></td>
+                            <td><a href="{{ path('teacher_show', {'id': teacher.id,}) }}">{{ teacher.user.firstName }}</a></td>
                             <td><a href="{{ path('teacher_show', {'id': teacher.id,}) }}">{{ teacher.user.email }}</a></td>
                             <td>
                                 <ul class="m-0 p-0">
