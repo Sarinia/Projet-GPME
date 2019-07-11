@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
+<head>
+    <meta charset="UTF-8">
 
-        {# titre de l'onglet de la page active #}
-        <title>
-            {% include 'partials/title.html.twig' %}
-            {% block title %}{% endblock %}
-        </title>
+    {# titre de l'onglet de la page active #}
+    <title>
+        {% include 'partials/title.html.twig' %}
+        {% block title %}
+        {% endblock %}
+    </title>
 
-        {# lien vers les différents fichiers de style CSS #}
-        <link rel="stylesheet" media="screen" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        {% if (app.request.attributes.get('_route') | slice(0,4) == "card") %}<link rel="stylesheet" media="print" href="/css/printA4.css" type="text/css" />{% endif %}
-        {% if (app.request.attributes.get('_route') | slice(0,8) == "passport") %}<link rel="stylesheet" media="print" href="/css/printA3.css" type="text/css" />{% endif %}
-        {% block stylesheets %}{% endblock %}
+    {# lien vers les différents fichiers de style CSS #}
+    <link rel="stylesheet" media="screen" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    {% if (app.request.attributes.get('_route') | slice(0,4) == "card") %}
+        <link rel="stylesheet" media="print" href="/css/printA4.css" type="text/css" />
+    {% endif %}
+    {% if (app.request.attributes.get('_route') | slice(0,8) == "passport") %}
+        <link rel="stylesheet" media="print" href="/css/printA3.css" type="text/css" />
+    {% endif %}
+    {% block stylesheets %}{% endblock %}
 
         {# background-image #}
         {% if app.request.attributes.get('establishment') is defined and app.request.attributes.get('establishment') != "" and app.request.attributes.get('_route') == "account_login" %}
@@ -29,38 +34,65 @@
         {# dimensionnement de la page #}
         <div class="container-fluid px-5">
 
-        {# titre de la page #}
-        <h1 class="text-center mt-1">
-            {% include 'partials/title.html.twig' %}
-            {% block pagetitle %}{% endblock %}
-        </h1>
+            {# titre de la page #}
+            <h1 class="text-center mt-1">
+                {% include 'partials/title.html.twig' %}
+                {% block pagetitle %}
+                {% endblock %}
+            </h1>
 
-        {# message d'information pour l'utilisateur #}
-        {% include 'partials/flash.html.twig' %}
+            {# message d'information pour l'utilisateur #}
+            {% include 'partials/flash.html.twig' %}
 
-        {# affichage de differentes informations pour le développement du site #}
-        {# <div id="debug" class="container">
-        {% if (app.user.title) is defined %}{{dump(app.user)}}{% endif %}
-        {{dump(app.request.attributes)}}
-        {{dump(app.request.request)}}
-        {{dump(app.request.query)}}
-        </div> #}
+            {# affichage de differentes informations pour le développement du site #}
+            {# <div id="debug" class="container">
+                <div>
+                    {% if (app.user.title) is defined %}
+                        {{dump(app.user)}}
+                    {% endif %}
+                </div>
+                <div>
+                    {{dump(app.request.attributes)}}
+                </div>
+                <div>
+                    {{dump(app.request.request)}}
+                </div>
+                <div>
+                    {{dump(app.request.query)}}
+                </div>
+            </div> #}
 
-        {# si un utilisateur est connecté alors on affiche le menu #}
-        {% if (app.user.title) is defined %}{% include 'partials/menu.html.twig' %}{% endif %}
+            {# si un utilisateur est connecté alors on affiche le menu #}
+            {% if app.user.title is defined and app.user.title == "ROLE_USER" %}
+                {% include 'partials/menu/studentMenu.html.twig' %}
+            {% endif %}
+            {% if app.user.title is defined and app.user.title == "ROLE_TEACHER" %}
+                {% include 'partials/menu/teacherMenu.html.twig' %}
+            {% endif %}
+            {% if app.user.title is defined and app.user.title == "ROLE_ADMIN" %}
+                {% include 'partials/menu/adminMenu.html.twig' %}
+            {% endif %}
+            {% if app.user.title is defined and app.user.title == "ROLE_SADMIN" %}
+                {% include 'partials/menu/sadminMenu.html.twig' %}
+            {% endif %}
 
-        {# block body pour afficher les informations qui ne sont pas générales à toutes les pages #}
-        {% block body %}{% endblock %}
+            {# block body pour afficher les informations qui ne sont pas générales à toutes les pages #}
+            {% block body %}
+            {% endblock %}
 
-        {# pied de page #}
-        {% include 'partials/footer.html.twig' %}
+            {# pied de page #}
+            {% include 'partials/footer.html.twig' %}
         </div>
 
         {# lien vers les différents fichiers de Javascript et Jquery #}
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+        </script>
         {# <script src="js/monjs.js"></script> #}
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        {% block javascripts %}{% endblock %}
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+        </script>
+        {% block javascripts %}
+        {% endblock %}
     </body>
-</html>
+    </html>
