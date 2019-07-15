@@ -30,32 +30,32 @@ class PassportController extends AbstractController
 
                 $cardsActivity1 = [];
                 if ($card->getActivity()->getNumber() == "Activité 1.1") {
-                    $cardsActivity1 = $card;
+                    $cardsActivity1[] = $card;
                 }
 
                 $cardsActivity2 = [];
                 if ($card->getActivity()->getNumber() == "Activité 1.2") {
-                    $cardsActivity2 = $card;
+                    $cardsActivity2[] = $card;
                 }
 
                 $cardsActivity3 = [];
                 if ($card->getActivity()->getNumber() == "Activité 1.3") {
-                    $cardsActivity3 = $card;
+                    $cardsActivity3[] = $card;
                 }
 
                 $cardsActivity4 = [];
                 if ($card->getActivity()->getNumber() == "Activité 1.4") {
-                    $cardsActivity4 = $card;
+                    $cardsActivity4[] = $card;
                 }
 
                 $cardsActivity5 = [];
                 if ($card->getActivity()->getNumber() == "Activité 1.5") {
-                    $cardsActivity5 = $card;
+                    $cardsActivity5[] = $card;
                 }
 
                 $cardsActivity6 = [];
                 if ($card->getActivity()->getNumber() == "Activité 1.6") {
-                    $cardsActivity6 = $card;
+                    $cardsActivity6[] = $card;
                 }
             }
             return $this->render('passport/show.html.twig', [
