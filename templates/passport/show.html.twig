@@ -1,0 +1,1627 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+	<div class="passport">
+		<!-- CARTOUCHE -->
+		<table style="width: 100%;margin-bottom: 5pt;">
+			<tr>
+				<th colspan="2" style="border-top: 1px solid black;border-right: 1px solid black;border-left: 1px solid black;text-align: center;">
+					<h2>BTS GESTION DE LA PME - SESSION 2019 - TABLEAU SYNOPTIQUE</h2>
+					<h2>E4 - Gérer les relations avec les clients et les fournisseurs</h2>
+				</th>
+			</tr>
+			<tr>
+				<th style="width: 70%;border: 1px solid black; border-collapse: collapse;text-align: center;">
+					<p class="m-1 p-0">NOM et Prénom du titulaire du passport : {{passport.student.user.lastName}} {{passport.student.user.firstName}}</p>
+				</th>
+				<th style="width: 30%;border: 1px solid black; border-collapse: collapse;text-align: center;">
+					<p class="m-1 p-0">Numéro candidat : {{passport.student.candidatenb | default('non renseigné')}}</p>
+				</th>
+			</tr>
+		</table>
+		<table style="width: 100%;margin-bottom: 5pt;">
+			<tr>
+				<th style="width: 70%;border: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">L'équipe pédagogique représentée par les enseignants, en lycée ou centre de formation : </p>
+					<p class="m-1 p-0">atteste que le titulaire de ce passeport professionnel a bien effectué, en formation, les activités et missions présentées dans ce tableau.</p>
+				</th>
+				<th style="width: 30%;border: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">Signatures des enseignants de l'équipe pédagogique et cachet de l'établissement</p>
+				</th>
+			</tr>
+		</table>
+
+		<!-- PASSSEPORT -->
+		<table style="width: 100%;margin-bottom: 5pt;">
+			<tr>
+				<th colspan="1" rowspan="2" style="width: 15%;border: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">Activités</p>
+				</th>
+				<th colspan="1" rowspan="2" style="width: 15%;border: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">Compétences</p>
+				</th>
+				<th colspan="4" style="width: ;border: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">Situation vécues ou observées</p>
+					<p class="m-1 p-0">Périodes (Situations Professionnelles)</p>
+				</th>
+				<th colspan="1" rowspan="2" style="width: 10%;border: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">Solutions Logicielles</p>
+				</th>
+				<th colspan="1" rowspan="2" style="width: 40%;border: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">Tâches des activités</p>
+				</th>
+			</tr>
+			<tr>
+				<th style="border: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">Avant la formation</p>
+				</th>
+				<th style="border: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">Pendant la formation en établissement</p>
+				</th>
+				<th style="border: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">Pendant la formation dans une PME</p>
+				</th>
+				<th style="border: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">Pendant la formation dans une organisation</p>
+				</th>
+			</tr>
+			{# activite 1 #}
+			<tr>
+				<td rowspan="{{activities[0].tasks | length}}" style="border: 1px solid black;text-align: left;">
+					<p class="m-1 p-0">{{activities[0].name}}</p>
+				</td>
+				<td rowspan="{{activities[0].tasks | length}}" style="border: 1px solid black;text-align: left;">
+					<p class="m-1 p-0">{{activities[0].skill}}</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[0]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[0]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[0]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[0]  and card.modality.name == "Pendant la formation dans une organisation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[0] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[0] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[0].name}}
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[1]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[1]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[1]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[1]  and card.modality.name == "Pendant la formation dans une organisation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[1] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[1] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[1].name}}
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[2]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[2]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[2]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[2]  and card.modality.name == "Pendant la formation dans une organisation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[2] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[2] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[2].name}}
+					</p>
+				</td>
+			</tr>
+
+			{# activite 2 #}
+			<tr>
+				<td rowspan="{{activities[1].tasks | length}}" style="border: 1px solid black;text-align: left;">
+					<p class="m-1 p-0">{{activities[1].name}}</p>
+				</td>
+				<td rowspan="{{activities[1].tasks | length}}" style="border: 1px solid black;text-align: left;">
+					<p class="m-1 p-0">{{activities[1].skill}}</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[3]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[3]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[3]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[3]  and card.modality.name == "Pendant la formation dans une organisation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[3] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[3] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[3].name}}
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[4]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[4]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[4]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[4]  and card.modality.name == "Pendant la formation dans une organisation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[4] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[4] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[4].name}}
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[5]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[5]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[5]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[5]  and card.modality.name == "Pendant la formation dans une organisation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[5] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[5] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[5].name}}
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[6]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[6]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[6]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[6]  and card.modality.name == "Pendant la formation dans une organisationn" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[6] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[6] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[6].name}}
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[7]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[7]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[7]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[7]  and card.modality.name == "Pendant la formation dans une organisation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[7] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[7] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[7].name}}
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[8]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[8]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[8]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[8]  and card.modality.name == "Pendant la formation dans une organisation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[8] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[8] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[8].name}}
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[9]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[9]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[9]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[9]  and card.modality.name == "Pendant la formation dans une organisation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[9] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[9] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[9].name}}
+					</p>
+				</td>
+			</tr>
+
+			{# activite 3 #}
+			<tr>
+				<td rowspan="{{activities[2].tasks | length}}" style="border: 1px solid black;text-align: left;">
+					<p class="m-1 p-0">{{activities[2].name}}</p>
+				</td>
+				<td rowspan="{{activities[2].tasks | length}}" style="border: 1px solid black;text-align: left;">
+					<p class="m-1 p-0">{{activities[2].skill}}</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[10]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[10]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[10]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[10]  and card.modality.name == "Pendant la formation dans une organisation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[10] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[10] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[10].name}}
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[11]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[11]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[11]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[11]  and card.modality.name == "Pendant la formation dans une organisation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[11] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[11] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[11].name}}
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[12]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[12]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[12]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[12]  and card.modality.name == "Pendant la formation dans une organisation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[12] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[12] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[12].name}}
+					</p>
+				</td>
+			</tr>
+
+			{# activite 4 #}
+			<tr>
+				<td rowspan="{{activities[3].tasks | length}}" style="border: 1px solid black;text-align: left;">
+					<p class="m-1 p-0">{{activities[3].name}}</p>
+				</td>
+				<td rowspan="{{activities[3].tasks | length}}" style="border: 1px solid black;text-align: left;">
+					<p class="m-1 p-0">{{activities[3].skill}}</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[13]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[13]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[13]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[13]  and card.modality.name == "Pendant la formation dans une organisation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[13] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[13] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[13].name}}
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[14]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[14]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[14]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[14]  and card.modality.name == "Pendant la formation dans une organisation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[14] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[14] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[14].name}}
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[15]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[15]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[15]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[15]  and card.modality.name == "Pendant la formation dans une organisation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[15] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[15] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[15].name}}
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[16]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[16]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[16]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[16]  and card.modality.name == "Pendant la formation dans une organisation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[16] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[16] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[16].name}}
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[17]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[17]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[17]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[17]  and card.modality.name == "Pendant la formation dans une organisation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[17] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[17] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[17].name}}
+					</p>
+				</td>
+			</tr>
+
+			{# activite 5 #}
+			<tr>
+				<td rowspan="{{activities[4].tasks | length}}" style="border: 1px solid black;text-align: left;">
+					<p class="m-1 p-0">{{activities[4].name}}</p>
+				</td>
+				<td rowspan="{{activities[4].tasks | length}}" style="border: 1px solid black;text-align: left;">
+					<p class="m-1 p-0">{{activities[4].skill}}</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[18]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[18]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[18]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[18]  and card.modality.name == "Pendant la formation dans une organisation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[18] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[18] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[18].name}}
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[19]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[19]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[19]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[19]  and card.modality.name == "Pendant la formation dans une organisation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[19] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[19] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[19].name}}
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[20]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[20]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[20]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[20]  and card.modality.name == "Pendant la formation dans une organisation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[20] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[20] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[20].name}}
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[21]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[21]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[21]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[21]  and card.modality.name == "Pendant la formation dans une organisation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[21] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[21] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[21].name}}
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[22]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[22]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[22]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[22]  and card.modality.name == "Pendant la formation dans une organisation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[22] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[22] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[22].name}}
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[23]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[23]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[23]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[23]  and card.modality.name == "Pendant la formation dans une organisation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[23] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[23] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[23].name}}
+					</p>
+				</td>
+			</tr>
+
+			{# activite 6 #}
+			<tr>
+				<td rowspan="{{activities[5].tasks | length}}" style="border: 1px solid black;text-align: left;">
+					<p class="m-1 p-0">{{activities[5].name}}</p>
+				</td>
+				<td rowspan="{{activities[5].tasks | length}}" style="border: 1px solid black;text-align: left;">
+					<p class="m-1 p-0">{{activities[5].skill}}</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[24]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[24]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[24]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[24]  and card.modality.name == "Pendant la formation dans une organisation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[24] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[24] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[24].name}}
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[25]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[25]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[25]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[25]  and card.modality.name == "Pendant la formation dans une organisation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[25] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[25] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[25].name}}
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[26]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[26]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[26]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[26]  and card.modality.name == "Pendant la formation dans une organisation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[26] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[26] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[26].name}}
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[27]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[27]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[27]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[27]  and card.modality.name == "Pendant la formation dans une organisation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[27] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[27] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[27].name}}
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[28]  and card.modality.name == "Avant la formation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[28]  and card.modality.name == "Pendant la formation en établissement" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[28]  and card.modality.name == "Pendant la formation dans une PME" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[28]  and card.modality.name == "Pendant la formation dans une organisation" %}
+								{{card.datesp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: center;">
+					<p class="m-1 p-0">
+						{% for card in cards %}
+							{% if card.task == tasks[28] %}
+								{{card.answerssp}}
+							{% endif %}
+						{% endfor %}
+					</p>
+				</td>
+				<td style="border-right: 1px solid black;border-bottom: 1px solid black;text-align: left;font-size: 0.8rem;">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% for card in cards %}{% if card.task == tasks[28] %}-check{% endif %}{% endfor %}-square"></i>{{tasks[28].name}}
+					</p>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+{% endblock %}

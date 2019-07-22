@@ -1,0 +1,82 @@
+<!-- menu principal -->
+<div id="menu_principal" class="my-3 d-flex flex-wrap justify-content-center">
+
+	<a href="{{ path('passport_show', {'id': app.user.student.passport.id}) }}" class="m-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,8) == "passport") %}success{% else %}primary{% endif %}">Tableau</a>
+	<a href="{{ path('card_show_list') }}" class="m-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,4) == "card") %}success{% else %}primary{% endif %}">Fiches SP</a>
+	<a href="{{ path('student_show_list') }}" class="m-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,7) == "student") %}success{% else %}primary{% endif %}">Etudiants</a>
+	<a href="{{ path('teacher_show_list') }}" class="m-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,7) == "teacher") %}success{% else %}primary{% endif %}">Enseignants</a>
+	<a href="{{ path('classroom_show_list') }}" class="m-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,9) == "classroom") %}success{% else %}primary{% endif %}">Classes</a>
+	<div class="dropdown">
+		<button class="m-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,11) == "referentiel") %}success{% else %}primary{% endif %} dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			Référentiel
+		</button>
+		<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			<a class="dropdown-item" href="{{ path('referentiel_activity_list') }}">Activités</a>
+			<a class="dropdown-item" href="{{ path('referentiel_task_list') }}">Tâches</a>
+			<a class="dropdown-item" href="{{ path('referentiel_problem_list') }}">Problématiques</a>
+			<a class="dropdown-item" href="{{ path('referentiel_modality_list') }}">Modalités</a>
+			<a class="dropdown-item" href="{{ path('referentiel_term_list') }}">Conditions</a>
+		</div>
+	</div>
+
+</div>
+
+{# ---------------------------------------------------------------------------------------------------------------------------------------------- #}
+
+<!-- menu secondaire -->
+<div id="menu_secondaire" class="my-3">
+
+	<!-- account -->
+	{% if (app.request.attributes.get('_route') | slice(0,7) == "account") %}
+		<a href="{{ path('dashboard', {'slug': app.user.slug,}) }}" class="m-1 btn btn-primary">Retour</a>
+		<a href="{{ path('account_profile') }}" class="m-1 btn btn-{% if app.request.attributes.get('_route') == "account_profile" %}success{% else %}primary{% endif %}">Modification du profil</a>
+		<a href="{{ path('account_password') }}" class="m-1 btn btn-{% if app.request.attributes.get('_route') == "account_password" %}success{% else %}primary{% endif %}">Modification du mot de passe</a>
+	{% endif %}
+
+	<!-- passport -->
+	{% if (app.request.attributes.get('_route') == "passport_show") %}
+		<a href="{{ path('dashboard', {'slug': app.user.slug,}) }}" class="btn btn-sm btn-primary">Retour</a>
+		<a href="{{ path('passport_print', {'id': passport.id}) }}" class="btn btn-sm btn-primary">Imprimer</a>
+	{% endif %}
+	{% if (app.request.attributes.get('_route') == "passport_print") %}
+		<a href="{{ path('passport_show', {'id': passport.id}) }}" class="btn btn-sm btn-primary">Retour</a>
+		<a href="" onclick="window.print();" class="btn btn-sm btn-primary">Imprimer</a>
+	{% endif %}
+
+	<!-- cardsp -->
+	{% if (app.request.attributes.get('_route') == "card_show_list") %}
+		<a href="{{ path('card_new') }}" class="btn btn-sm btn-primary">Créer une fiche</a>
+	{% endif %}
+	{% if (app.request.attributes.get('_route') == "card_show") %}
+		<a href="{{ path('card_show_list') }}" class="btn btn-sm btn-primary">Retour</a>
+		<a href="{{ path('card_modify', {'id': card.id}) }}" class="btn btn-sm btn-primary">Modifier</a>
+		<a href="{{ path('card_print', {'id': card.id}) }}" class="btn btn-sm btn-primary">Imprimer</a>
+	{% endif %}
+	{% if (app.request.attributes.get('_route') == "card_new") %}
+		<a href="{{ path('card_show_list') }}" class="btn btn-sm btn-primary">Retour</a>
+	{% endif %}
+	{% if (app.request.attributes.get('_route') == "card_modify") %}
+		<a href="{{ path('card_show_list') }}" class="btn btn-sm btn-primary">Retour</a>
+	{% endif %}
+	{% if (app.request.attributes.get('_route') == "card_print") %}
+		<a href="{{ path('card_show_list') }}" class="btn btn-sm btn-primary">Retour</a>
+		<a href="" onclick="window.print();" class="btn btn-sm btn-primary">Imprimer</a>
+	{% endif %}
+
+	<!-- student -->
+	{% if (app.request.attributes.get('_route') == "student_show") %}
+		<a href="{{ path('student_show_list') }}" class="btn btn-sm btn-primary">Retour</a>
+	{% endif %}
+
+	<!-- teacher -->
+	{% if (app.request.attributes.get('_route') == "teacher_show") %}
+		<a href="{{ path('teacher_show_list') }}" class="btn btn-sm btn-primary">Retour</a>
+	{% endif %}
+
+	<!-- classroom -->
+	{% if (app.request.attributes.get('_route') == "classroom_show") %}
+		<a href="{{ path('classroom_show_list') }}" class="btn btn-sm btn-primary">Retour</a>
+	{% endif %}
+
+</div>
+

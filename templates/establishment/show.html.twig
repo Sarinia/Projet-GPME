@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+	{# Affichage du tableau des établissements #}
+	<div class="row">
+		<div class="col-3">
+			<div class="card">
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item">Nom de l'établissement : {{establishment.name | upper }}</li>
+					<li class="list-group-item">Adresse : {{establishment.adress}}</li>
+					<li class="list-group-item">Code postal : {{establishment.postalcode}}</li>
+					<li class="list-group-item">Ville : {{establishment.city}}</li>
+					<li class="list-group-item">Département : {{establishment.department.name}}</li>
+					<li class="list-group-item">Administrateur : {% for admin in establishment.admins %}{{admin.user.lastName | default('non assigné')}} {{admin.user.firstName | default('')}}{% endfor %}</li>
+					<li class="list-group-item">Crée le : {{ establishment.createdAt | date("d/m/Y") }}</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-9">
+			<h5>Liste des classes</h5>
+			{% include 'partials/tables/classroom.html.twig' %}
+		</div>
+	</div>
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{% if app.user.title == "ROLE_SADMIN" %}
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col" class="col-1">#</th>
+				<th scope="col" class="col-2">Nom</th>
+				<th scope="col" class="col-2">Prénom</th>
+				<th scope="col">Email</th>
+				<th scope="col">Etablissement</th>
+				<th scope="col" class="col-1">Crée le</th>
+				<th scope="col" class="col-1">Actif</th>
+				<th scope="col" class="col-2">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for admin in admins %}
+				<tr>
+					<td>{{ admin.id }}</td>
+					<td>{{ admin.user.lastName | upper }}</td>
+					<td>{{ admin.user.firstName }}</td>
+					<td>{{ admin.user.email }}</td>
+					<td>{{admin.establishment.name | default('non renseigné')}}</td>
+					<td>{{ admin.user.createdAt | date('d/m/Y') }}</td>
+					<td class="{% if admin.user.exist == true %}text-success{% else %}text-danger{% endif %}">{% if admin.user.exist == true %} oui {% else %} non {% endif %}</td>
+					<td class="py-1">
+						<a href="{{ path('admin_show', {'id': admin.id,}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Voir"><i class="far fa-file-alt"></i></a>
+						<a href="{{ path('admin_modify', {'id': admin.id,}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Modifier"><i class="far fa-edit"></i></a>
+						{% if admin.user.exist == false %}{% set dataId = admin.id %}{% set dataLink = path('admin_delete', {'id': admin.id,}) %}
+							<a href="{{ path('admin_enable', {'id': admin.id,}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Activer"><i class="far fa-eye"></i></a>
+							{% include 'partials/modals/modal.html.twig' %}
+						{% else %}
+							<a href="{{ path('admin_disable', {'id': admin.id,}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Désactiver"><i class="far fa-eye-slash"></i></a>
+						{% endif %}
+					</td>
+				</tr>
+			{% endfor %} 
+		</tbody>
+	</table>
+{% endif %}

@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+	{% block body %}
+		{% if app.user.title == "ROLE_USER" %}
+			{{ form_start(form) }}
+			{{ form_row(form.candidateNb) }}
+			{{ form_row(form.user.lastName) }}
+			{{ form_row(form.user.firstName) }}
+			{{ form_row(form.user.email) }}
+			{{ form_row(form.birthDate) }}
+			{{ form_row(form.save) }}
+			{{ form_end(form) }}
+		{% endif %}
+
+		{% if app.user.title == "ROLE_TEACHER" %}
+			{{ form_start(form) }}
+			{{ form_row(form.user.lastName) }}
+			{{ form_row(form.user.firstName) }}
+			{{ form_row(form.user.email) }}
+			{{ form_row(form.save) }}
+			{{ form_end(form) }}
+		{% endif %}
+
+		{% if app.user.title == "ROLE_ADMIN" %}
+			{{ form_start(form) }}
+			{{ form_row(form.user.lastName) }}
+			{{ form_row(form.user.firstName) }}
+			{{ form_row(form.user.email) }}
+			{{ form_row(form.save) }}
+			{{ form_end(form) }}
+		{% endif %}
+
+		{% if app.user.title == "ROLE_SADMIN" %}
+			{{ form_start(form) }}
+			{{ form_row(form.user.lastName) }}
+			{{ form_row(form.user.firstName) }}
+			{{ form_row(form.user.email) }}
+			{{ form_row(form.save) }}
+			{{ form_end(form) }}
+		{% endif %}
+		<p>* champs obligatoires</p>
+	{% endblock %}

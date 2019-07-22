@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+	{% block body %}
+
+		{# formulaire de modification d'une classe #}
+		{{ form_start(form) }}
+		{% if app.user.title == 'ROLE_SADMIN' %}
+			<div class="form-group">
+				<label class="required" for="establishment">Sélectionner l'établissement : </label>
+				<select class="form-control" id="establishment" name="establishment">
+					{% for establishment in establishments %}{% set selected = "" %}
+						{% if establishment.id == classroom.establishment.id %}{% set selected = "selected" %}
+						{% endif %}
+						<option value="{{establishment.id}}" {{selected}}>{{establishment.name}} ({{establishment.department.name}})</option>
+					{% endfor %}
+				</select>
+			</div>
+		{% endif %}
+		{{ form_row(form.degree) }}
+		{{ form_row(form.startDate) }}
+		{{ form_row(form.endDate) }}
+		{{ form_row(form.exist) }}
+		{{ form_row(form.save) }}
+		{{ form_end(form) }}
+		<p>* champs obligatoires</p>
+
+	{% endblock %}

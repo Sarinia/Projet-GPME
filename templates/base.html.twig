@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+
+    {# titre de l'onglet de la page active #}
+    <title>{% include 'partials/title.html.twig' %}{% block title %}{% endblock %}</title>
+
+    {# lien vers les différents fichiers de style CSS #}
+    <script src="https://kit.fontawesome.com/e15493bec8.js"></script>
+    <link rel="stylesheet" media="screen" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    {% if (app.request.attributes.get('_route') == "card_print") %}<link rel="stylesheet" media="print" href="/css/printA4.css" type="text/css" />
+    {% endif %}
+    {% if (app.request.attributes.get('_route') == "passport_print") %}<link rel="stylesheet" media="print" href="/css/printA3.css" type="text/css" />
+    {% endif %}
+    {% block stylesheets %}
+    {% endblock %}
+
+</head>
+
+<body class="h-100">
+
+    {# include du header #}
+    {% include 'partials/header.html.twig' %}
+
+    {# dimensionnement de la page #}
+    <main class="container-fluid px-5">
+
+        {# titre de la page #}
+        <h1 class="text-center mt-1">{% include 'partials/title.html.twig' %}{% block pagetitle %}{% endblock %}</h1>
+
+        {# message d'information pour l'utilisateur #}
+        {% include 'partials/flash.html.twig' %}
+
+        
+
+        {# si un utilisateur est connecté alors on affiche le menu #}
+        {% if app.user.title is defined and app.user.title == "ROLE_USER" %}
+            {% include 'partials/menu/studentMenu.html.twig' %}
+        {% endif %}
+        {% if app.user.title is defined and app.user.title == "ROLE_TEACHER" %}
+            {% include 'partials/menu/teacherMenu.html.twig' %}
+        {% endif %}
+        {% if app.user.title is defined and app.user.title == "ROLE_ADMIN" %}
+            {% include 'partials/menu/adminMenu.html.twig' %}
+        {% endif %}
+        {% if app.user.title is defined and app.user.title == "ROLE_SADMIN" %}
+            {% include 'partials/menu/sadminMenu.html.twig' %}
+        {% endif %}
+
+        {# block body pour afficher les informations qui ne sont pas générales à toutes les pages #}
+        {% block body %}
+        {% endblock %}
+    </main>
+
+    {# pied de page #}
+    {% include 'partials/footer.html.twig' %}
+
+    {# lien vers les différents fichiers de Javascript et Jquery #}
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    {% block javascripts %}
+    {% endblock %}
+</body>
+</html>

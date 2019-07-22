@@ -1,0 +1,125 @@
+{% if app.user.title == "ROLE_SADMIN" %}
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col" class="col-1">Id</th>
+				<th scope="col" class="col-2">Titulaire</th>
+				<th scope="col">Progression</th>
+				<th scope="col" class="col-1">Nb de fiches</th>
+				<th scope="col" class="col-1">Créé le</th>
+				<th scope="col" class="col-1">Actif</th>
+				<th scope="col" class="col-2">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for student in classroom.students %}
+				<tr>
+					<td>{{student.passport.id}}</td>
+					<td>{{student.user.lastName | upper}}</td>
+					<td>{% include 'partials/progress/passport.html.twig' %}</td>
+					<td>{{student.passport.cards | length}}</td>
+					<td>{{student.passport.createdAt | date('d/m/Y')}}</td>
+					<td class="{% if student.passport.exist == true %}text-success{% else %}text-danger{% endif %}">{% if student.passport.exist == true %} oui {% else %} non {% endif %}</td>
+					<td class="py-1">
+						<a href="{{ path('passport_show', {'id': student.passport.id}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Voir"><i class="far fa-file-alt"></i></a>
+						<a href="{{ path('passport_print', {'id': student.passport.id}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Apercu avant impression"><i class="fas fa-print"></i></a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endif %}
+
+{% if app.user.title == "ROLE_ADMIN" %}
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col" class="col-1">Id</th>
+				<th scope="col" class="col-2">Titulaire</th>
+				<th scope="col">Progression</th>
+				<th scope="col" class="col-1">Nb de fiches</th>
+				<th scope="col" class="col-1">Créé le</th>
+				<th scope="col" class="col-1">Actif</th>
+				<th scope="col" class="col-2">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for student in classroom.students %}
+				<tr>
+					<td>{{student.passport.id}}</td>
+					<td>{{student.user.lastName | upper}}</td>
+					<td>{% include 'partials/progress/passport.html.twig' %}</td>
+					<td>{{student.passport.cards | length}}</td>
+					<td>{{student.passport.createdAt | date('d/m/Y')}}</td>
+					<td class="{% if student.passport.exist == true %}text-success{% else %}text-danger{% endif %}">{% if student.passport.exist == true %} oui {% else %} non {% endif %}</td>
+					<td class="py-1">
+						<a href="{{ path('passport_show', {'id': student.passport.id}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Voir"><i class="far fa-file-alt"></i></a>
+						<a href="{{ path('passport_print', {'id': student.passport.id}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Apercu avant impression"><i class="fas fa-print"></i></a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endif %}
+
+{% if app.user.title == "ROLE_TEACHER" %}
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col" class="col-1">Id</th>
+				<th scope="col" class="col-2">Titulaire</th>
+				<th scope="col">Progression</th>
+				<th scope="col" class="col-1">Nb de fiches</th>
+				<th scope="col" class="col-1">Créé le</th>
+				<th scope="col" class="col-1">Actif</th>
+				<th scope="col" class="col-2">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for student in classroom.students %}
+				<tr>
+					<td>{{student.passport.id}}</td>
+					<td>{{student.user.lastName | upper}}</td>
+					<td>{% include 'partials/progress/passport.html.twig' %}</td>
+					<td>{{student.passport.cards | length}}</td>
+					<td>{{student.passport.createdAt | date('d/m/Y')}}</td>
+					<td class="{% if student.passport.exist == true %}text-success{% else %}text-danger{% endif %}">{% if student.passport.exist == true %} oui {% else %} non {% endif %}</td>
+					<td class="py-1">
+						<a href="{{ path('passport_show', {'id': student.passport.id}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Voir"><i class="far fa-file-alt"></i></a>
+						<a href="{{ path('passport_print', {'id': student.passport.id}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Apercu avant impression"><i class="fas fa-print"></i></a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endif %}
+
+{% if app.user.title == "ROLE_USER" %}
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col" class="col-1">Id</th>
+				<th scope="col">Progression</th>
+				<th scope="col" class="col-1">Nb de fiches</th>
+				<th scope="col" class="col-1">Créé le</th>
+				<th scope="col" class="col-1">Actif</th>
+				<th scope="col" class="col-2">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>{{student.passport.id}}</td>
+				<td>{% include 'partials/progress/passport.html.twig' %}</td>
+				<td>{{student.passport.cards | length}}</td>
+				<td>{{student.passport.createdAt | date('d/m/Y')}}</td>
+				<td class="{% if student.passport.exist == true %}text-success{% else %}text-danger{% endif %}">{% if student.passport.exist == true %} oui {% else %} non {% endif %}</td>
+				<td class="py-1">
+					<a href="{{ path('passport_show', {'id': student.passport.id}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Voir"><i class="far fa-file-alt"></i></a>
+					<a href="{{ path('passport_print', {'id': student.passport.id}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Apercu avant impression"><i class="fas fa-print"></i></a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+{% for card in student.passport.cards %}{{card.id}}{% endfor %}
+	
+{% endif %}

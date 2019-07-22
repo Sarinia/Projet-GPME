@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %} 
+
+{% block body %}
+	
+	{% if app.user.title == "ROLE_SADMIN" %}
+		<h5>Derniers étudiants ajoutés</h5>
+		{% include 'partials/tables/student.html.twig' %}
+		<h5>Derniers enseignants ajoutés</h5>
+		{% include 'partials/tables/teacher.html.twig' %}
+		<h5>Dernières classes ajoutées</h5>
+		{% include 'partials/tables/classroom.html.twig' %}
+		<h5>Derniers administrateurs ajoutés</h5>
+		{% include 'partials/tables/admin.html.twig' %}
+		<h5>Derniers établissements ajoutés</h5>
+		{% include 'partials/tables/establishment.html.twig' %}
+		<h5>Derniers départements ajoutés</h5>
+		{% include 'partials/tables/department.html.twig' %}
+	{% endif %}
+
+	{% if app.user.title == "ROLE_ADMIN" %}
+		<h5>Mes discussions  <span>(x message(s) non lu(s))</span></h5>
+		
+		<h5>Liste des tableaux synoptiques</h5>
+		{% for classroom in classrooms %}	
+			{% include 'partials/tables/passport.html.twig' %}
+		{% endfor %}
+		<h5>Listes des fiches de situation professionnelle</h5>
+		{% for classroom in classrooms %}
+			{% for student in classroom.students %}	
+				{% include 'partials/tables/card.html.twig' %}
+			{% endfor %}
+		{% endfor %}
+	{% endif %}
+
+	{% if app.user.title == "ROLE_TEACHER" %}
+		<h5>Mes discussions  <span>(x message(s) non lu(s))</span></h5>
+		
+		<h5>Liste des tableaux synoptiques</h5>
+		{% for classroom in classrooms %}	
+			{% include 'partials/tables/passport.html.twig' %}
+		{% endfor %}
+		<h5>Listes des fiches de situation professionnelle</h5>
+		{% for classroom in classrooms %}
+			{% for student in classroom.students %}	
+				{% include 'partials/tables/card.html.twig' %}
+			{% endfor %}
+		{% endfor %}
+	{% endif %}
+
+	{% if app.user.title == "ROLE_USER" %}
+		<h5>Mes discussions  <span>(x message(s) non lu(s))</span></h5>
+
+		<h5>Résumé de mon passeport professionnel</h5>
+		{% include 'partials/tables/passport.html.twig' %}
+		<h5>Mes fiches de situation professionnelle</h5>
+		{% include 'partials/tables/card.html.twig' %}
+	{% endif %}
+
+{% endblock %}
