@@ -1,0 +1,264 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+	{% block body %}
+
+		{{ form_start(form) }}
+
+		{{ form_row(form.exist) }}
+		{{ form_row(form.associate) }}
+
+		<!-- CARTOUCHE -->
+		<table class="table table-bordered w-100 mb-3">
+			<tr>
+				<th colspan="2" class="text-center">
+					<h2 class="m-1 p-0">BTS gestion de la PME - Session 2019-2020</h2>
+				</th>
+			</tr>
+			<tr>
+				<th colspan="2" class="text-center">
+					<h3 class="m-1 p-0">E4 - Gérer les relations avec les clients et les fournisseurs</h3>
+				</th>
+			</tr>
+			<tr>
+				<td class="w-50">
+					<p class="m-1 p-0 text-center">{{card.student.user.lastName}} - {{card.student.user.firstName}}</p>
+				</td>
+				<td class="w-50">
+					<p class="m-1 p-0 text-center">{{card.student.candidateNb}}</p>
+				</td>
+			</tr>
+		</table>
+
+		<!-- FICHE -->
+		<table class="table table-bordered w-100 m-0">
+			<tr>
+				<th colspan="3" class="text-center">
+					<h4 class="m-1 p-0">Fiche d'analyse d'une situation professionnelle</h4>
+				</th>
+			</tr>
+		</table>
+
+		<table class="table table-bordered w-100 mb-3">
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Identification de la situation professionnelle</p>
+				</td>
+				<td style="width: 15%;" class="text-center m-0 p-1">
+					
+				</td>
+				<td>
+					<p class="m-1 p-0">Modalité de réalisation</p>
+					{{ form_row(form.modality, {'attr': {'class' : 'form-control-sm'}}) }}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p class="m-1 p-0">Période de réalisation</p>
+				</td>
+				<td class="text-center">
+					{{ form_row(form.datesp) }}
+				</td>
+				<td colspan="3">
+					<p class="m-1 p-0">Condition de réalisation</p>
+					{{ form_row(form.term, {'attr': {'class' : 'form-control-sm'}}) }}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p class="m-1 p-0">Activités concernées</p>
+				</td>
+				<td colspan="2">
+					{{ form_row(form.activity, {'attr': {'class' : 'form-control-sm','onchange':"recupActivity();"}}) }}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p class="m-1 p-0">Tâches concernées</p>
+				</td>
+				<td colspan="2">
+					{% for activity in activities %}
+						<div class="form-group activity d-none m-0" id="activity_{{activity.id}}">
+							{% for task in activity.tasks %}{% set checked = "" %}
+								{% if task.id == card.task.id %}{% set checked = "checked" %}
+								{% endif %}
+								<input id="task_{{task.id}}" type="checkbox" {{ checked }} name="task[]" value="{{task.id}}"><label for="task_{{task.id}}" class="ml-2">{{task.name}}</label><br>
+							{% endfor %}
+						</div>
+					{% endfor %}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p class="m-1 p-0">Intitulé de la situation professionnelle</p>
+				</td>
+				<td colspan="2">
+					<p class="m-1 p-0">{{ form_row(form.entitledsp) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p class="m-1 p-0">Lieu, période et durée de réalisation</p>
+				</td>
+				<td colspan="2">
+					<p class="m-1 p-0">{{ form_row(form.infossp) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p class="m-1 p-0">Cadre de la situation professionnelle</p>
+				</td>
+				<td colspan="2">
+					<p class="m-1 p-0">{{ form_row(form.framesp) }}</p>
+				</td>
+			</tr>
+		</table>
+
+		<!-- PROBLEME -->
+		<table class="table table-bordered w-100 mb-3">
+			<tr>
+				<th colspan="2" class="text-center">
+					<h4 class="m-1 p-0">Problème de gestion soulevé et enjeux de la situation</h4>
+				</th>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Type de problème</p>
+				</td>
+				<td colspan="3" class="text-center">
+					{{ form_row(form.problem, {'attr': {'class' : 'form-control-sm','onchange':"recupProblem();"}}) }}
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Descriptif du problème</p>
+				</td>
+				<td>
+					<div class="form-group problem d-none" id="problem_1">{{ form_row(form.problemmanagsp) }}</div>
+					<div class="form-group problem d-none" id="problem_2">{{ form_row(form.problemcomosp) }}</div>
+					<div class="form-group problem d-none" id="problem_3">{{ form_row(form.problemcomwsp) }}</div>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Acteurs et relation entre les acteurs</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.actorssp) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Objectif</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.targetsp) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Conditions de réalisation : contraintes dont le processus et organisation comptable, environnement numérique</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.conditionssp) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Ressources à disposition</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.resourcessp) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Solutions logicielles choisies et fonctionnalités mobilisées</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.answerssp) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Productions réalisées</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.productionssp) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Ecrits professionnels produits</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.writtensp) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Oraux professionnels</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.oralsp) }}</p>
+				</td>
+			</tr>
+		</table>
+
+		<!-- ANALYSE -->
+		<table class="table table-bordered w-100 mb-3">
+			<tr>
+				<th colspan="2" class="text-center">
+					<h4 class="m-1 p-0">Analyse</h4>
+				</th>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Analyse de la situation</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.analysissp) }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 15%;">
+					<p class="m-1 p-0">Contribution de la situation professionnelle à la professionnalisation</p>
+				</td>
+				<td style="width: 85%;">
+					<p class="m-1 p-0">{{ form_row(form.contributionsp) }}</p>
+				</td>
+			</tr>
+		</table>
+
+		{{ form_row(form.save) }}
+		{{ form_end(form) }}
+
+	{% endblock %}
+	{% block javascripts %}
+		<script>
+		var select_problem = document.getElementById("card_problem" );
+		card_problem.addEventListener('onchange',recupProblem);
+		function recupProblem(){
+			var valeur_problem = select_problem.options[select_problem.selectedIndex].value;
+			$(".problem").addClass("d-none");
+			$("#problem_"+valeur_problem).removeClass("d-none");
+			// console.log(valeur_problem);
+		};
+		$(document).ready(function(){
+			recupProblem();
+		});
+
+		var select_activity = document.getElementById("card_activity" );
+		card_activity.addEventListener('onchange',recupActivity);
+		function recupActivity(){
+			var valeur_activity = select_activity.options[select_activity.selectedIndex].value;
+			$(".activity").addClass("d-none");
+			$("#activity_"+valeur_activity).removeClass("d-none");
+			// console.log(valeur_activity);
+		};
+		$(document).ready(function(){
+			recupActivity();
+		});
+		</script>
+	{% endblock %}

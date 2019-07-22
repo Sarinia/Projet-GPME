@@ -1,0 +1,238 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	{% set i = 1 %}
+		<div style="width: 210mm;height: 297mm;margin: auto;">
+			<!-- CARTOUCHE -->
+			<table cellspacing="0" cellpadding="0" style="width: 100%; margin: 0pt 0pt 3pt 0pt; padding: 0pt;">
+				<tr>
+					<th colspan="2" style="border-top: solid 1pt black; border-right: solid 1pt black; border-left: solid 1pt black; margin: 0pt;padding: 0pt;">
+						<h2  style="font-size: 16pt !important;margin: 2pt;padding: 2pt;text-align: center;">BTS gestion de la PME - Session 2019-2020</h2>
+					</th>
+				</tr>
+				<tr>
+					<th colspan="2" style="border: solid 1pt black; margin: 0pt;padding: 0pt;">
+						<h3 style="font-size: 14pt !important;margin: 1pt;padding: 2pt;text-align: center;">E4 - Gérer les relations avec les clients et les fournisseurs</h3>
+					</th>
+				</tr>
+				<tr>
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black; border-left: solid 1pt black; margin: 0pt;padding: 0pt;width: 50%;">
+						<p style="font-size: 10pt !important;margin: 1pt;padding: 1pt;text-align: center;widows: 2; orphans: 2;">{{card.student.user.lastName}} - {{card.student.user.firstName}}</p>
+					</td>
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black; margin: 0pt;padding: 0pt;width: 50%;">
+						<p style="font-size: 10pt !important;margin: 1pt;padding: 1pt;text-align: center;widows: 2; orphans: 2;">{{card.student.candidateNb | default('non renseigné')}}</p>
+					</td>
+				</tr>
+			</table>
+
+			<!-- FICHE -->
+			<table cellspacing="0" cellpadding="0" style="width: 100%; margin: 0pt; padding: 0pt;">
+				<tr>
+					<th colspan="3" style="border: solid 1pt black; border-right: solid 1pt black; border-left: solid 1pt black; margin: 0pt;padding: 0pt;">
+						<h4 style="font-size: 12pt !important;margin: 1pt;padding: 1pt;text-align: center;">Fiche d'analyse d'une situation professionnelle</h4>
+					</th>
+				</tr>
+				<tr>
+					{% for problem in problems %}
+						<td style="border-bottom: solid 1pt black; border-right: solid 1pt black; border-left: solid 1pt black;margin: 0pt;padding: 0pt;width: 33.333%;text-align: center;">
+							<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;widows: 2; orphans: 2;">
+								<i style="font-size: 10pt !important;margin: 0pt;padding: 0pt 4pt 0pt 2pt;text-align: center;widows: 2; orphans: 2;" class="far fa{% if card.problem == problem %}-check{% endif %}-square"></i>{{problem.name}}
+							</p>
+						</td>
+					{% endfor %}
+				</tr>
+			</table>
+
+			<table cellspacing="0" cellpadding="0" style="width: 100%; margin: 0pt 0pt 3pt 0pt; padding: 0pt;">
+				<tr>
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black; border-left: solid 1pt black;margin: 0pt;padding: 0pt;width: 25%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt 0pt 0pt 3pt;text-align: left;widows: 2; orphans: 2;">Identification de la situation professionnelle</p>
+					</td>
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black; margin: 0pt;padding: 0pt;width: 25%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: center;widows: 2; orphans: 2;">{{card.numbersp}}</p>
+					</td>
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black; margin: 0pt;padding: 0pt 0pt 0pt 3pt;width: 50%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;widows: 2; orphans: 2;">Modalité de réalisation</p>
+						{% for modality in modalities %}
+							<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;widows: 2; orphans: 2;">
+								<i style="font-size: 10pt !important;margin: 0pt;padding: 0pt 4pt 0pt 2pt;text-align: center;widows: 2; orphans: 2;" class="far fa{% if card.modality.name is defined and card.modality.name == modality.name %}-check{% endif %}-square"></i>{{modality.name}}
+							</p>
+						{% endfor %}
+					</td>
+				</tr>
+				<tr>
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black; border-left: solid 1pt black;margin: 0pt;padding: 0pt;width: 25%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt 0pt 0pt 3pt;text-align: left;widows: 2; orphans: 2;">Période de réalisation</p>
+					</td>
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black;margin: 0pt;padding: 0pt;width: 25%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: center;widows: 2; orphans: 2;">{{card.datesp}}</p>
+					</td>
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black;margin: 0pt;padding: 0pt 0pt 0pt 3pt;width: 50%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">Condition de réalisation</p>
+						{% for term in terms %}
+							<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;widows: 2; orphans: 2;">
+								<i style="font-size: 10pt !important;margin: 0pt;padding: 0pt 4pt 0pt 2pt;text-align: center;widows: 2; orphans: 2;" class="far fa{% if card.term.name is defined and card.term.name == term.name %}-check{% endif %}-square"></i>{{term.name}}
+							</p>
+						{% endfor %}
+					</td>
+				</tr>
+				<tr>
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black; border-left: solid 1pt black;margin: 0pt;padding: 0pt;width: 25%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt 0pt 0pt 3pt;text-align: left;widows: 2; orphans: 2;">Activités concernées</p>
+					</td>
+					<td colspan="2" style="border-bottom: solid 1pt black; border-right: solid 1pt black;margin: 0pt;padding: 0pt 0pt 0pt 3pt;width: 75%;">
+						{% for activity in activities %}
+							<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;widows: 2; orphans: 2;">
+								<i style="font-size: 10pt !important;margin: 0pt;padding: 0pt 4pt 0pt 2pt;text-align: center;widows: 2; orphans: 2;" class="far fa{% if card.activity.name is defined and card.activity.name == activity.name %}-check{% endif %}-square"></i>{{activity.name}}
+							</p>
+						{% endfor %}
+					</td>
+				</tr>
+				<tr style="height: 35pt;">
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black; border-left: solid 1pt black;margin: 0pt;padding: 0pt 0pt 0pt 3pt;width: 25%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">Intitulé de la situation professionnelle</p>
+					</td>
+					<td colspan="2" style="border-bottom: solid 1pt black; border-right: solid 1pt black;margin: 0pt;padding: 0pt;width: 75%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">{{card.entitledsp}}</p>
+					</td>
+				</tr>
+				<tr style="height: 35pt;">
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black; border-left: solid 1pt black;margin: 0pt;padding: 0pt 0pt 0pt 3pt;width: 25%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">Lieu, période et durée de réalisation</p>
+					</td>
+					<td colspan="2" style="border-bottom: solid 1pt black; border-right: solid 1pt black;margin: 0pt;padding: 0pt;width: 75%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">{{card.infossp}}</p>
+					</td>
+				</tr>
+				<tr style="height: 35pt;">
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black; border-left: solid 1pt black;margin: 0pt;padding: 0pt 0pt 0pt 3pt;width: 25%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">Cadre de la situation professionnelle</p>
+					</td>
+					<td colspan="2" style="border-bottom: solid 1pt black; border-right: solid 1pt black;margin: 0pt;padding: 0pt;width: 75%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">{{card.framesp}}</p>
+					</td>
+				</tr>
+			</table>
+
+			<!-- PROBLEME -->
+			<table cellspacing="0" cellpadding="0" style="width: 100%; margin: 0pt; padding: 0pt;">
+				<tr>
+					<th colspan="3" style="border: solid 1pt black; border-right: solid 1pt black; border-left: solid 1pt black; margin: 0pt;padding: 0pt;">
+						<h4 style="font-size: 12pt !important;margin: 1pt;padding: 1pt;text-align: center;">Problème de gestion soulevé et enjeux de la situation</h4>
+					</th>
+				</tr>
+				<tr>
+					{% for problem in problems %}
+						<td style="border-bottom: solid 1pt black; border-right: solid 1pt black; border-left: solid 1pt black;margin: 0pt;padding: 0pt;width: 33.333%;text-align: center;">
+							<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;widows: 2; orphans: 2;">
+								<i style="font-size: 10pt !important;margin: 0pt;padding: 0pt 4pt 0pt 2pt;text-align: center;widows: 2; orphans: 2;" class="far fa{% if card.problem == problem %}-check{% endif %}-square"></i>{{problem.name}}
+							</p>
+						</td>
+					{% endfor %}
+				</tr>
+				<tr style="height: 43pt;">
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black; border-left: solid 1pt black;margin: 0pt;padding: 0pt;width: 33.333%;text-align: center;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">{{card.problemmanagsp}}</p>
+					</td>
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black; border-left: solid 1pt black;margin: 0pt;padding: 0pt;width: 33.333%;text-align: center;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">{{card.problemcomosp}}</p>
+					</td>
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black; border-left: solid 1pt black;margin: 0pt;padding: 0pt;width: 33.333%;text-align: center;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">{{card.problemcomwsp}}</p>
+					</td>
+				</tr>
+			</table>
+
+			<table cellspacing="0" cellpadding="0" style="width: 100%; margin: 0pt 0pt 3pt 0pt; padding: 0pt;">
+				<tr style="height: 43pt;">
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black; border-left: solid 1pt black;margin: 0pt;padding: 0pt 0pt 0pt 3pt;width: 25%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">Acteurs et relation entre les acteurs</p>
+					</td>
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black;margin: 0pt;padding: 0pt;width: 75%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">{{card.actorssp}}</p>
+					</td>
+				</tr>
+				<tr style="height: 43pt;">
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black; border-left: solid 1pt black;margin: 0pt;padding: 0pt 0pt 0pt 3pt;width: 25%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">Objectif</p>
+					</td>
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black;margin: 0pt;padding: 0pt;width: 75%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">{{card.targetsp}}</p>
+					</td>
+				</tr>
+				<tr style="height: 43pt;">
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black; border-left: solid 1pt black;margin: 0pt;padding: 0pt 0pt 0pt 3pt;width: 25%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">Conditions de réalisation : contraintes dont le processus et organisation comptable, environnement numérique</p>
+					</td>
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black;margin: 0pt;padding: 0pt;width: 75%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">{{card.conditionssp}}</p>
+					</td>
+				</tr>
+				<tr style="height: 43pt;">
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black; border-left: solid 1pt black;margin: 0pt;padding: 0pt 0pt 0pt 3pt;width: 25%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">Ressources à disposition</p>
+					</td>
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black;margin: 0pt;padding: 0pt;width: 75%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">{{card.resourcessp}}</p>
+					</td>
+				</tr>
+				<tr style="height: 43pt;">
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black; border-left: solid 1pt black;margin: 0pt;padding: 0pt 0pt 0pt 3pt;width: 25%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">Solutions logicielles choisies et fonctionnalités mobilisées</p>
+					</td>
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black;margin: 0pt;padding: 0pt;width: 75%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">{{card.answerssp}}</p>
+					</td>
+				</tr>
+				<tr style="height: 43pt;">
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black; border-left: solid 1pt black;margin: 0pt;padding: 0pt 0pt 0pt 3pt;width: 25%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">Productions réalisées</p>
+					</td>
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black;margin: 0pt;padding: 0pt;width: 75%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">{{card.productionssp}}</p>
+					</td>
+				</tr>
+				<tr style="height: 43pt;">
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black; border-left: solid 1pt black;margin: 0pt;padding: 0pt 0pt 0pt 3pt;width: 25%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">Ecrits professionnels produits</p>
+					</td>
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black;margin: 0pt;padding: 0pt;width: 75%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">{{card.writtensp}}</p>
+					</td>
+				</tr>
+				<tr style="height: 43pt;">
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black; border-left: solid 1pt black;margin: 0pt;padding: 0pt 0pt 0pt 3pt;width: 25%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">Oraux professionnels</p>
+					</td>
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black;margin: 0pt;padding: 0pt;width: 75%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">{{card.oralsp}}</p>
+					</td>
+				</tr>
+			</table>
+
+			<!-- ANALYSE -->
+			<table cellspacing="0" cellpadding="0" style="width: 100%; margin: 0pt; padding: 0pt; page-break-before: always;">
+				<tr>
+					<th colspan="2" style="border: solid 1pt black; border-right: solid 1pt black; border-left: solid 1pt black; margin: 0pt;padding: 0pt;">
+						<h4 style="font-size: 12pt !important;margin: 1pt;padding: 1pt;text-align: center;">Analyse</h4>
+					</th>
+				</tr>
+				<tr>
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black; border-left: solid 1pt black;margin: 0pt;padding: 0pt 0pt 0pt 3pt;width: 25%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">Analyse de la situation</p>
+					</td>
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black;margin: 0pt;padding: 0pt;width: 75%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">{{card.analysissp}}</p>
+					</td>
+				</tr>
+				<tr>
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black; border-left: solid 1pt black;margin: 0pt;padding: 0pt 0pt 0pt 3pt;width: 25%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">Contribution de la situation professionnelle à la professionnalisation</p>
+					</td>
+					<td style="border-bottom: solid 1pt black; border-right: solid 1pt black;margin: 0pt;padding: 0pt;width: 75%;">
+						<p style="font-size: 10pt !important;margin: 0pt;padding: 0pt;text-align: left;widows: 2; orphans: 2;">{{card.contributionsp}}</p>
+					</td>
+				</tr>
+			</table>
+		</div>
+	{% endblock %}

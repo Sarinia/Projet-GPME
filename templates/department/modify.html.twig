@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+	{% block body %}
+
+		{# formulaire de modification de département #}
+		{{ form_start(form) }}
+		{{ form_row(form.name) }}
+		{{ form_row(form.exist) }}
+		{{ form_row(form.save) }}
+		{{ form_end(form) }}
+		<p>* champs obligatoires</p>
+
+	{% endblock %}

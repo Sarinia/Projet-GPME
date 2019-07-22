@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {# Affichage du tableau des enseignants #}
+    {% for classroom in classrooms %}{% set teachers = classroom.teachers %}
+        <h5>Classe {{classroom.slug | upper }}</h5>
+        {% include 'partials/tables/teacher.html.twig' %}
+    {% endfor %}
+
+{% endblock %}
+
