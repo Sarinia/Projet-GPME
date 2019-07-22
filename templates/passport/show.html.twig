@@ -14,10 +14,10 @@
 				</tr>
 				<tr>
 					<th style="width: 70%;border: 1px solid black; border-collapse: collapse;text-align: center;">
-						<p class="m-1 p-0">NOM et Prénom du titulaire du passport : {{passport.student.user.firstName}} {{passport.student.user.lastName}}</p>
+						<p class="m-1 p-0">NOM et Prénom du titulaire du passport : {{passport.student.user.lastName}} {{passport.student.user.firstName}}</p>
 					</th>
 					<th style="width: 30%;border: 1px solid black; border-collapse: collapse;text-align: center;">
-						<p class="m-1 p-0">Numéro candidat : {{passport.student.candidatenb}}</p>
+						<p class="m-1 p-0">Numéro candidat : {{passport.student.candidatenb | default('non renseigné')}}</p>
 					</th>
 				</tr>
 			</thead>

@@ -20,8 +20,6 @@ class PassportController extends AbstractController
     */
     public function show(Passport $passport, ActivityRepository $activityRepo)
     {
-        $activities = $activityRepo->findAll();
-
         $cards = $passport->getCards();
 
         foreach ($cards as $card) {
@@ -61,7 +59,7 @@ class PassportController extends AbstractController
             return $this->render('passport/show.html.twig', [
                     'passport' => $passport,
                     'student' => $passport->getStudent(),
-                    'activities' => $activities,
+                    'activities' => $activityRepo->findAll(),
                     'cardsActivity1' => $cardsActivity1,
                     'cardsActivity2' => $cardsActivity2,
                     'cardsActivity3' => $cardsActivity3,
