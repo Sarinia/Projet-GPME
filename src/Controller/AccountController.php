@@ -16,6 +16,7 @@ use App\Repository\DepartmentRepository;
 use App\Repository\EstablishmentRepository;
 use App\Repository\StudentRepository;
 use App\Repository\TeacherRepository;
+use Cocur\Slugify\Slugify;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -148,6 +149,10 @@ class AccountController extends AbstractController
             // si le formulaire est soumis et est valide
             if ($form->isSubmitted() && $form->isValid()) {
 
+                $slugify = new Slugify();
+                $slug = $slugify->slugify($this->getUser()->getFirstName()."-".$this->getUser()->getLastName());
+                $this->getUser()->setSlug($slug);
+
                 // on persiste les données
                 $manager->persist($sadmin);
 
@@ -175,6 +180,10 @@ class AccountController extends AbstractController
 
             // si le formulaire est soumis et est valide
             if ($form->isSubmitted() && $form->isValid()) {
+
+                $slugify = new Slugify();
+                $slug = $slugify->slugify($this->getUser()->getFirstName()."-".$this->getUser()->getLastName());
+                $this->getUser()->setSlug($slug);
 
                 // on persiste les données
                 $manager->persist($admin);
@@ -204,6 +213,10 @@ class AccountController extends AbstractController
             // si le formulaire est soumis et est valide
             if ($form->isSubmitted() && $form->isValid()) {
 
+                $slugify = new Slugify();
+                $slug = $slugify->slugify($this->getUser()->getFirstName()."-".$this->getUser()->getLastName());
+                $this->getUser()->setSlug($slug);
+
                 // on persiste les données
                 $manager->persist($teacher);
 
@@ -231,6 +244,10 @@ class AccountController extends AbstractController
 
             // si le formulaire est soumis et est valide
             if ($form->isSubmitted() && $form->isValid()) {
+
+                $slugify = new Slugify();
+                $slug = $slugify->slugify($this->getUser()->getFirstName()."-".$this->getUser()->getLastName());
+                $this->getUser()->setSlug($slug);
 
                 // on persiste les données
                 $manager->persist($student);
@@ -269,11 +286,7 @@ class AccountController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // on vérifie que le mot de passe saisie est le même que le mot de passe de la base de données
-            if (!password_verify($passwordUpdate->getOldPassword(), $user->getHash())) {
-
-                // on enregistre un message flash
-                $this->addFlash( 'danger', 'L\'ancien mot de passe est incorrect !' );
-            } else {
+            if (password_verify($passwordUpdate->getOldPassword(), $user->getHash())) {
 
                 // on récupére le nouveau mot de passe
                 $newPassword = $passwordUpdate->getNewPassword();
@@ -295,6 +308,15 @@ class AccountController extends AbstractController
 
                 // on redirige vers la page de dashboard
                 return $this->redirectToRoute('dashboard');
+                
+            } else {
+                // on enregistre un message flash
+                $this->addFlash( 'danger', 'L\'ancien mot de passe est incorrect !' );
+
+                // on retourne la vue et les données
+                return $this->render('account/password.html.twig', [
+                    'form' => $form->createView(),
+                ]);
             }
         }
 
