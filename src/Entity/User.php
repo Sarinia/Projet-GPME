@@ -48,9 +48,34 @@ class User implements UserInterface
     private $title;
 
     /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
      * @ORM\Column(type="boolean")
      */
     private $exist;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Sadmin", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $sadmin;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Admin", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $admin;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Teacher", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $teacher;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Student", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $student;
 
     public function getId(): ?int
     {
@@ -129,6 +154,30 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getExist(): ?bool
+    {
+        return $this->exist;
+    }
+
+    public function setExist(bool $exist): self
+    {
+        $this->exist = $exist;
+
+        return $this;
+    }
+
     public function getPassword() {
         return $this->hash;
     }
@@ -154,14 +203,74 @@ class User implements UserInterface
 
     }
 
-    public function getExist(): ?bool
+    public function getSadmin(): ?Sadmin
     {
-        return $this->exist;
+        return $this->sadmin;
     }
 
-    public function setExist(bool $exist): self
+    public function setSadmin(?Sadmin $sadmin): self
     {
-        $this->exist = $exist;
+        $this->sadmin = $sadmin;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newUser = $sadmin === null ? null : $this;
+        if ($newUser !== $sadmin->getUser()) {
+            $sadmin->setUser($newUser);
+        }
+
+        return $this;
+    }
+
+    public function getAdmin(): ?Admin
+    {
+        return $this->admin;
+    }
+
+    public function setAdmin(?Admin $admin): self
+    {
+        $this->admin = $admin;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newUser = $admin === null ? null : $this;
+        if ($newUser !== $admin->getUser()) {
+            $admin->setUser($newUser);
+        }
+
+        return $this;
+    }
+
+    public function getTeacher(): ?Teacher
+    {
+        return $this->teacher;
+    }
+
+    public function setTeacher(?Teacher $teacher): self
+    {
+        $this->teacher = $teacher;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newUser = $teacher === null ? null : $this;
+        if ($newUser !== $teacher->getUser()) {
+            $teacher->setUser($newUser);
+        }
+
+        return $this;
+    }
+
+    public function getStudent(): ?Student
+    {
+        return $this->student;
+    }
+
+    public function setStudent(?Student $student): self
+    {
+        $this->student = $student;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newUser = $student === null ? null : $this;
+        if ($newUser !== $student->getUser()) {
+            $student->setUser($newUser);
+        }
 
         return $this;
     }

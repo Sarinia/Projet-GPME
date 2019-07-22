@@ -6,9 +6,10 @@
 
 		{# formulaire de création de département #}
 		{{ form_start(form) }}
-		{{ form_row(form.name, {'label':'Nom du département :'}) }}
-		{{ form_row(form.exist, {'label':'Activer le département :'}) }}
-		{{ form_row(form.save, {'label':'Enregistrer'}) }}
+		{{ form_row(form.name) }}
+		{{ form_row(form.exist) }}
+		{{ form_row(form.save) }}
 		{{ form_end(form) }}
+		<p>* champs obligatoires</p>
 
 	{% endblock %}

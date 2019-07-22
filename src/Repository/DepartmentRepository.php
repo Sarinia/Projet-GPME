@@ -46,5 +46,5 @@ class DepartmentRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-    */ 
+    */
 }

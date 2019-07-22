@@ -6,23 +6,24 @@
 
 		{# formulaire de création d'un administrateur #}
 		{{ form_start(form) }}
-		{{ form_row(form.establishment, {'label':'Sélectionner l\'établissement :', 'attr':{'onchange':"recup();"}}) }}
-		<label class="form-check-label" for="classroom">Selectionner les classes :</label>
+		{{ form_row(form.establishment, {'label':'Sélectionner l\'établissement *', 'attr':{'onchange':"recup();"}}) }}
+		<label class="form-check-label" for="classroom">Selectionner les classes *</label>
 		{% for establishment in establishments %}
 			<div class="form-inline establishment d-none" id="establishment_{{establishment.id}}">
 				{% for classroom in establishment.classrooms %}
-					<input class="form-check-input ml-4 mr-1 mt-2 mb-3" type="checkbox" id="classroom{{classroom.id}}" name="classroom[]" value="{{classroom.id}}"><label class=" mx-1 mt-2 mb-3" for="classroom{{classroom.id}}">{{classroom.degree}}</label>
+					<input class="form-check-input ml-4 mr-1 mt-2 mb-3" type="checkbox" id="classroom{{classroom.id}}" name="classroom[]" value="{{classroom.id}}"><label class=" mx-1 mt-2 mb-3" for="classroom{{classroom.id}}">{{classroom.slug | upper }}</label>
 				{% endfor %}
 			</div>
 		{% endfor %}
-		{{ form_row(form.candidateNb, {'label':'Numéro de candidat :'}) }}
-		{{ form_row(form.user.lastName, {'label':'Nom :'}) }}
-		{{ form_row(form.user.firstName, {'label':'Prénom :'}) }}
-		{{ form_row(form.user.email, {'label':'Email :'}) }}
-		{{ form_row(form.birthDate, {'label':'Date de naissance :'}) }}
-		{{ form_row(form.user.exist, {'label':"Activer l'enseignant :"}) }}
-		{{ form_row(form.save, {'label':"Enregistrer"}) }}
+		{{ form_row(form.candidateNb) }}
+		{{ form_row(form.user.lastName) }}
+		{{ form_row(form.user.firstName) }}
+		{{ form_row(form.user.email) }}
+		{{ form_row(form.birthDate) }}
+		{{ form_row(form.user.exist) }}
+		{{ form_row(form.save) }}
 		{{ form_end(form) }}
+		<p>* champs obligatoires</p>
 		
 	{% endblock %}
 	{% block javascripts %}

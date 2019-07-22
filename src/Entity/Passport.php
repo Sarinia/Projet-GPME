@@ -19,20 +19,25 @@ class Passport
     private $id;
 
     /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Student", inversedBy="passport", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $student;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $exist;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Card", mappedBy="passport")
      */
     private $cards;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Student", inversedBy="passport")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $student;
 
     public function __construct()
     {
@@ -44,6 +49,18 @@ class Passport
         return $this->id;
     }
 
+    public function getStudent(): ?Student
+    {
+        return $this->student;
+    }
+
+    public function setStudent(Student $student): self
+    {
+        $this->student = $student;
+
+        return $this;
+    }
+
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
@@ -52,6 +69,18 @@ class Passport
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getExist(): ?bool
+    {
+        return $this->exist;
+    }
+
+    public function setExist(bool $exist): self
+    {
+        $this->exist = $exist;
 
         return $this;
     }
@@ -83,18 +112,6 @@ class Passport
                 $card->setPassport(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getStudent(): ?Student
-    {
-        return $this->student;
-    }
-
-    public function setStudent(?Student $student): self
-    {
-        $this->student = $student;
 
         return $this;
     }

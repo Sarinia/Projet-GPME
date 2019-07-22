@@ -21,7 +21,7 @@ class Activity
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $number;
+    private $entitle;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -34,18 +34,12 @@ class Activity
     private $skill;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Card", mappedBy="activity")
-     */
-    private $card;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Task", mappedBy="activity")
      */
     private $tasks;
 
     public function __construct()
     {
-        $this->card = new ArrayCollection();
         $this->tasks = new ArrayCollection();
     }
 
@@ -54,14 +48,14 @@ class Activity
         return $this->id;
     }
 
-    public function getNumber(): ?string
+    public function getEntitle(): ?string
     {
-        return $this->number;
+        return $this->entitle;
     }
 
-    public function setNumber(string $number): self
+    public function setEntitle(string $entitle): self
     {
-        $this->number = $number;
+        $this->entitle = $entitle;
 
         return $this;
     }
@@ -86,37 +80,6 @@ class Activity
     public function setSkill(string $skill): self
     {
         $this->skill = $skill;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Card[]
-     */
-    public function getCard(): Collection
-    {
-        return $this->card;
-    }
-
-    public function addCard(Card $card): self
-    {
-        if (!$this->card->contains($card)) {
-            $this->card[] = $card;
-            $card->setActivity($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCard(Card $card): self
-    {
-        if ($this->card->contains($card)) {
-            $this->card->removeElement($card);
-            // set the owning side to null (unless already changed)
-            if ($card->getActivity() === $this) {
-                $card->setActivity(null);
-            }
-        }
 
         return $this;
     }

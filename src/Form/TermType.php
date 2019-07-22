@@ -14,8 +14,8 @@ class TermType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        ->add('number', TextType::class, ['label' => 'Numéro :'])
-        ->add('title', TextType::class, ['label' => 'Nom :'])
+        ->add('entitle', TextType::class, ['label' => 'Numéro :'])
+        ->add('name', TextType::class, ['label' => 'Nom :'])
         ->add('save', SubmitType::class, ['label' => 'Enregistrer'],['attr' => ['class' => 'btn btn-primary']]);
         ;
     }

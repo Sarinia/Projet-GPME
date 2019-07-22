@@ -4,96 +4,77 @@ namespace App\Controller;
 
 use App\Entity\Passport;
 use App\Repository\ActivityRepository;
-use App\Repository\AdminRepository;
+use App\Repository\CardRepository;
 use App\Repository\ClassroomRepository;
-use App\Repository\PassportRepository;
-use App\Repository\SadminRepository;
-use App\Repository\StudentRepository;
-use App\Repository\TeacherRepository;
+use App\Repository\TaskRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 class PassportController extends AbstractController
 {
     /**
-    * @Route("/passport/show/{id}", name="passport_show")
-    */
-    public function show(Passport $passport, ActivityRepository $activityRepo)
-    {
-        $cards = $passport->getCards();
-
-        foreach ($cards as $card) {
-
-            if ($card->getAssociate() == true) {
-
-                $cardsActivity1 = [];
-                if ($card->getActivity()->getNumber() == "Activité 1.1") {
-                    $cardsActivity1[] = $card;
-                }
-
-                $cardsActivity2 = [];
-                if ($card->getActivity()->getNumber() == "Activité 1.2") {
-                    $cardsActivity2[] = $card;
-                }
-
-                $cardsActivity3 = [];
-                if ($card->getActivity()->getNumber() == "Activité 1.3") {
-                    $cardsActivity3[] = $card;
-                }
-
-                $cardsActivity4 = [];
-                if ($card->getActivity()->getNumber() == "Activité 1.4") {
-                    $cardsActivity4[] = $card;
-                }
-
-                $cardsActivity5 = [];
-                if ($card->getActivity()->getNumber() == "Activité 1.5") {
-                    $cardsActivity5[] = $card;
-                }
-
-                $cardsActivity6 = [];
-                if ($card->getActivity()->getNumber() == "Activité 1.6") {
-                    $cardsActivity6[] = $card;
-                }
-            }
-            return $this->render('passport/show.html.twig', [
-                    'passport' => $passport,
-                    'student' => $passport->getStudent(),
-                    'activities' => $activityRepo->findAll(),
-                    'cardsActivity1' => $cardsActivity1,
-                    'cardsActivity2' => $cardsActivity2,
-                    'cardsActivity3' => $cardsActivity3,
-                    'cardsActivity4' => $cardsActivity4,
-                    'cardsActivity5' => $cardsActivity5,
-                    'cardsActivity6' => $cardsActivity6,
-                ]);
-        }
-
-        return $this->render('passport/show.html.twig', [
-            'passport' => $passport,
-            'student' => $passport->getStudent(),
-            'activities' => $activities,
-        ]);
-    }
-
-    /**
-    * @Route("/passport/modify/{id}", name="passport_modify")
-    */
-    public function modify()
-    {
-        return $this->render('passport/modify.html.twig', [
-            'controller_name' => 'CardController',
-        ]);
-    }
-
-    /**
-     * @Route("/passport/delete/{id}", name="passport_delete")
+     * @Route("/passport/show_list", name="passport_show_list")
      */
-    public function delete()
+    public function index(ClassroomRepository $classroomRepo)
     {
-        return $this->render('passport/.html.twig', [
-            'controller_name' => 'CardController',
+    	if ($this->getUser()->getTitle() == "ROLE_SADMIN") {
+
+    		return $this->render('passport/list.html.twig', [
+    			'classrooms' => $classroomRepo->findAll(),
+    		]);
+    	}
+
+    	if ($this->getUser()->getTitle() == "ROLE_ADMIN") {
+
+    		$classrooms = $this->getUser()->getAdmin()->getEstablishment()->getClassrooms();
+
+    		return $this->render('passport/list.html.twig', [
+    			'classrooms' => $classrooms,
+    		]);
+    	}
+
+    	if ($this->getUser()->getTitle() == "ROLE_TEACHER") {
+
+    		$classrooms = $this->getUser()->getTeacher()->getClassrooms();
+
+    		return $this->render('passport/list.html.twig', [
+    			'classrooms' => $classrooms,
+    		]);
+    	}
+
+    	if ($this->getUser()->getTitle() == "ROLE_USER") {
+
+    		$classrooms = $this->getUser()->getStudent()->getClassrooms();
+
+    		return $this->render('passport/list.html.twig', [
+    			'classrooms' => $classrooms,
+    		]);
+    	}
+    }
+
+    /**
+     * @Route("/passport/show/{id}", name="passport_show")
+     */
+    public function show(Passport $passport, ActivityRepository $activityRepo, TaskRepository $taskRepo, CardRepository $cardRepo)
+    {
+    	return $this->render('passport/show.html.twig', [
+            'activities' => $activityRepo->findAll(),
+            'tasks' => $taskRepo->findAll(),
+            'cards' => $cardRepo->findBy(['passport' => $passport]),
+            'passport' => $passport,
         ]);
     }
 
+    /**
+    * @Route("/passport/print/{id}", name="passport_print")
+    */
+    public function print(Passport $passport, ActivityRepository $activityRepo, TaskRepository $taskRepo, CardRepository $cardRepo)
+    {
+        return $this->render('passport/print.html.twig', [
+            'activities' => $activityRepo->findAll(),
+            'tasks' => $taskRepo->findAll(),
+            'cards' => $cardRepo->findBy(['passport' => $passport]),
+            'passport' => $passport,
+        ]);
+    }
 }

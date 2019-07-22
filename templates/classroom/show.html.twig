@@ -7,63 +7,23 @@
         <div class="col-3">
             <div class="card">
                 <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Diplôme : {{classroom.slug | upper}}</li>
                     <li class="list-group-item">Diplôme : {{classroom.degree}}</li>
                     <li class="list-group-item">Date de début : {{classroom.startDate}}</li>
                     <li class="list-group-item">Date de fin : {{classroom.endDate}}</li>
-                    <li class="list-group-item">Etablissement : {{classroom.establishment.name}}</li>
-                    <li class="list-group-item">Administrateur : {% if admin is not null %}{{admin.user.lastName}} {{admin.user.firstName}}{% else %}non assigné{% endif %}</li>
+                    <li class="list-group-item">Etablissement : {{establishment.name}}</li>
+                    <li class="list-group-item">Administrateur : {% for admin in classroom.establishment.admins %}{{admin.user.lastName | default('non assigné')}} {{admin.user.lastName | default('')}}{% endfor %}</li>
                     <li class="list-group-item">Crée le : {{ classroom.createdAt | date("d/m/Y") }}</li>
                 </ul>
             </div>
         </div>
         <div class="col-9">
             <h5>Liste des enseignants</h5>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Nom</th>
-                        <th scope="col">Prénom</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Actif</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for teacher in classroom.teachers %}
-                        <tr>
-                            <td><a href="{{ path('teacher_show', {'id': teacher.id,}) }}">{{ teacher.id }}</a></td>
-                            <td><a href="{{ path('teacher_show', {'id': teacher.id,}) }}">{{ teacher.user.firstName }}</a></td>
-                            <td><a href="{{ path('teacher_show', {'id': teacher.id,}) }}">{{ teacher.user.lastName }}</a></td>
-                            <td><a href="{{ path('teacher_show', {'id': teacher.id,}) }}">{{ teacher.user.email }}</a></td>
-                            <td><a class="{% if teacher.user.exist == 1 %}text-success{% else %}text-danger{% endif %}" href="{{ path('teacher_show', {'id': teacher.id}) }}">{% if teacher.user.exist == 1 %} oui {% else %} non {% endif %}</a></td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            {% include 'partials/tables/teacher.html.twig' %}
 
             <h5>Liste des étudiants</h5>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Nom</th>
-                        <th scope="col">Prénom</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Actif</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for student in classroom.students %}
-                        <tr>
-                            <td><a href="{{ path('student_show', {'id': student.id,}) }}">{{ student.id }}</a></td>
-                            <td><a href="{{ path('student_show', {'id': student.id,}) }}">{{ student.user.firstName }}</a></td>
-                            <td><a href="{{ path('student_show', {'id': student.id,}) }}">{{ student.user.lastName }}</a></td>
-                            <td><a href="{{ path('student_show', {'id': student.id,}) }}">{{ student.user.email }}</a></td>
-                            <td><a class="{% if student.user.exist == 1 %}text-success{% else %}text-danger{% endif %}" href="{{ path('student_show', {'id': student.id}) }}">{% if student.user.exist == 1 %} oui {% else %} non {% endif %}</a></td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            {% include 'partials/tables/student.html.twig' %}
         </div>
     </div>
+    
 {% endblock %}

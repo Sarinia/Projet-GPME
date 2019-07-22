@@ -16,11 +16,12 @@
 				</select>
 			</div>
 		{% endif %}
-		{{ form_row(form.degree, {'label':'Diplôme :'}) }}
-		{{ form_row(form.startDate, {'label':'Date de début :'}) }}
-		{{ form_row(form.endDate, {'label':'Date de fin :'}) }}
-		{{ form_row(form.exist, {'label':'Activer la classe :'}) }}
-		{{ form_row(form.save, {'label':'Enregistrer'}) }}
+		{{ form_row(form.degree) }}
+		{{ form_row(form.startDate) }}
+		{{ form_row(form.endDate) }}
+		{{ form_row(form.exist) }}
+		{{ form_row(form.save) }}
 		{{ form_end(form) }}
+		<p>* champs obligatoires</p>
 
 	{% endblock %}

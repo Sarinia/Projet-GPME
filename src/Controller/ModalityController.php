@@ -7,26 +7,27 @@ use App\Form\ModalityType;
 use App\Repository\ModalityRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ModalityController extends AbstractController
 {
     /**
-     * @Route("/referentiel/modality/list", name="referentiel_modality_list")
+     * @Route("/modality/list", name="referentiel_modality_list")
      */
     public function index(ModalityRepository $modalityRepo)
     {
     	// modalités
     	$modalities = $modalityRepo->findAll();
 
-    	return $this->render('referentiel/modality/list.html.twig', [
+    	return $this->render('modality/list.html.twig', [
     		'modalities' => $modalities,
     	]);
     }
 
     /**
-     * @Route("/referentiel/modality/new", name="referentiel_modality_new")
+     * @Route("/modality/new", name="referentiel_modality_new")
      */
     public function create(ObjectManager $manager, Request $request)
     {
@@ -46,17 +47,17 @@ class ModalityController extends AbstractController
 
             $this->addFlash('success','Votre modalité a bien été ajouté !');
 
-    		return $this->redirectToRoute('referentiel_modality_list');
-    	}
+            return $this->redirectToRoute('referentiel_list');
+        }
 
         // on redirige vers la liste des administrateurs
-    	return $this->render('referentiel/modality/new.html.twig', [
-    		'form' => $form->createView(),
-    	]);
+        return $this->render('modality/new.html.twig', [
+          'form' => $form->createView(),
+      ]);
     }
 
     /**
-     * @Route("/referentiel/modality/modify/{id}", name="referentiel_modality_modify")
+     * @Route("/modality/modify/{id}", name="referentiel_modality_modify")
      */
     public function modify(Modality $modality, ObjectManager $manager, Request $request)
     {
@@ -73,26 +74,27 @@ class ModalityController extends AbstractController
 
     		$this->addFlash('success','Votre modalité a bien été modifié !');
 
-    		return $this->redirectToRoute('referentiel_modality_list');
+    		return $this->redirectToRoute('referentiel_list');
     	}
 
         // on redirige vers la liste des administrateurs
-    	return $this->render('referentiel/modality/modify.html.twig', [
+    	return $this->render('modality/modify.html.twig', [
             'form' => $form->createView(),
-    		'modality' => $modality,
-    	]);
+            'modality' => $modality,
+        ]);
     }
 
     /**
-     * @Route("/referentiel/modality/delete/{id}", name="referentiel_modality_delete")
+     * @Route("/modality/delete/{id}", name="referentiel_modality_delete")
      */
-    public function delete(Modality $modality, ObjectManager $manager)
+    public function delete(Modality $modality, ObjectManager $manager, Request $request)
     {
     	$manager->remove($modality);
     	$manager->flush();
 
     	$this->addFlash('success','Votre modalité a bien été supprimé !');
 
-    	return $this->redirectToRoute('referentiel_modality_list');
+    	$referer = $request->headers->get('referer');   
+        return new RedirectResponse($referer);
     }
 }

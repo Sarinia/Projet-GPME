@@ -6,12 +6,13 @@
 
 		{# formulaire de modification d'un administrateur #}
 		{{ form_start(form) }}
-		{{ form_row(form.establishment, {'label':'Selectionner l\'établissement :'}) }}
-		{{ form_row(form.user.lastName, {'label':'Nom :'}) }}
-		{{ form_row(form.user.firstName, {'label':'Prénom :'}) }}
-		{{ form_row(form.user.email, {'label':'Email :'}) }}
-		{{ form_row(form.user.exist, {'label':"Activer l'administrateur :"}) }}
-		{{ form_row(form.save, {'label':"Mettre à jour"}) }}
+		{{ form_row(form.establishment) }}
+		{{ form_row(form.user.lastName) }}
+		{{ form_row(form.user.firstName) }}
+		{{ form_row(form.user.email) }}
+		{{ form_row(form.user.exist) }}
+		{{ form_row(form.save) }}
 		{{ form_end(form) }}
+		<p>* champs obligatoires</p>
 
 	{% endblock %}

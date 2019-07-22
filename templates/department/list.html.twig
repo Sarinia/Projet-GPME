@@ -3,24 +3,6 @@
 {% block body %}
 
     {# Affichage du tableau des départements #}
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Id</th>
-                <th scope="col">Nom</th>
-                <th scope="col">Créé le</th>
-                <th scope="col">Actif</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for department in departments %}
-                <tr>
-                    <td><a href="{{ path('department_show', {'id': department.id}) }}">{{ department.id }}</a></td>
-                    <td><a href="{{ path('department_show', {'id': department.id}) }}">{{ department.name }}</a></td>
-                    <td><a href="{{ path('department_show', {'id': department.id}) }}">{{ department.createdAt | date("d/m/Y") }}</a></td>
-                    <td><a class="{% if department.exist == 1 %}text-success{% else %}text-danger{% endif %}" href="{{ path('department_show', {'id': department.id}) }}">{% if department.exist == 1 %} oui {% else %} non {% endif %}</a></td>
-                </tr>  
-            {% endfor %}
-        </tbody>
-    </table>
+    {% include 'partials/tables/department.html.twig' %}
+    
 {% endblock %}

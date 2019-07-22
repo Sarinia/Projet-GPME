@@ -14,6 +14,7 @@ use App\Repository\UserRepository;
 use Cocur\Slugify\Slugify;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -23,62 +24,39 @@ class TeacherController extends AbstractController
     /**
      * @Route("/teacher/show_list", name="teacher_show_list")
      */
-    public function index(StudentRepository $studentRepo, TeacherRepository $teacherRepo, AdminRepository $adminRepo, ClassroomRepository $classroomRepo)
+    public function index(ClassroomRepository $classroomRepo)
     {
-        // liste des enseignants pour le super-admin
         if ($this->getUser()->getTitle() == "ROLE_SADMIN") {
 
-            // on récupère la liste des classes
-            $classrooms = $classroomRepo->findAll();
-
-            // on retourne la vue et les données
             return $this->render('teacher/list.html.twig', [
-                'classrooms' => $classrooms,
+                'classrooms' => $classroomRepo->findAll(),
             ]);
         }
 
-        // liste des enseignants pour l'admin
         if ($this->getUser()->getTitle() == "ROLE_ADMIN") {
 
-            // on récupère les infos de l'admin connecté
-            $adminCo = $adminRepo->findOneBy(['user' => $this->getUser()]);
+            $admin = $this->getUser()->getAdmin();
 
-            // on récupère la liste des enseignants
-            $classrooms = $classroomRepo->findBy(['establishment' => $adminCo->getEstablishment()->getId()]);
-
-            // on retourne la vue et les données
             return $this->render('teacher/list.html.twig', [
-                'classrooms' => $classrooms,
+                'classrooms' => $admin->getEstablishment()->getClassrooms(),
             ]);
         }
 
-        // liste des enseignants pour l'enseignant
         if ($this->getUser()->getTitle() == "ROLE_TEACHER") {
 
-            // on récupère les infos de l'enseignant connecté
-            $teacherCo = $teacherRepo->findOneBy(['user' => $this->getUser()]);
+            $teacher = $this->getUser()->getTeacher();
 
-            // on récupère la liste des enseignants
-            $classrooms = $teacherCo->getClassrooms();
-
-            // on retourne la vue et les données
             return $this->render('teacher/list.html.twig', [
-                'classrooms' => $classrooms,
+                'classrooms' => $teacher->getClassrooms(),
             ]);
         }
 
-        // liste des enseignants pour l'étudiant
         if ($this->getUser()->getTitle() == "ROLE_USER") {
 
-            // on récupère les infos de l'étudiant connecté
-            $studentCo = $studentRepo->findOneBy(['user' => $this->getUser()]);
+            $student = $this->getUser()->getStudent();
 
-            // on récupère la liste des enseignants
-            $classrooms = $classroomRepo->findBy(['id' => $studentCo->getClassroom()->getId()]);
-
-            // on retourne la vue et les données
             return $this->render('teacher/list.html.twig', [
-                'classrooms' => $classrooms,
+                'classrooms' => $student->getClassrooms(),
             ]);
         }
     }
@@ -88,12 +66,8 @@ class TeacherController extends AbstractController
      */
     public function show(Teacher $teacher, AdminRepository $adminRepo)
     {
-        $admin = $adminRepo->findOneBy(['establishment' => $teacher->getEstablishment()]);
-
-        // on retourne la vue et les données
         return $this->render('teacher/show.html.twig', [
             'teacher' => $teacher,
-            'admin' => $admin,
         ]);
     }
 
@@ -102,16 +76,12 @@ class TeacherController extends AbstractController
      */
     public function create(UserPasswordEncoderInterface $encoder, ObjectManager $manager, Request $request, EstablishmentRepository $estabRepo, ClassroomRepository $classroomRepo)
     {
-        // on instancie un nouveau user
         $teacher = new Teacher();
 
-        // Création du formulaire à partir du fichier NewUserType
         $form = $this->createForm(TeacherType::class, $teacher);
 
-        // récupération des données du formulaire
         $form->handleRequest($request);
 
-        // si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()){
 
             // USER
@@ -128,9 +98,8 @@ class TeacherController extends AbstractController
             // title
             $teacher->getUser()->setTitle('ROLE_TEACHER');
 
-            // TEACHER
             // on assigne son role et son établissement
-            $teacher->setCreatedAt(new \DateTime());
+            $teacher->getUser()->setCreatedAt(new \DateTime());
 
             // on récupére la classe et on le transmet au teacher
             $classrooms_selected = $request->request->get('classroom');
@@ -144,13 +113,22 @@ class TeacherController extends AbstractController
             $manager->flush();
 
             // on envoie un email au user pour lui indiquer son mot de passe
-            mail(
-                $teacher->getUser()->getEmail(),
-                'Bonjour',
-                'un compte a été créé pour vous sur le site GPME,
-                identifiant : '.$teacher->getUser()->getEmail().'
-                votre mot de passe : '.$passRandom
-            );
+            $from = "gpme.contact@gmail.com";
+            $link = "<a href='http://passeportgpme.estiennedorves.net'>Passeport Numérique</a>";
+            $to = $admin->getUser()->getEmail();
+            $subject = "Création d'un compte Passeport Numérique";
+            $message = 
+            "
+            Bonjour,<br>
+            Nous avons le plaisir de vous informer de la création d'un compte sur le site ".$link." .<br>
+            Votre identifiant est : ".$admin->getUser()->getEmail()." .<br>
+            Votre mot de passe est : ".$passRandom." .<br>
+            A réception de cet email, pensez à modifier votre mot de passe.
+            ";
+            $headers = "MIME-Version: 1.0"."\r\n";
+            $headers .= "Content-type: text/html; charset=iso-8859-1"."\r\n";
+            $headers .= "From:" . $from;
+            mail($to,$subject,$message,$headers);
 
             // on enregistre un message flash
             $this->addFlash('success','L\'enseignant a bien été créé !');
@@ -222,28 +200,51 @@ class TeacherController extends AbstractController
     }
 
     /**
+     * @Route("/teacher/enable/{id}", name="teacher_enable")
+     */
+    public function enable(ObjectManager $manager, Request $request, Teacher $teacher)
+    {
+        $teacher->getUser()->setExist(1);
+        $manager->persist($teacher);
+        $manager->flush();
+
+        $referer = $request->headers->get('referer');   
+        return new RedirectResponse($referer);
+    }
+
+    /**
+     * @Route("/teacher/disable/{id}", name="teacher_disable")
+     */
+    public function disable(ObjectManager $manager, Request $request, Teacher $teacher)
+    {
+        $teacher->getUser()->setExist(0);
+        $manager->persist($teacher);
+        $manager->flush();
+
+        $referer = $request->headers->get('referer');   
+        return new RedirectResponse($referer);
+    }
+
+    /**
      * @Route("/teacher/delete/{id}", name="teacher_delete")
      */
-    public function delete(ObjectManager $manager, Teacher $teacher)
+    public function delete(ObjectManager $manager, Teacher $teacher, Request $request)
     {
-        // on vérifie que son compte est inactif
         if ($teacher->getUser()->getExist() == false){
 
-            // on supprime la ligne de la table Teacher et de la table User
             $manager->remove($teacher);
             $manager->flush();
 
-            // on enregistre un message flash
             $this->addFlash('success', "L'enseignant a bien été supprimé !");
 
-            // on redirige vers la liste des administrateurs
-            return $this->redirectToRoute('teacher_show_list');
+            $referer = $request->headers->get('referer');   
+            return new RedirectResponse($referer);
+            
         } else {
-            // on enregistre un message flash
             $this->addFlash('danger', "L'enseignant ne peut être supprimé car il existe !");
 
-            // on redirige vers la liste des administrateurs
-            return $this->redirectToRoute('teacher_show_list');
+            $referer = $request->headers->get('referer');   
+            return new RedirectResponse($referer);
         }
     }
 }

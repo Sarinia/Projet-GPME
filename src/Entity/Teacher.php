@@ -19,13 +19,12 @@ class Teacher
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\User", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="teacher", cascade={"persist", "remove"})
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Establishment", inversedBy="teachers")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $establishment;
 
@@ -33,11 +32,6 @@ class Teacher
      * @ORM\ManyToMany(targetEntity="App\Entity\Classroom", inversedBy="teachers")
      */
     private $classrooms;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $createdAt;
 
     public function __construct()
     {
@@ -95,18 +89,6 @@ class Teacher
         if ($this->classrooms->contains($classroom)) {
             $this->classrooms->removeElement($classroom);
         }
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
 
         return $this;
     }

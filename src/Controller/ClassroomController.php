@@ -12,6 +12,7 @@ use App\Repository\TeacherRepository;
 use Cocur\Slugify\Slugify;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\DateTime;
@@ -21,48 +22,41 @@ class ClassroomController extends AbstractController
     /**
      * @Route("/classroom/show_list", name="classroom_show_list")
      */
-    public function index(AdminRepository $adminRepo, TeacherRepository $teacherRepo, ClassroomRepository $classroomRepo, EstablishmentRepository $estabRepo,Request $request)
+    public function index(ClassroomRepository $classroomRepo)
     {
-
         if ($this->getUser()) {
 
-            // liste des classes pour le super-admin
             if ($this->getUser()->getTitle() == "ROLE_SADMIN") {
 
-                // requete de toutes les classes et tous les établissements de la BDD
-                $classrooms = $classroomRepo->findAll();
-
-                // on retourne la vue et les données
                 return $this->render('classroom/list.html.twig', [
-                    'classrooms' => $classrooms,
+                    'classrooms' => $classroomRepo->findAll(),
                 ]);
             }
 
-            // liste des classes pour l'admin
             if ($this->getUser()->getTitle() == "ROLE_ADMIN") {
 
-                $admin = $adminRepo->findOneBy(['user' => $this->getUser()]);
+                $admin = $this->getUser()->getAdmin();
 
-                // requete de toutes les classes et tous les établissements de la BDD
-                $classrooms = $admin->getEstablishment()->getClassrooms();
-
-                // on retourne la vue et les données
                 return $this->render('classroom/list.html.twig', [
-                    'classrooms' => $classrooms,
+                    'classrooms' => $admin->getEstablishment()->getClassrooms(),
                 ]);
             }
 
-            // liste des classes pour le teacher
             if ($this->getUser()->getTitle() == "ROLE_TEACHER") {
 
-                $teacher = $teacherRepo->findOneBy(['user' => $this->getUser()]);
+                $teacher = $this->getUser()->getTeacher();
 
-                // requete de toutes les classes et tous les établissements de la BDD
-                $classrooms = $teacher->getClassrooms();
-
-                // on retourne la vue et les données
                 return $this->render('classroom/list.html.twig', [
-                    'classrooms' => $classrooms,
+                    'classrooms' => $teacher->getClassrooms(),
+                ]);
+            }
+
+            if ($this->getUser()->getTitle() == "ROLE_USER") {
+
+                $student = $this->getUser()->getStudent();
+
+                return $this->render('classroom/list.html.twig', [
+                    'classrooms' => $student->getClassrooms(),
                 ]);
             }
         }
@@ -71,14 +65,14 @@ class ClassroomController extends AbstractController
     /**
      * @Route("/classroom/show/{id}", name="classroom_show")
      */
-    public function show(Classroom $classroom, AdminRepository $adminRepo)
+    public function show(Classroom $classroom)
     {
-        $admin = $adminRepo->findOneBy(['establishment' => $classroom->getEstablishment()]);
-
-        // on retourne la vue et les données
         return $this->render('classroom/show.html.twig', [
             'classroom' => $classroom,
-            'admin' => $admin,
+            'teachers' => $classroom->getTeachers(),
+            'students' => $classroom->getStudents(),
+            'establishment' => $classroom->getEstablishment(),
+            'admins' => $classroom->getEstablishment()->getAdmins(),
         ]);
     }
 
@@ -87,21 +81,14 @@ class ClassroomController extends AbstractController
      */
     public function create(ObjectManager $manager,Request $request, EstablishmentRepository $establishmentRepo, AdminRepository $adminRepo)
     {   
-        // liste des classes pour le super-admin
         if ($this->getUser()->getTitle() == "ROLE_SADMIN") {
 
-            $establishments = $establishmentRepo->findAll();
-
-            // on instancie un nouveau Classroom
             $classroom = new Classroom();
 
-            // Création du formulaire à partir du fichier NewAdminType
             $form = $this->createForm(ClassroomType::class, $classroom);
 
-            // récupération des données du formulaire
             $form->handleRequest($request);
 
-            // si le formulaire est soumis et valide
             if ($form->isSubmitted() && $form->isValid()){
 
                 // établissement
@@ -114,47 +101,36 @@ class ClassroomController extends AbstractController
                 $degree = $classroom->getDegree();
                 $startDate = $classroom->getStartDate();
                 $endDate = $classroom->getEndDate();
-                $ligne = $classroom->getId();
-                $slug = $slugify->slugify($degree."-".$ligne."-".$startDate."-".$endDate);
+                $slug = $slugify->slugify($degree."-".$startDate."-".$endDate);
                 $classroom->setSlug($slug);
 
                 // createdAt
                 $classroom->setCreatedAt(new \DateTime());
 
-                // on persiste et on sauvegarde les données du formulaire
                 $manager->persist($classroom);
                 $manager->flush();
 
-                // on stocke un message flash
                 $this->addFlash('success','La classe a bien été créé');
 
-                // on redirige vers la liste des administrateurs
                 return $this->redirectToRoute('classroom_show_list');
             }
 
-            // on retourne la vue et les données
             return $this->render('classroom/new.html.twig', [
                 'form' => $form->createView(),
-                'establishments' => $establishments,
+                'establishments' => $establishmentRepo->findAll(),
             ]);
         }
 
-        // liste des classes pour le admin
         if ($this->getUser()->getTitle() == "ROLE_ADMIN") {
 
-            $user = $this->getUser();
-            $admin = $adminRepo->findOneBy(['id' => $user]);
+            $admin = $this->getUser()->getAdmin();
 
-            // on instancie un nouveau Classroom
             $classroom = new Classroom();
 
-            // Création du formulaire à partir du fichier NewAdminType
             $form = $this->createForm(ClassroomType::class, $classroom);
 
-            // récupération des données du formulaire
             $form->handleRequest($request);
 
-            // si le formulaire est soumis et valide
             if ($form->isSubmitted() && $form->isValid()){
 
                 // établissement
@@ -165,25 +141,20 @@ class ClassroomController extends AbstractController
                 $degree = $classroom->getDegree();
                 $startDate = $classroom->getStartDate();
                 $endDate = $classroom->getEndDate();
-                $ligne = $classroom->getId();
-                $slug = $slugify->slugify($degree."-".$ligne."-".$startDate."-".$endDate);
+                $slug = $slugify->slugify($degree."-".$startDate."-".$endDate);
                 $classroom->setSlug($slug);
 
                 // createdAt
                 $classroom->setCreatedAt(new \DateTime());
 
-                // on persiste et on sauvegarde les données du formulaire
                 $manager->persist($classroom);
                 $manager->flush();
 
-                // on stocke un message flash
                 $this->addFlash('success','La classe a bien été créé');
 
-                // on redirige vers la liste des administrateurs
                 return $this->redirectToRoute('classroom_show_list');
             }
 
-            // on retourne la vue et les données
             return $this->render('classroom/new.html.twig', [
                 'form' => $form->createView(),
             ]);
@@ -195,18 +166,12 @@ class ClassroomController extends AbstractController
      */
     public function modify(ObjectManager $manager, Request $request, Classroom $classroom, EstablishmentRepository $establishmentRepo, ClassroomRepository $classroomRepo, AdminRepository $adminRepo)
     {
-        // liste des classes pour le super-admin
         if ($this->getUser()->getTitle() == "ROLE_SADMIN") {
 
-            $establishments = $establishmentRepo->findAll();
-
-            // Création du formulaire à partir du fichier NewAdminType
             $form = $this->createForm(ClassroomType::class, $classroom);
 
-            // récupération des données du formulaire
             $form->handleRequest($request);
 
-            // si le formulaire est soumis et valide
             if ($form->isSubmitted() && $form->isValid()){
 
                 // établissement
@@ -219,27 +184,22 @@ class ClassroomController extends AbstractController
                 $degree = $classroom->getDegree();
                 $startDate = $classroom->getStartDate();
                 $endDate = $classroom->getEndDate();
-                $ligne = $classroom->getId();
-                $slug = $slugify->slugify($degree."-".$ligne."-".$startDate."-".$endDate);
+                $slug = $slugify->slugify($degree."-".$startDate."-".$endDate);
                 $classroom->setSlug($slug);
 
-                // on persiste et on sauvegarde les données du formulaire
                 $manager->persist($classroom);
                 $manager->flush();
 
-                // on stocke un message flash
-                $this->addFlash('success','Le département a bien été mis à jour !');
+                $this->addFlash('success','La classe a bien été mis à jour !');
 
-                // on redirige vers la liste des administrateurs
                 return $this->redirectToRoute('classroom_show', [
                     'id' => $classroom->getId(),
                 ]);
             }
 
-            // on retourne la vue et les données
             return $this->render('classroom/modify.html.twig', [
                 'form' => $form->createView(),
-                'establishments' => $establishments,
+                'establishments' => $establishmentRepo->findAll(),
                 'classroom' => $classroom,
             ]);
         }
@@ -247,16 +207,12 @@ class ClassroomController extends AbstractController
         // liste des classes pour le super-admin
         if ($this->getUser()->getTitle() == "ROLE_ADMIN") {
 
-            $user = $this->getUser();
-            $admin = $adminRepo->findOneBy(['id' => $user]);
+            $admin = $this->getUser()->getAdmin();
 
-            // Création du formulaire à partir du fichier NewAdminType
             $form = $this->createForm(ClassroomType::class, $classroom);
 
-            // récupération des données du formulaire
             $form->handleRequest($request);
 
-            // si le formulaire est soumis et valide
             if ($form->isSubmitted() && $form->isValid()){
 
                 // établissement
@@ -267,24 +223,19 @@ class ClassroomController extends AbstractController
                 $degree = $classroom->getDegree();
                 $startDate = $classroom->getStartDate();
                 $endDate = $classroom->getEndDate();
-                $ligne = $classroom->getId();
-                $slug = $slugify->slugify($degree."-".$ligne."-".$startDate."-".$endDate);
+                $slug = $slugify->slugify($degree."-".$startDate."-".$endDate);
                 $classroom->setSlug($slug);
 
-                // on persiste et on sauvegarde les données du formulaire
                 $manager->persist($classroom);
                 $manager->flush();
 
-                // on stocke un message flash
-                $this->addFlash('success','Le département a bien été mis à jour !');
+                $this->addFlash('success','La classe a bien été mis à jour !');
 
-                // on redirige vers la liste des administrateurs
                 return $this->redirectToRoute('classroom_show', [
                     'id' => $classroom->getId(),
                 ]);
             }
 
-            // on retourne la vue et les données
             return $this->render('classroom/modify.html.twig', [
                 'form' => $form->createView(),
                 'classroom' => $classroom,
@@ -293,29 +244,62 @@ class ClassroomController extends AbstractController
     }
 
     /**
+     * @Route("/classroom/enable/{id}", name="classroom_enable")
+     */
+    public function enable(ObjectManager $manager, Request $request, Classroom $classroom)
+    {
+        $classroom->setExist(1);
+        $manager->persist($classroom);
+        $manager->flush();
+
+        $referer = $request->headers->get('referer');   
+        return new RedirectResponse($referer);
+    }
+
+    /**
+     * @Route("/classroom/disable/{id}", name="classroom_disable")
+     */
+    public function disable(ObjectManager $manager, Request $request, Classroom $classroom)
+    {
+        $classroom->setExist(0);
+        $manager->persist($classroom);
+        $manager->flush();
+
+        $referer = $request->headers->get('referer');   
+        return new RedirectResponse($referer);
+    }
+
+    /**
      * @Route("/classroom/delete/{id}", name="classroom_delete")
      */
-    public function delete(ObjectManager $manager, Classroom $classroom)
+    public function delete(ObjectManager $manager, Classroom $classroom, Request $request)
     {    
-        // on vérifie que la classe est inactive
         if ($classroom->getExist() == false){
 
-            // on supprime la ligne de la table classe
-            $manager->remove($classroom);
-            $manager->flush();
+            if (Count($classroom->getTeachers()) == 0 && Count($classroom->getStudents()) == 0) {
 
-            // on stocke un message flash
-            $this->addFlash('success', "La classe a bien été supprimée !");
+                $manager->remove($classroom);
+                $manager->flush();
+
+                $this->addFlash('success', "La classe a bien été supprimée !");
+
+                $referer = $request->headers->get('referer');   
+                return new RedirectResponse($referer);
+
+            } else {
+
+                $this->addFlash('danger', "la classe a encore des étudiants ou des enseignants !");
+
+                $referer = $request->headers->get('referer');   
+                return new RedirectResponse($referer);  
+            }
             
-            // on redirige vers la liste des classes
-            return $this->redirectToRoute('classroom_show_list');            
         } else {
 
-            // on stocke un message flash
             $this->addFlash('danger', "La classe ne peut être supprimée car elle existe !");
             
-            // on redirige vers la liste des classes
-            return $this->redirectToRoute('classroom_show_list');  
+            $referer = $request->headers->get('referer');   
+            return new RedirectResponse($referer);  
         } 
     }
 }

@@ -24,6 +24,11 @@ class Department
     private $name;
 
     /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
      * @ORM\Column(type="boolean")
      */
     private $exist;
@@ -32,11 +37,6 @@ class Department
      * @ORM\OneToMany(targetEntity="App\Entity\Establishment", mappedBy="department")
      */
     private $establishments;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $createdAt;
 
     public function __construct()
     {
@@ -60,6 +60,18 @@ class Department
         return $this;
     }
 
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
     public function getExist(): ?bool
     {
         return $this->exist;
@@ -75,7 +87,7 @@ class Department
     /**
      * @return Collection|Establishment[]
      */
-    public function getEstablishment(): Collection
+    public function getEstablishments(): Collection
     {
         return $this->establishments;
     }
@@ -99,18 +111,6 @@ class Department
                 $establishment->setDepartment(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
 
         return $this;
     }

@@ -45,14 +45,13 @@ security:
     access_control:
         - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/account, roles: ROLE_USER }
+        - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/passport, roles: ROLE_USER }
         - { path: ^/card, roles: ROLE_USER }
         - { path: ^/student, roles: ROLE_USER }
         - { path: ^/teacher, roles: ROLE_USER }
-        - { path: ^/classroom, roles: ROLE_TEACHER }
+        - { path: ^/classroom, roles: ROLE_USER }
         - { path: ^/admin, roles: ROLE_SADMIN }
         - { path: ^/sadmin, roles: ROLE_SADMIN }
-        - { path: ^/sadmin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/department, roles: ROLE_SADMIN }
         - { path: ^/establishment, roles: ROLE_SADMIN }
-        - { path: ^/profile, roles: ROLE_USER }

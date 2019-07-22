@@ -19,36 +19,24 @@ class Student
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $candidateNb;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $birthDate;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\User", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="student", cascade={"persist", "remove"})
      */
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Establishment", inversedBy="students")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToMany(targetEntity="App\Entity\Classroom", inversedBy="students")
      */
-    private $establishment;
+    private $classrooms;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Classroom", inversedBy="students")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $classroom;
+    private $candidateNb;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    private $createdAt;
+    private $birthDate;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Card", mappedBy="student")
@@ -56,43 +44,24 @@ class Student
     private $cards;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Passport", mappedBy="student")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Establishment", inversedBy="students")
      */
-    private $passports;
+    private $establishment;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Passport", mappedBy="student", cascade={"persist", "remove"})
+     */
+    private $passport;
 
     public function __construct()
     {
+        $this->classrooms = new ArrayCollection();
         $this->cards = new ArrayCollection();
-        $this->passports = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getCandidateNb(): ?string
-    {
-        return $this->candidateNb;
-    }
-
-    public function setCandidateNb(string $candidateNb): self
-    {
-        $this->candidateNb = $candidateNb;
-
-        return $this;
-    }
-
-    public function getBirthDate(): ?\DateTimeInterface
-    {
-        return $this->birthDate;
-    }
-
-    public function setBirthDate(\DateTimeInterface $birthDate): self
-    {
-        $this->birthDate = $birthDate;
-
-        return $this;
     }
 
     public function getUser(): ?User
@@ -107,38 +76,52 @@ class Student
         return $this;
     }
 
-    public function getEstablishment(): ?Establishment
+    /**
+     * @return Collection|Classroom[]
+     */
+    public function getClassrooms(): Collection
     {
-        return $this->establishment;
+        return $this->classrooms;
     }
 
-    public function setEstablishment(?Establishment $establishment): self
+    public function addClassroom(Classroom $classroom): self
     {
-        $this->establishment = $establishment;
+        if (!$this->classrooms->contains($classroom)) {
+            $this->classrooms[] = $classroom;
+        }
 
         return $this;
     }
 
-    public function getClassroom(): ?Classroom
+    public function removeClassroom(Classroom $classroom): self
     {
-        return $this->classroom;
-    }
-
-    public function setClassroom(?Classroom $classroom): self
-    {
-        $this->classroom = $classroom;
+        if ($this->classrooms->contains($classroom)) {
+            $this->classrooms->removeElement($classroom);
+        }
 
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCandidateNb(): ?string
     {
-        return $this->createdAt;
+        return $this->candidateNb;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCandidateNb(?string $candidateNb): self
     {
-        $this->createdAt = $createdAt;
+        $this->candidateNb = $candidateNb;
+
+        return $this;
+    }
+
+    public function getBirthDate(): ?\DateTimeInterface
+    {
+        return $this->birthDate;
+    }
+
+    public function setBirthDate(?\DateTimeInterface $birthDate): self
+    {
+        $this->birthDate = $birthDate;
 
         return $this;
     }
@@ -174,32 +157,30 @@ class Student
         return $this;
     }
 
-    /**
-     * @return Collection|Passport[]
-     */
-    public function getPassports(): Collection
+    public function getEstablishment(): ?Establishment
     {
-        return $this->passports;
+        return $this->establishment;
     }
 
-    public function addPassport(Passport $passport): self
+    public function setEstablishment(?Establishment $establishment): self
     {
-        if (!$this->passports->contains($passport)) {
-            $this->passports[] = $passport;
-            $passport->setStudent($this);
-        }
+        $this->establishment = $establishment;
 
         return $this;
     }
 
-    public function removePassport(Passport $passport): self
+    public function getPassport(): ?Passport
     {
-        if ($this->passports->contains($passport)) {
-            $this->passports->removeElement($passport);
-            // set the owning side to null (unless already changed)
-            if ($passport->getStudent() === $this) {
-                $passport->setStudent(null);
-            }
+        return $this->passport;
+    }
+
+    public function setPassport(Passport $passport): self
+    {
+        $this->passport = $passport;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $passport->getStudent()) {
+            $passport->setStudent($this);
         }
 
         return $this;

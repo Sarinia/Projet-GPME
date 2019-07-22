@@ -1,0 +1,102 @@
+{% set pourcentPassport = 0 %}
+
+	{# activity1 #}{% set activity1 = 0 %}
+	{% for card in student.passport.cards %}
+		{% if card.task.entitle == 1 %}{% set activity1 = activity1 + 1 %}
+		{% endif %}
+		{% if card.task.entitle == 2 %}{% set activity1 = activity1 + 1 %}
+		{% endif %}
+		{% if card.task.entitle == 3 %}{% set activity1 = activity1 + 1 %}
+		{% endif %}
+		{% if activity1 >= 2 %}{% set pourcentPassport = pourcentPassport + 10 %}
+		{% endif %}
+	{% endfor %}
+	{# activity2 #}{% set activity2 = 0 %}
+	{% for card in student.passport.cards %}
+		{% if card.task.entitle == 4 %}{% set activity2 = activity2 + 1 %}
+		{% endif %}
+		{% if card.task.entitle == 5 %}{% set activity2 = activity2 + 1 %}
+		{% endif %}
+		{% if card.task.entitle == 6 %}{% set activity2 = activity2 + 1 %}
+		{% endif %}
+		{% if card.task.entitle == 7 %}{% set activity2 = activity2 + 1 %}
+		{% endif %}
+		{% if card.task.entitle == 8 %}{% set activity2 = activity2 + 1 %}
+		{% endif %}
+		{% if card.task.entitle == 9 %}{% set activity2 = activity2 + 1 %}
+		{% endif %}
+		{% if card.task.entitle == 10 %}{% set activity2 = activity2 + 1 %}
+		{% endif %}
+		{% if activity2 >= 5 %}{% set pourcentPassport = pourcentPassport + 27 %}
+		{% endif %}
+	{% endfor %}
+	{# activity3 #}{% set activity3 = 0 %}
+	{% for card in student.passport.cards %}
+		{% if card.task.entitle == 11 %}{% set activity3 = activity3 + 1 %}
+		{% endif %}
+		{% if card.task.entitle == 12 %}{% set activity3 = activity3 + 1 %}
+		{% endif %}
+		{% if card.task.entitle == 13 %}{% set activity3 = activity3 + 1 %}
+		{% endif %}
+		{% if activity3 >= 2 %}{% set pourcentPassport = pourcentPassport + 10 %}
+		{% endif %}
+	{% endfor %}
+	{# activity4 #}{% set activity4 = 0 %}
+	{% for card in student.passport.cards %}
+		{% if card.task.entitle == 14 %}{% set activity4 = activity4 + 1 %}
+		{% endif %}
+		{% if card.task.entitle == 15 %}{% set activity4 = activity4 + 1 %}
+		{% endif %}
+		{% if card.task.entitle == 16 %}{% set activity4 = activity4 + 1 %}
+		{% endif %}
+		{% if card.task.entitle == 17 %}{% set activity4 = activity4 + 1 %}
+		{% endif %}
+		{% if card.task.entitle == 18 %}{% set activity4 = activity4 + 1 %}
+		{% endif %}
+		{% if activity4 >= 3 %}{% set pourcentPassport = pourcentPassport + 16 %}
+		{% endif %}
+	{% endfor %}
+	{# activity5 #}{% set activity5 = 0 %}
+	{% for card in student.passport.cards %}
+		{% if card.task.entitle == 19 %}{% set activity5 = activity5 + 1 %}
+		{% endif %}
+		{% if card.task.entitle == 20 %}{% set activity5 = activity5 + 1 %}
+		{% endif %}
+		{% if card.task.entitle == 21 %}{% set activity5 = activity5 + 1 %}
+		{% endif %}
+		{% if card.task.entitle == 22 %}{% set activity5 = activity5 + 1 %}
+		{% endif %}
+		{% if card.task.entitle == 23 %}{% set activity5 = activity5 + 1 %}
+		{% endif %}
+		{% if card.task.entitle == 24 %}{% set activity5 = activity5 + 1 %}
+		{% endif %}
+		{% if activity5 >= 4 %}{% set pourcentPassport = pourcentPassport + 21 %}
+		{% endif %}
+	{% endfor %}
+	{# activity6 #}{% set activity6 = 0 %}
+	{% for card in student.passport.cards %}
+		{% if card.task.entitle == 25 %}{% set activity6 = activity6 + 1 %}
+		{% endif %}
+		{% if card.task.entitle == 26 %}{% set activity6 = activity6 + 1 %}
+		{% endif %}
+		{% if card.task.entitle == 27 %}{% set activity6 = activity6 + 1 %}
+		{% endif %}
+		{% if card.task.entitle == 28 %}{% set activity6 = activity6 + 1 %}
+		{% endif %}
+		{% if card.task.entitle == 29 %}{% set activity6 = activity6 + 1 %}
+		{% endif %}
+		{% if activity6 >= 3 %}{% set pourcentPassport = pourcentPassport + 16 %}
+		{% endif %}
+	{% endfor %}
+	
+
+
+		<div class="progress my-1">
+			<div class="progress-bar {% if pourcentPassport == "100%" %}bg-success{% endif %}" role="progressbar" style="width: {{ pourcentPassport }}%" aria-valuenow="{{ pourcentPassport }}" aria-valuemin="0" aria-valuemax="100">
+				{% if pourcentPassport == "100%" %}
+					Consulter
+				{% else %}
+					{{ pourcentPassport }}%
+				{% endif %}
+			</div>
+		</div>

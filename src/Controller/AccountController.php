@@ -2,20 +2,21 @@
 
 namespace App\Controller;
 
+use App\Entity\Establishment;
 use App\Entity\PasswordUpdate;
+use App\Entity\User;
 use App\Form\AccountAdminType;
 use App\Form\AccountSadminType;
 use App\Form\AccountStudentType;
 use App\Form\AccountTeacherType;
-use App\Form\AccountType;
 use App\Form\PasswordUpdateType;
-use App\Form\StudentType;
 use App\Repository\AdminRepository;
+use App\Repository\ClassroomRepository;
 use App\Repository\DepartmentRepository;
 use App\Repository\EstablishmentRepository;
-use App\Repository\SadminRepository;
 use App\Repository\StudentRepository;
 use App\Repository\TeacherRepository;
+use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,13 +35,12 @@ class AccountController extends AbstractController
         if ($this->getUser() && !empty($this->getUser())) {
 
             // on le redirige vers le dashboard
-            return $this->redirectToRoute('dashboard');
+            return $this->redirectToRoute('dashboard',[
+                'slug' => $this->getUser()->getSlug(),
+            ]);
 
         // si aucun utilisateur n'est connecté
         } else {
-
-            // on récupére tous les départements dans la base de données
-            $departments = $departmentRepo->findAll();
 
             // on récupére les données du formulaire dans des variables
             $establishment = $request->request->get('establishment_choice');
@@ -48,9 +48,11 @@ class AccountController extends AbstractController
             //on vérifie si un établissement a été choisi
             if (isset($establishment) && !empty($establishment)) {
 
+                $establishment = $establishmentRepo->findOneBy(['id' => $establishment]);dump($establishment);
+
                 // on redirige vers la page de login
                 return $this->redirectToRoute('account_login', [
-                    'establishment' => $establishment,
+                    'slug' => $establishment->getSlug(),
                 ]);
 
             } else {
@@ -61,31 +63,25 @@ class AccountController extends AbstractController
 
                 // on retourne la vue et les données
                 return $this->render('account/index.html.twig', [
-                    'departments' => $departments,
+                    'departments' => $departmentRepo->findAll(),
                     'establishments' => $establishments,
                 ]);
             }
 
             // on retourne la vue et les données
             return $this->render('account/index.html.twig', [
-                'departments' => $departments,
+                'departments' => $departmentRepo->findAll(),
             ]);
         }
     }
 
     /**
-     * @Route("/{establishment}/login", name="account_login")
+     * @Route("/{slug}/login", name="account_login")
      */
-    public function login(AuthenticationUtils $utils, $establishment, EstablishmentRepository $establishmentRepo)
+    public function login(AuthenticationUtils $utils, Establishment $establishment, EstablishmentRepository $establishmentRepo)
     {
-        $establishment = $establishmentRepo->findOneBy(['slug' => $establishment]);
-
-        // on enregistre l'erreur s'il y en a
-        $error = $utils->getLastAuthenticationError();
-
-        // on retourne la vue et les données
-        return $this->render('account/login.html.twig', [
-            'hasError' => $error,
+        return $this->render('account/login.html.twig', [// on retourne la vue et les données
+            'hasError' => $utils->getLastAuthenticationError(),
             'establishment' => $establishment,
         ]);
     }
@@ -96,15 +92,53 @@ class AccountController extends AbstractController
     public function logout(){}
 
     /**
+    * @Route("/dashboard/{slug}", name="dashboard")
+    */
+    public function dashboard(User $user, StudentRepository $studentRepo, TeacherRepository $teacherRepo, AdminRepository $adminRepo, ClassroomRepository $classroomRepo, EstablishmentRepository $establishmentRepo, DepartmentRepository $departmentRepo)
+    {
+        if ($this->getUser()->getTitle() == "ROLE_SADMIN") {
+            return $this->render('account/dashboard.html.twig', [
+            'students' => $studentRepo->findBy([],['id' => 'DESC'],5),// liste des étudiants
+            'teachers' => $teacherRepo->findBy([],['id' => 'DESC'],5),// liste des enseignants
+            'classrooms' => $classroomRepo->findBy([],['createdAt' => 'DESC'],5),// liste des classes
+            'admins' => $adminRepo->findBy([],['id' => 'DESC'],5),// liste des administrateurs
+            'establishments' => $establishmentRepo->findBy([],['createdAt' => 'DESC'],5),// liste des établissements
+            'departments' => $departmentRepo->findBy([],['createdAt' => 'DESC'],5),// liste des départements
+        ]);
+        }
+
+        if ($this->getUser()->getTitle() == "ROLE_ADMIN") {
+            return $this->render('account/dashboard.html.twig', [
+            // messages
+            'classrooms' => $this->getUser()->getAdmin()->getEstablishment()->getClassrooms(),// passeports
+            // fiches SP
+        ]);
+        }
+
+        if ($this->getUser()->getTitle() == "ROLE_TEACHER") {
+            return $this->render('account/dashboard.html.twig', [
+            // messages
+            'classrooms' => $this->getUser()->getTeacher()->getClassrooms(),// passeports
+            // fiches SP
+        ]);
+        }
+
+        if ($this->getUser()->getTitle() == "ROLE_USER") {
+            return $this->render('account/dashboard.html.twig', [
+            // messages
+            'student' => $this->getUser()->getStudent(),// passeports
+        ]);
+        }
+    }
+
+    /**
      * @Route("/account/profile", name="account_profile")
      */
-    public function profile(Request $request, ObjectManager $manager, StudentRepository $studentRepo, TeacherRepository $teacherRepo, AdminRepository $adminRepo, SadminRepository $sadminRepo)
+    public function profile(Request $request, ObjectManager $manager)
     {
-        if ($this->getUser()->getTitle() == "ROLE_SADMIN" ) {
+        if ($this->getUser()->getTitle() == "ROLE_SADMIN") {
 
-            // on récupére l'utilisateur connecté
-            $user = $this->getUser();
-            $sadmin = $sadminRepo->findOneBy(['user' => $user]);
+            $sadmin = $this->getUser()->getSadmin();
 
             // on crée le formulaire
             $form = $this->createForm(AccountSadminType::class, $sadmin);
@@ -130,11 +164,9 @@ class AccountController extends AbstractController
             ]);
         }
 
-        if ($this->getUser()->getTitle() == "ROLE_ADMIN" ) {
+        if ($this->getUser()->getTitle() == "ROLE_ADMIN") {
 
-            // on récupére l'utilisateur connecté
-            $user = $this->getUser();
-            $admin = $adminRepo->findOneBy(['user' => $user]);
+            $admin = $this->getUser()->getAdmin();
 
             // on crée le formulaire
             $form = $this->createForm(AccountAdminType::class, $admin);
@@ -160,11 +192,9 @@ class AccountController extends AbstractController
             ]);
         }
 
-        if ($this->getUser()->getTitle() == "ROLE_TEACHER" ) {
+        if ($this->getUser()->getTitle() == "ROLE_TEACHER") {
 
-            // on récupére l'utilisateur connecté
-            $user = $this->getUser();
-            $teacher = $teacherRepo->findOneBy(['user' => $user]);
+            $teacher = $this->getUser()->getTeacher();
 
             // on crée le formulaire
             $form = $this->createForm(AccountTeacherType::class, $teacher);
@@ -190,11 +220,9 @@ class AccountController extends AbstractController
             ]);
         }
 
-        if ($this->getUser()->getTitle() == "ROLE_USER" ) {
+        if ($this->getUser()->getTitle() == "ROLE_USER") {
 
-            // on récupére l'utilisateur connecté
-            $user = $this->getUser();
-            $student = $studentRepo->findOneBy(['user' => $user]);
+            $student = $this->getUser()->getStudent();
 
             // on crée le formulaire
             $form = $this->createForm(AccountStudentType::class, $student);

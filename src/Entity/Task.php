@@ -21,7 +21,7 @@ class Task
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $number;
+    private $entitle;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -34,13 +34,13 @@ class Task
     private $activity;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Card", inversedBy="tasks")
+     * @ORM\OneToMany(targetEntity="App\Entity\Card", mappedBy="task")
      */
-    private $card;
+    private $cards;
 
     public function __construct()
     {
-        $this->card = new ArrayCollection();
+        $this->cards = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -48,14 +48,14 @@ class Task
         return $this->id;
     }
 
-    public function getNumber(): ?string
+    public function getEntitle(): ?string
     {
-        return $this->number;
+        return $this->entitle;
     }
 
-    public function setNumber(string $number): self
+    public function setEntitle(string $entitle): self
     {
-        $this->number = $number;
+        $this->entitle = $entitle;
 
         return $this;
     }
@@ -87,15 +87,16 @@ class Task
     /**
      * @return Collection|Card[]
      */
-    public function getCard(): Collection
+    public function getCards(): Collection
     {
-        return $this->card;
+        return $this->cards;
     }
 
     public function addCard(Card $card): self
     {
-        if (!$this->card->contains($card)) {
-            $this->card[] = $card;
+        if (!$this->cards->contains($card)) {
+            $this->cards[] = $card;
+            $card->setTask($this);
         }
 
         return $this;
@@ -103,8 +104,12 @@ class Task
 
     public function removeCard(Card $card): self
     {
-        if ($this->card->contains($card)) {
-            $this->card->removeElement($card);
+        if ($this->cards->contains($card)) {
+            $this->cards->removeElement($card);
+            // set the owning side to null (unless already changed)
+            if ($card->getTask() === $this) {
+                $card->setTask(null);
+            }
         }
 
         return $this;

@@ -7,38 +7,17 @@
 		<div class="col-3">
 			<div class="card">
 				<ul class="list-group list-group-flush">
-					<li class="list-group-item">Nom : {{admin.user.lastName}}</li>
+					<li class="list-group-item">Nom : {{admin.user.lastName | upper }}</li>
 					<li class="list-group-item">Prénom : {{admin.user.firstName}}</li>
 					<li class="list-group-item">Email : {{admin.user.email}}</li>
-					<li class="list-group-item">Etablissement : {{admin.establishment.name}}</li>
-					<li class="list-group-item">Crée le : {{ admin.createdAt | date("d/m/Y") }}</li>
+					<li class="list-group-item">Etablissement : {{admin.establishment.name | default('non assigné')}}</li>
+					<li class="list-group-item">Crée le : {{ admin.user.createdAt | date("d/m/Y") }}</li>
 				</ul>
 			</div>
 		</div>
 		<div class="col-9">
 			<h5>Liste des classes :</h5>
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th scope="col">Diplôme</th>
-						<th scope="col">Date de début</th>
-						<th scope="col">Date de fin</th>
-						<th scope="col">Etablissement</th>
-						<th scope="col">Actif</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for classroom in admin.establishment.classrooms %}
-						<tr>
-							<td><a href="{{ path('classroom_show', {'id': classroom.id}) }}">{{ classroom.degree }}</a></td>
-							<td><a href="{{ path('classroom_show', {'id': classroom.id}) }}">{{ classroom.startDate}}</a></td>
-							<td><a href="{{ path('classroom_show', {'id': classroom.id}) }}">{{ classroom.endDate}}</a></td>
-							<td><a href="{{ path('establishment_show', {'id': classroom.establishment.id}) }}">{{ classroom.establishment.name}}</a></td>
-							<td><a class="{% if classroom.exist == 1 %}text-success{% else %}text-danger{% endif %}" href="{{ path('classroom_show', {'id': classroom.id}) }}">{% if classroom.exist == 1 %} oui {% else %} non {% endif %}</a></td>
-						</tr> 
-					{% endfor %}
-				</tbody>
-			</table>
+			{% include 'partials/tables/classroom.html.twig' %}
 		</div>
 	</div>
 

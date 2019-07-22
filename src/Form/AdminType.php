@@ -16,10 +16,9 @@ class AdminType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        // ->add('createdAt')
-        ->add('establishment', EntityType::class, ['class' => Establishment::class, 'label' => false, 'choice_label' => function ($establishment) { return $establishment->getName()." (".$establishment->getDepartment()->getName().")"; }])
-        ->add('user', UserType::class, ['label' => false])
-        ->add('save', SubmitType::class, ['attr' => ['class' => 'btn btn-primary']]);
+        ->add('establishment', EntityType::class, ['class' => Establishment::class, 'label' => 'Selectionner l\'établissement','required' => false, 'placeholder' => 'Choisir un établissement', 'choice_label' => function ($establishment) { return $establishment->getName()." (".$establishment->getDepartment()->getName().")"; }])
+        ->add('user', UserType::class)
+        ->add('save', SubmitType::class, ['label' => 'Enregistrer', 'attr' => ['class' => 'btn btn-primary']]);
         ;
     }
 

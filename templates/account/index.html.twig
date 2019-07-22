@@ -16,7 +16,7 @@
 			<select class="form-control my-2" name="establishment_choice">
 				<option value="">Choix de l'établissement</option>
 				{% for establishment in establishments %}
-					<option value="{{ establishment.slug }}">{{ establishment.name }}</option>
+					<option value="{{ establishment.id }}">{{ establishment.name }}</option>
 				{% endfor %}
 			</select>
 		{% endif %}

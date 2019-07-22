@@ -6,8 +6,8 @@
 
 		{{ form_start(form) }}
 
-		{{ form_row(form.exist, {'label':"Activer la fiche de situation professionnelle :"}) }}
-		{{ form_row(form.associate, {'label':"Associer la fiche au passeport professionnel :"}) }}
+		{{ form_row(form.exist) }}
+		{{ form_row(form.associate) }}
 
 		<!-- CARTOUCHE -->
 		<table class="table table-bordered w-100 mb-3">
@@ -23,10 +23,10 @@
 			</tr>
 			<tr>
 				<td class="w-50">
-					<p class="m-1 p-0 text-center">{{student.user.lastName}} - {{student.user.firstName}}</p>
+					<p class="m-1 p-0 text-center">{{app.user.lastName}} - {{app.user.firstName}}</p>
 				</td>
 				<td class="w-50">
-					<p class="m-1 p-0 text-center">{{student.candidateNb}}</p>
+					<p class="m-1 p-0 text-center">{{app.user.student.candidateNb | default('non renseigné')}}</p>
 				</td>
 			</tr>
 		</table>
@@ -50,7 +50,7 @@
 				</td>
 				<td>
 					<p class="m-1 p-0">Modalité de réalisation</p>
-					{{ form_label(form.modality) }}{{ form_widget(form.modality, {'attr': {'class' : 'form-control-sm'}}) }}
+					{{ form_row(form.modality, {'attr': {'class' : 'form-control-sm'}}) }}
 				</td>
 			</tr>
 			<tr>
@@ -58,12 +58,11 @@
 					<p class="m-1 p-0">Période de réalisation</p>
 				</td>
 				<td class="text-center">
-					<p class="m-1 p-0">Mois</p>{{ form_label(form.monthsp) }}{{ form_widget(form.monthsp, {'attr': {'class' : 'form-control-sm'}}) }}
-					<p class="m-1 p-0">Années</p>{{ form_label(form.yearsp) }}{{ form_widget(form.yearsp, {'attr': {'class' : 'form-control-sm'}}) }}
+					{{ form_row(form.datesp) }}
 				</td>
 				<td colspan="3">
 					<p class="m-1 p-0">Condition de réalisation</p>
-					{{ form_label(form.term) }}{{ form_widget(form.term, {'attr': {'class' : 'form-control-sm'}}) }}
+					{{ form_row(form.term, {'attr': {'class' : 'form-control-sm'}}) }}
 				</td>
 			</tr>
 			<tr>
@@ -71,7 +70,7 @@
 					<p class="m-1 p-0">Activités concernées</p>
 				</td>
 				<td colspan="2">
-					{{ form_label(form.activity) }}{{ form_widget(form.activity, {'attr': {'class' : 'form-control-sm','onchange':"recupActivity();"}}) }}
+					{{ form_row(form.activity, {'attr': {'class' : 'form-control-sm','onchange':"recupActivity();"}}) }}
 				</td>
 			</tr>
 			<tr>
@@ -80,9 +79,9 @@
 				</td>
 				<td colspan="2">
 					{% for activity in activities %}
-						<div class="form-group activity d-none" id="activity_{{activity.id}}">
+						<div class="form-group activity d-none m-0" id="activity_{{activity.id}}">
 							{% for task in activity.tasks %}
-								<input id="task_{{task.id}}" type="checkbox" name="task[]" value="{{task.id}}"><label for="task_{{task.id}}" class="ml-2">{{task.number}} {{task.name}}</label><br>
+								<input id="task_{{task.id}}" type="checkbox" name="task[]" value="{{task.id}}"><label for="task_{{task.id}}" class="ml-2">{{task.name}}</label><br>
 							{% endfor %}
 						</div>
 					{% endfor %}
@@ -93,7 +92,7 @@
 					<p class="m-1 p-0">Intitulé de la situation professionnelle</p>
 				</td>
 				<td colspan="2">
-					<p class="m-1 p-0">{{ form_row(form.entitledsp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+					<p class="m-1 p-0">{{ form_row(form.entitledsp) }}</p>
 				</td>
 			</tr>
 			<tr>
@@ -101,7 +100,7 @@
 					<p class="m-1 p-0">Lieu, période et durée de réalisation</p>
 				</td>
 				<td colspan="2">
-					<p class="m-1 p-0">{{ form_row(form.infossp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+					<p class="m-1 p-0">{{ form_row(form.infossp) }}</p>
 				</td>
 			</tr>
 			<tr>
@@ -109,7 +108,7 @@
 					<p class="m-1 p-0">Cadre de la situation professionnelle</p>
 				</td>
 				<td colspan="2">
-					<p class="m-1 p-0">{{ form_row(form.framesp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+					<p class="m-1 p-0">{{ form_row(form.framesp) }}</p>
 				</td>
 			</tr>
 		</table>
@@ -126,7 +125,7 @@
 					<p class="m-1 p-0">Type de problème</p>
 				</td>
 				<td colspan="3" class="text-center">
-					{{ form_label(form.problem) }}{{ form_widget(form.problem, {'attr': {'class' : 'form-control-sm','onchange':"recupProblem();"}}) }}
+					{{ form_row(form.problem, {'attr': {'class' : 'form-control-sm','onchange':"recupProblem();"}}) }}
 				</td>
 			</tr>
 			<tr>
@@ -134,9 +133,9 @@
 					<p class="m-1 p-0">Descriptif du problème</p>
 				</td>
 				<td>
-					<div class="form-group problem d-none" id="problem_1">{{ form_widget(form.problemmanagsp, {'attr': {'class' : 'form-control-sm'}}) }}</div>
-					<div class="form-group problem d-none" id="problem_2">{{ form_widget(form.problemcomosp, {'attr': {'class' : 'form-control-sm'}}) }}</div>
-					<div class="form-group problem d-none" id="problem_3">{{ form_widget(form.problemcomwsp, {'attr': {'class' : 'form-control-sm'}}) }}</div>
+					<div class="form-group problem d-none" id="problem_1">{{ form_row(form.problemmanagsp) }}</div>
+					<div class="form-group problem d-none" id="problem_2">{{ form_row(form.problemcomosp) }}</div>
+					<div class="form-group problem d-none" id="problem_3">{{ form_row(form.problemcomwsp) }}</div>
 				</td>
 			</tr>
 			<tr>
@@ -144,7 +143,7 @@
 					<p class="m-1 p-0">Acteurs et relation entre les acteurs</p>
 				</td>
 				<td style="width: 85%;">
-					<p class="m-1 p-0">{{ form_row(form.actorssp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+					<p class="m-1 p-0">{{ form_row(form.actorssp) }}</p>
 				</td>
 			</tr>
 			<tr>
@@ -152,7 +151,7 @@
 					<p class="m-1 p-0">Objectif</p>
 				</td>
 				<td style="width: 85%;">
-					<p class="m-1 p-0">{{ form_row(form.targetsp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+					<p class="m-1 p-0">{{ form_row(form.targetsp) }}</p>
 				</td>
 			</tr>
 			<tr>
@@ -160,7 +159,7 @@
 					<p class="m-1 p-0">Conditions de réalisation : contraintes dont le processus et organisation comptable, environnement numérique</p>
 				</td>
 				<td style="width: 85%;">
-					<p class="m-1 p-0">{{ form_row(form.conditionssp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+					<p class="m-1 p-0">{{ form_row(form.conditionssp) }}</p>
 				</td>
 			</tr>
 			<tr>
@@ -168,7 +167,7 @@
 					<p class="m-1 p-0">Ressources à disposition</p>
 				</td>
 				<td style="width: 85%;">
-					<p class="m-1 p-0">{{ form_row(form.resourcessp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+					<p class="m-1 p-0">{{ form_row(form.resourcessp) }}</p>
 				</td>
 			</tr>
 			<tr>
@@ -176,7 +175,7 @@
 					<p class="m-1 p-0">Solutions logicielles choisies et fonctionnalités mobilisées</p>
 				</td>
 				<td style="width: 85%;">
-					<p class="m-1 p-0">{{ form_row(form.answerssp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+					<p class="m-1 p-0">{{ form_row(form.answerssp) }}</p>
 				</td>
 			</tr>
 			<tr>
@@ -184,7 +183,7 @@
 					<p class="m-1 p-0">Productions réalisées</p>
 				</td>
 				<td style="width: 85%;">
-					<p class="m-1 p-0">{{ form_row(form.productionssp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+					<p class="m-1 p-0">{{ form_row(form.productionssp) }}</p>
 				</td>
 			</tr>
 			<tr>
@@ -192,7 +191,7 @@
 					<p class="m-1 p-0">Ecrits professionnels produits</p>
 				</td>
 				<td style="width: 85%;">
-					<p class="m-1 p-0">{{ form_row(form.writtensp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+					<p class="m-1 p-0">{{ form_row(form.writtensp) }}</p>
 				</td>
 			</tr>
 			<tr>
@@ -200,7 +199,7 @@
 					<p class="m-1 p-0">Oraux professionnels</p>
 				</td>
 				<td style="width: 85%;">
-					<p class="m-1 p-0">{{ form_row(form.oralsp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+					<p class="m-1 p-0">{{ form_row(form.oralsp) }}</p>
 				</td>
 			</tr>
 		</table>
@@ -217,7 +216,7 @@
 					<p class="m-1 p-0">Analyse de la situation</p>
 				</td>
 				<td style="width: 85%;">
-					<p class="m-1 p-0">{{ form_row(form.analysissp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+					<p class="m-1 p-0">{{ form_row(form.analysissp) }}</p>
 				</td>
 			</tr>
 			<tr>
@@ -225,18 +224,19 @@
 					<p class="m-1 p-0">Contribution de la situation professionnelle à la professionnalisation</p>
 				</td>
 				<td style="width: 85%;">
-					<p class="m-1 p-0">{{ form_row(form.contributionsp, {'attr': {'class' : 'form-control-sm'}}) }}</p>
+					<p class="m-1 p-0">{{ form_row(form.contributionsp) }}</p>
 				</td>
 			</tr>
 		</table>
 
-		{{ form_row(form.save, {'label':"Enregistrer"}) }}
+		{{ form_row(form.save) }}
 		{{ form_end(form) }}
 
 	{% endblock %}
 	{% block javascripts %}
 		<script>
-		var select_problem = document.getElementById("card_problem" );
+		// script champ problem
+		var select_problem = document.getElementById("card_problem");
 		card_problem.addEventListener('onchange',recupProblem);
 		function recupProblem(){
 			var valeur_problem = select_problem.options[select_problem.selectedIndex].value;
@@ -248,13 +248,14 @@
 			recupProblem();
 		});
 
-		var select_activity = document.getElementById("card_activity" );
+		// script champ acivity
+		var select_activity = document.getElementById("card_activity");
 		card_activity.addEventListener('onchange',recupActivity);
 		function recupActivity(){
 			var valeur_activity = select_activity.options[select_activity.selectedIndex].value;
 			$(".activity").addClass("d-none");
 			$("#activity_"+valeur_activity).removeClass("d-none");
-			// console.log(valeur_activity);
+			console.log(valeur_activity);
 		};
 		$(document).ready(function(){
 			recupActivity();

@@ -1,209 +1,157 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
 	<!-- CARTOUCHE -->
-	<div id="block" class="border mb-2">
-		<div class="border">
-			<h2 class="text-center m-2">BTS gestion de la PME - Session 2019-2020</h2>
-		</div>
-		<div class="border">
-			<h3 class="text-center m-2">E4 - Gérer les relations avec les clients et les fournisseurs</h3>
-		</div>
-		<div class="d-flex">
-			<div class="col-6 border">
-				<p id="name" class="text-center m-1">{{card.student.user.lastName}} - {{card.student.user.firstName}}</p>
-			</div>
-			<div class="col-6 border">
-				<p id="candidateNb" class="text-center m-1">{{card.student.candidateNb}}</p>
-			</div>
-		</div>
-	</div>
+	<table class="table table-bordered w-100 mb-3">
+		<tr>
+			<th colspan="2" class="text-center"><h2 class="m-1 p-0">BTS gestion de la PME - Session 2019-2020</h2></th>
+		</tr>
+		<tr>
+			<th colspan="2" class="text-center"><h3 class="m-1 p-0">E4 - Gérer les relations avec les clients et les fournisseurs</h3></th>
+		</tr>
+		<tr>
+			<td class="w-50"><p class="m-1 p-0 text-center">{{card.student.user.lastName}} - {{card.student.user.firstName}}</p></td>
+			<td class="w-50"><p class="m-1 p-0 text-center">{{card.student.candidateNb | default('non renseigné')}}</p></td>
+		</tr>
+	</table>
 
 	<!-- FICHE -->
-	<div id="block" class="border mb-2">
-		<div class="border">
-			<h4 class="text-center m-2">Fiche d'analyse d'une situation professionnelle</h4>
-		</div>
-		<div class="d-flex">
+	<table class="table table-bordered w-100 m-0">
+		<tr>
+			<th colspan="3" class="text-center"><h4 class="m-1 p-0">Fiche d'analyse d'une situation professionnelle</h4></th>
+		</tr>
+		<tr>
 			{% for problem in problems %}
-				<div class="col-4 border text-center">
-					<input class="mr-2" type="checkbox" name="" {% if card.problem == problem %}checked="checked"{% endif %} disabled="disabled"><label class="m-0 p-0" for="">{{problem.title}}</label>
-				</div>
+				<td class="col-4 text-center">
+					<p class="m-1 p-0">
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% if card.problem == problem %}-check{% endif %}-square"></i>{{problem.name}}
+					</p>
+				</td>
 			{% endfor %}
-		</div>
-		<div class="d-flex">
-			<div class="col-2 border">
-				<p class="m-1">Identification de la situation professionnelle</p>
-			</div>
-			<div class="col-2 border">
-				<p class="text-center m-1">{{card.numbersp}}</p>
-			</div>
-			<div class="col-8 border">
-				<p class="m-1">Modalité de réalisation</p>
+		</tr>
+	</table>
+
+	<table class="table table-bordered w-100 mb-3">
+		<tr>
+			<td style="width: 15%;"><p class="m-1 p-0">Identification de la situation professionnelle</p></td>
+			<td style="width: 15%;" class="text-center m-0 p-1">{{card.numbersp}}</td>
+			<td>
+				<p class="m-1 p-0">Modalité de réalisation</p>
 				{% for modality in modalities %}
-					<input class="mr-2" type="checkbox" name="" {% if card.modality.title is defined and card.modality.title == modality.title %}checked="checked"{% else %}{% endif %} disabled="disabled"><label class="m-0 p-0" for="">{{modality.title}}</label><br>
+					<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% if card.modality.name is defined and card.modality.name == modality.name %}-check{% endif %}-square"></i>{{modality.name}}<br>
 				{% endfor %}
-			</div>
-		</div>
-		<div class="d-flex">
-			<div class="col-2 border">
-				<p class="m-1">Période de réalisation</p>
-			</div>
-			<div class="col-2 border">
-				<p class="text-center m-1">{{card.monthsp}}/{{card.yearsp}}</p>
-			</div>
-			<div class="col-8 border">
-				<p class="m-1">Condition de réalisation</p>
+			</td>
+		</tr>
+		<tr>
+			<td><p class="m-1 p-0">Période de réalisation</p></td>
+			<td class="text-center"><p class="m-1 p-0">{{card.datesp}}</p></td>
+			<td colspan="3">
+				<p class="m-1 p-0">Condition de réalisation</p>
 				{% for term in terms %}
-					<input class="mr-2" type="checkbox" name="" {% if card.term.title is defined and card.term.title == term.title %}checked="checked"{% endif %} disabled="disabled"><label class="m-0 p-0" for="">{{term.title}}</label><br>
+					<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% if card.term.name is defined and card.term.name == term.name %}-check{% endif %}-square"></i>{{term.name}}<br>
 				{% endfor %}
-			</div>
-		</div>
-		<div class="d-flex">
-			<div class="col-2 border">
-				<p class="m-1">Activités concernées</p>
-			</div>
-			<div class="col-10 border">
+			</td>
+		</tr>
+		<tr>
+			<td><p class="m-1 p-0">Activités concernées</p></td>
+			<td colspan="2">
 				{% for activity in activities %}
-					<input class="mr-2" type="checkbox" name="" {% if card.activity.name is defined and card.activity.name == activity.name %}checked="checked"{% endif %} disabled="disabled"><label class="m-0 p-0" for="">{{activity.number}} {{activity.name}}</label><br>
+					<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% if card.activity.name is defined and card.activity.name == activity.name %}-check{% endif %}-square"></i>{{activity.name}}<br>
 				{% endfor %}
-			</div>
-		</div>
-		<div class="d-flex">
-			<div class="col-2 border">
-				<p class="m-1">Intitulé de la situation professionnelle</p>
-			</div>
-			<div class="col-10 border">
+			</td>
+		</tr>
+		<tr>
+			<td><p class="m-1 p-0">Tâches concernées</p></td>
+			<td colspan="2">
+				{% for task in tasks %}
+					{% if task.activity.id == card.activity.id %}
+						<i style="margin: 0pt;padding: 0pt 4pt 0pt 2pt;" class="far fa{% if task.id == card.task.id %}-check{% endif %}-square"></i>{{task.name}}<br>
+					{% endif %}
+				{% endfor %}
+			</td>
+		</tr>
+		<tr>
+			<td><p class="m-1 p-0">Intitulé de la situation professionnelle</p></td>
+			<td colspan="2">
 				<p class="m-1">{{card.entitledsp}}</p>
-			</div>
-		</div>
-		<div class="d-flex">
-			<div class="col-2 border">
-				<p class="m-1">Lieu, période et durée de réalisation</p>
-			</div>
-			<div class="col-10 border">
-				<p class="m-1">{{card.infossp}}</p>
-			</div>
-		</div>
-		<div class="d-flex">
-			<div class="col-2 border">
-				<p class="m-1">Cadre de la situation professionnelle</p>
-			</div>
-			<div class="col-10 border">
-				<p class="m-1">{{card.framesp}}</p>
-			</div>
-		</div>
-	</div>
+			</td>
+		</tr>
+		<tr>
+			<td><p class="m-1 p-0">Lieu, période et durée de réalisation</p></td>
+			<td colspan="2"><p class="m-1 p-0">{{card.infossp}}</p></td>
+		</tr>
+		<tr>
+			<td><p class="m-1 p-0">Cadre de la situation professionnelle</p></td>
+			<td colspan="2"><p class="m-1 p-0">{{card.framesp}}</p></td>
+		</tr>
+	</table>
 
 	<!-- PROBLEME -->
-	<div id="block" class="border mb-2">
-		<div class="border">
-			<h4 class="text-center m-2">Problème de gestion soulevé et enjeux de la situation</h4>
-		</div>
-		<div class="d-flex">
+	<table class="table table-bordered w-100 m-0">
+		<tr>
+			<th colspan="3" class="text-center"><h4 class="m-1 p-0">Problème de gestion soulevé et enjeux de la situation</h4></th>
+		</tr>
+		<tr>
 			{% for problem in problems %}
-				<div class="col-4 border text-center">
-					<input class="mr-2" type="checkbox" name="" {% if card.problem == problem %}checked="checked"{% endif %} disabled="disabled"><label class="m-0 p-0" for="">{{problem.title}}</label>
-				</div>
+				<td class="col-4 text-center"><input class="mr-2" type="checkbox" name="" {% if card.problem == problem %}checked="checked"{% endif %} disabled="disabled"><label class="m-0 p-0" for="">{{problem.name}}</label></td>
 			{% endfor %}
-		</div>
-		<div class="d-flex">
-			<div class="col-4 border">
-				<p class="text-center m-1">{{card.problemmanagsp}}</p>
-			</div>
-			<div class="col-4 border">
-				<p class="text-center m-1">{{card.problemcomosp}}</p>
-			</div>
-			<div class="col-4 border">
-				<p class="text-center m-1">{{card.problemcomwsp}}</p>
-			</div>
-		</div>
-		<div class="d-flex">
-			<div class="col-2 border">
-				<p>Acteurs et relation entre les acteurs</p>
-			</div>
-			<div class="col-10 border">
-				<p>{{card.actorssp}}</p>
-			</div>
-		</div>
-		<div class="d-flex">
-			<div class="col-2 border">
-				<p>Objectif</p>
-			</div>
-			<div class="col-10 border">
-				<p>{{card.targetsp}}</p>
-			</div>
-		</div>
-		<div class="d-flex">
-			<div class="col-2 border">
-				<p>Conditions de réalisation : contraintes dans le processus et organisation comptable, environnement numérique</p>
-			</div>
-			<div class="col-10 border">
-				<p>{{card.conditionssp}}</p>
-			</div>
-		</div>
-		<div class="d-flex">
-			<div class="col-2 border">
-				<p>Ressources à disposition</p>
-			</div>
-			<div class="col-10 border">
-				<p>{{card.resourcessp}}</p>
-			</div>
-		</div>
-		<div class="d-flex">
-			<div class="col-2 border">
-				<p>Solutions logicielles choisies et fonctionnalités mobilisées</p>
-			</div>
-			<div class="col-10 border">
-				<p>{{card.answerssp}}</p>
-			</div>
-		</div>
-		<div class="d-flex">
-			<div class="col-2 border">
-				<p>Productions réalisées</p>
-			</div>
-			<div class="col-10 border">
-				<p>{{card.productionssp}}</p>
-			</div>
-		</div>
-		<div class="d-flex">
-			<div class="col-2 border">
-				<p>Ecrits professionnels produits</p>
-			</div>
-			<div class="col-10 border">
-				<p>{{card.writtensp}}</p>
-			</div>
-		</div>
-		<div class="d-flex">
-			<div class="col-2 border">
-				<p>Oraux professionnels</p>
-			</div>
-			<div class="col-10 border">
-				<p>{{card.oralsp}}</p>
-			</div>
-		</div>
-	</div>
+		</tr>
+		<tr>
+			<td><p style="min-height: 16px;" class="m-1">{{card.problemmanagsp}}</p></td>
+			<td><p style="min-height: 16px;" class="m-1">{{card.problemcomosp}}</p></td>
+			<td><p style="min-height: 16px;" class="m-1">{{card.problemcomwsp}}</p></td>
+		</tr>
+	</table>
+
+	<table class="table table-bordered w-100 mb-3">
+		<tr>
+			<td style="width: 15%;"><p class="m-1 p-0">Acteurs et relation entre les acteurs</p></td>
+			<td style="width: 85%;"><p class="m-1 p-0">{{card.actorssp}}</p></td>
+		</tr>
+		<tr>
+			<td style="width: 15%;"><p class="m-1 p-0">Objectif</p></td>
+			<td style="width: 85%;"><p class="m-1 p-0">{{card.targetsp}}</p></td>
+		</tr>
+		<tr>
+			<td style="width: 15%;"><p class="m-1 p-0">Conditions de réalisation : contraintes dont le processus et organisation comptable, environnement numérique</p></td>
+			<td style="width: 85%;"><p class="m-1 p-0">{{card.conditionssp}}</p></td>
+		</tr>
+		<tr>
+			<td style="width: 15%;"><p class="m-1 p-0">Ressources à disposition</p></td>
+			<td style="width: 85%;"><p class="m-1 p-0">{{card.resourcessp}}</p></td>
+		</tr>
+		<tr>
+			<td style="width: 15%;"><p class="m-1 p-0">Solutions logicielles choisies et fonctionnalités mobilisées</p></td>
+			<td style="width: 85%;"><p class="m-1 p-0">{{card.answerssp}}</p></td>
+		</tr>
+		<tr>
+			<td style="width: 15%;"><p class="m-1 p-0">Productions réalisées</p></td>
+			<td style="width: 85%;"><p class="m-1 p-0">{{card.productionssp}}</p></td>
+		</tr>
+		<tr>
+			<td style="width: 15%;"><p class="m-1 p-0">Ecrits professionnels produits</p></td>
+			<td style="width: 85%;"><p class="m-1 p-0">{{card.writtensp}}</p></td>
+		</tr>
+		<tr>
+			<td style="width: 15%;"><p class="m-1 p-0">Oraux professionnels</p></td>
+			<td style="width: 85%;"><p class="m-1 p-0">{{card.oralsp}}</p></td>
+		</tr>
+	</table>
 
 	<!-- ANALYSE -->
-	<div id="block" class="border mb-2">
-		<div class="border">
-			<h4 class="text-center m-2">Analyse</h4>
-		</div>
-		<div class="d-flex">
-			<div class="col-2 border">
-				<p>Analyse de la situation</p>
-			</div>
-			<div class="col-10 border">
-				<p>{{card.analysissp}}</p>
-			</div>
-		</div>
-		<div class="d-flex">
-			<div class="col-2 border">
-				<p>Contribution de la situation professionnelle à la professionnalisation</p>
-			</div>
-			<div class="col-10 border">
-				<p>{{card.contributionsp}}</p>
-			</div>
-		</div>
-	</div>
+	<table class="table table-bordered w-100 mb-3">
+		<tr>
+			<th colspan="2" class="text-center"><h4 class="m-1 p-0">Analyse</h4></th>
+		</tr>
+		<tr>
+			<td style="width: 15%;"><p class="m-1 p-0">Analyse de la situation</p></td>
+			<td style="width: 85%;"><p class="m-1 p-0">{{card.analysissp}}</p></td>
+		</tr>
+		<tr>
+			<td style="width: 15%;"><p class="m-1 p-0">Contribution de la situation professionnelle à la professionnalisation</p></td>
+			<td style="width: 85%;"><p class="m-1 p-0">{{card.contributionsp}}</p></td>
+		</tr>
+	</table>
+
 {% endblock %}

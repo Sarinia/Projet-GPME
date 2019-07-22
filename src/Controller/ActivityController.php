@@ -7,26 +7,27 @@ use App\Form\ActivityType;
 use App\Repository\ActivityRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ActivityController extends AbstractController
 {
     /**
-     * @Route("/referentiel/activity/list", name="referentiel_activity_list")
+     * @Route("/activity/list", name="referentiel_activity_list")
      */
     public function index(ActivityRepository $activityRepo)
     {
     	// activités
     	$activities = $activityRepo->findAll();
 
-    	return $this->render('referentiel/activity/list.html.twig', [
+    	return $this->render('activity/list.html.twig', [
     		'activities' => $activities,
     	]);
     }
 
     /**
-     * @Route("/referentiel/activity/new", name="referentiel_activity_new")
+     * @Route("/activity/new", name="referentiel_activity_new")
      */
     public function create(ObjectManager $manager, Request $request)
     {
@@ -50,13 +51,13 @@ class ActivityController extends AbstractController
     	}
 
         // on redirige vers la liste des administrateurs
-    	return $this->render('referentiel/activity/new.html.twig', [
+    	return $this->render('activity/new.html.twig', [
     		'form' => $form->createView(),
     	]);
     }
 
     /**
-     * @Route("/referentiel/activity/modify/{id}", name="referentiel_activity_modify")
+     * @Route("/activity/modify/{id}", name="referentiel_activity_modify")
      */
     public function modify(Activity $activity, ObjectManager $manager, Request $request)
     {
@@ -73,26 +74,37 @@ class ActivityController extends AbstractController
 
     		$this->addFlash('success','Votre activité a bien été modifié !');
 
-    		return $this->redirectToRoute('referentiel_activity_list');
+    		return $this->redirectToRoute('referentiel_list');
     	}
 
         // on redirige vers la liste des administrateurs
-    	return $this->render('referentiel/activity/modify.html.twig', [
+    	return $this->render('activity/modify.html.twig', [
             'form' => $form->createView(),
-    		'activity' => $activity,
-    	]);
+            'activity' => $activity,
+        ]);
     }
 
     /**
-     * @Route("/referentiel/activity/delete/{id}", name="referentiel_activity_delete")
+     * @Route("/activity/delete/{id}", name="referentiel_activity_delete")
      */
-    public function delete(Activity $activity, ObjectManager $manager)
+    public function delete(Activity $activity, ObjectManager $manager, Request $request)
     {
-    	$manager->remove($activity);
-    	$manager->flush();
+        if (Count($activity->getTasks()) == 0) {
 
-    	$this->addFlash('success','Votre activité a bien été supprimé !');
+            $manager->remove($activity);
+            $manager->flush();
 
-    	return $this->redirectToRoute('referentiel_activity_list');
+            $this->addFlash('success','Votre activité a bien été supprimé !');
+
+            $referer = $request->headers->get('referer');   
+            return new RedirectResponse($referer);
+
+        } else {
+
+            $this->addFlash('danger', "L'activité contient encore des tâches !");
+
+            $referer = $request->headers->get('referer');   
+            return new RedirectResponse($referer);  
+        }  
     }
 }

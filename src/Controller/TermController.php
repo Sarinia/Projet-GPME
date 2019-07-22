@@ -7,26 +7,27 @@ use App\Form\TermType;
 use App\Repository\TermRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class TermController extends AbstractController
 {
     /**
-     * @Route("/referentiel/term/list", name="referentiel_term_list")
+     * @Route("/term/list", name="referentiel_term_list")
      */
     public function index(TermRepository $termRepo)
     {
     	// termes
     	$terms = $termRepo->findAll();
 
-    	return $this->render('referentiel/term/list.html.twig', [
+    	return $this->render('term/list.html.twig', [
     		'terms' => $terms,
     	]);
     }
 
     /**
-     * @Route("/referentiel/term/new", name="referentiel_term_new")
+     * @Route("/term/new", name="referentiel_term_new")
      */
     public function create(ObjectManager $manager, Request $request)
     {
@@ -46,17 +47,17 @@ class TermController extends AbstractController
 
     		$this->addFlash('success','Votre condition a bien été ajouté !');
 
-    		return $this->redirectToRoute('referentiel_term_list');
+    		return $this->redirectToRoute('referentiel_list');
     	}
 
         // on redirige vers la liste des administrateurs
-    	return $this->render('referentiel/term/new.html.twig', [
+    	return $this->render('term/new.html.twig', [
     		'form' => $form->createView(),
     	]);
     }
 
     /**
-     * @Route("/referentiel/term/modify/{id}", name="referentiel_term_modify")
+     * @Route("/term/modify/{id}", name="referentiel_term_modify")
      */
     public function modify(Term $term, ObjectManager $manager, Request $request)
     {
@@ -73,26 +74,27 @@ class TermController extends AbstractController
 
     		$this->addFlash('success','Votre condition a bien été modifié !');
 
-    		return $this->redirectToRoute('referentiel_term_list');
+    		return $this->redirectToRoute('referentiel_list');
     	}
 
         // on redirige vers la liste des administrateurs
-    	return $this->render('referentiel/term/modify.html.twig', [
+    	return $this->render('term/modify.html.twig', [
             'form' => $form->createView(),
-    		'term' => $term,
-    	]);
+            'term' => $term,
+        ]);
     }
 
     /**
-     * @Route("/referentiel/term/delete/{id}", name="referentiel_term_delete")
+     * @Route("/term/delete/{id}", name="referentiel_term_delete")
      */
-    public function delete(Term $term, ObjectManager $manager)
+    public function delete(Term $term, ObjectManager $manager, Request $request)
     {
     	$manager->remove($term);
     	$manager->flush();
 
     	$this->addFlash('success','Votre condition a bien été supprimé !');
 
-    	return $this->redirectToRoute('referentiel_term_list');
+    	$referer = $request->headers->get('referer');   
+        return new RedirectResponse($referer);
     }
 }

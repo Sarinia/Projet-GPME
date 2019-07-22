@@ -1,28 +1,24 @@
 {# Account #}
 {% if (app.request.attributes.get('_route') == "homepage") %}Accueil{% endif %}
 {% if (app.request.attributes.get('_route') == "account_login") %}Connexion{% endif %}
-{% if (app.request.attributes.get('_route') == "account_sadmin_login") %}Connexion du Super-admin{% endif %}
+{% if (app.request.attributes.get('_route') == "dashboard") %}Tableau de bord{% endif %}
 {% if (app.request.attributes.get('_route') == "account_profile") %}Modification du profil{% endif %}
 {% if (app.request.attributes.get('_route') == "account_password") %}Modification du mot de passe{% endif %}
 
 {# Contact #}
 {% if (app.request.attributes.get('_route') == "contact") %}Formulaire de contact{% endif %}
 
-{# Accueil #}
-{% if (app.request.attributes.get('_route') == "dashboard_student") %}Tableau de bord {{ app.user.firstName }} - {{ app.user.lastName }}{% endif %}
-{% if (app.request.attributes.get('_route') == "dashboard_teacher") %}Tableau de bord {{ app.user.firstName }} - {{ app.user.lastName }}{% endif %}
-{% if (app.request.attributes.get('_route') == "dashboard_admin") %}Tableau de bord {{ app.user.firstName }} - {{ app.user.lastName }}{% endif %}
-{% if (app.request.attributes.get('_route') == "dashboard_sadmin") %}Tableau de bord {{ app.user.firstName }} - {{ app.user.lastName }}{% endif %}
-
 {# Passport #}
-{% if (app.request.attributes.get('_route') == "passport_show_list") %}Passeport professionnel{% endif %}
-{% if (app.request.attributes.get('_route') == "passport_show") %}Passeport professionnel{% endif %}
+{% if (app.request.attributes.get('_route') == "passport_show_list") %}Liste des Tableaux Synoptiques{% endif %}
+{% if (app.request.attributes.get('_route') == "passport_show") %}Tableau Synoptique{% endif %}
+	{% if (app.request.attributes.get('_route') == "passport_print") %}Aperçu avant impression{% endif %}
 
 {# Card #}
 {% if (app.request.attributes.get('_route') == "card_show_list") %}Liste des fiches de situation professionnelle{% endif %}
 {% if (app.request.attributes.get('_route') == "card_show") %}Page de la fiche de situation professionnelle{% endif %}
 {% if (app.request.attributes.get('_route') == "card_new") %}Création d'une fiche de situation professionnelle{% endif %}
 {% if (app.request.attributes.get('_route') == "card_modify") %}Modification d'une fiche de situation professionnelle{% endif %}
+{% if (app.request.attributes.get('_route') == "card_print") %}Aperçu avant impression{% endif %}
 
 {# Student #}
 {% if (app.request.attributes.get('_route') == "student_show_list") %}Liste des étudiants{% endif %}
@@ -51,15 +47,10 @@
 {# referentiel #}
 {% if (app.request.attributes.get('_route') == "referentiel_list") %}Information du Référentiel{% endif %}
 {% if (app.request.attributes.get('_route') == "referentiel_activity_list") %}Liste des activités{% endif %}
-{% if (app.request.attributes.get('_route') == "referentiel_problem_list") %}Liste des problématique{% endif %}
+{% if (app.request.attributes.get('_route') == "referentiel_task_list") %}Liste des tâches{% endif %}
+{% if (app.request.attributes.get('_route') == "referentiel_problem_list") %}Liste des problématiques{% endif %}
 {% if (app.request.attributes.get('_route') == "referentiel_modality_list") %}Liste des modalités{% endif %}
 {% if (app.request.attributes.get('_route') == "referentiel_term_list") %}Liste des conditions{% endif %}
-{% if (app.request.attributes.get('_route') == "referentiel_activity_new") %}Création d'une activité{% endif %}
-{% if (app.request.attributes.get('_route') == "referentiel_task_new") %}Création d'une tâche{% endif %}
-{% if (app.request.attributes.get('_route') == "referentiel_problem_new") %}Création d'une problématique{% endif %}
-{% if (app.request.attributes.get('_route') == "referentiel_modality_new") %}Création d'une modalité{% endif %}
-{% if (app.request.attributes.get('_route') == "referentiel_term_new") %}Création d'une condition{% endif %}
-{# {% if (app.request.attributes.get('_route') == "referentiel_show") %}{% endif %} #}
 
 {# Establishment #}
 {% if (app.request.attributes.get('_route') == "establishment_show_list") %}Liste des établissements{% endif %}

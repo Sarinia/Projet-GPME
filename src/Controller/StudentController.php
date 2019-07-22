@@ -17,6 +17,7 @@ use App\Repository\UserRepository;
 use Cocur\Slugify\Slugify;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -26,62 +27,39 @@ class StudentController extends AbstractController
     /**
      * @Route("/student/show_list", name="student_show_list")
      */
-    public function index(UserRepository $userRepo, StudentRepository $studentRepo, TeacherRepository $teacherRepo, AdminRepository $adminRepo, EstablishmentRepository $estabRepo, ClassroomRepository $classroomRepo, Request $request)
+    public function index(ClassroomRepository $classroomRepo)
     {
-        // liste des enseignants pour le super-admin
         if ($this->getUser()->getTitle() == "ROLE_SADMIN") {
 
-            // on récupère la liste des classes
-            $classrooms = $classroomRepo->findAll();
-
-            // on retourne la vue et les données
             return $this->render('student/list.html.twig', [
-                'classrooms' => $classrooms,
+                'classrooms' => $classroomRepo->findAll(),
             ]);
         }
 
-        // liste des enseignants pour l'admin
         if ($this->getUser()->getTitle() == "ROLE_ADMIN") {
 
-            // on récupère les infos de l'admin connecté
-            $adminCo = $adminRepo->findOneBy(['user' => $this->getUser()]);
+            $admin = $this->getUser()->getAdmin();
 
-            // on récupère la liste des enseignants
-            $classrooms = $classroomRepo->findBy(['establishment' => $adminCo->getEstablishment()->getId()]);
-
-            // on retourne la vue et les données
             return $this->render('student/list.html.twig', [
-                'classrooms' => $classrooms,
+                'classrooms' => $admin->getEstablishment()->getClassrooms(),
             ]);
         }
 
-        // liste des enseignants pour l'enseignant
         if ($this->getUser()->getTitle() == "ROLE_TEACHER") {
 
-            // on récupère les infos de l'enseignant connecté
-            $teacherCo = $teacherRepo->findOneBy(['user' => $this->getUser()]);
+            $teacher = $this->getUser()->getTeacher();
 
-            // on récupère la liste des enseignants
-            $classrooms = $teacherCo->getClassrooms();
-
-            // on retourne la vue et les données
             return $this->render('student/list.html.twig', [
-                'classrooms' => $classrooms,
+                'classrooms' => $teacher->getClassrooms(),
             ]);
         }
 
-        // liste des enseignants pour l'étudiant
         if ($this->getUser()->getTitle() == "ROLE_USER") {
 
-            // on récupère les infos de l'étudiant connecté
-            $studentCo = $studentRepo->findOneBy(['user' => $this->getUser()]);
+            $student = $this->getUser()->getStudent();
 
-            // on récupère la liste des enseignants
-            $classrooms = $classroomRepo->findBy(['id' => $studentCo->getClassroom()->getId()]);
-
-            // on retourne la vue et les données
             return $this->render('student/list.html.twig', [
-                'classrooms' => $classrooms,
+                'classrooms' => $student->getClassrooms(),
             ]);
         }
     }
@@ -89,14 +67,10 @@ class StudentController extends AbstractController
     /**
      * @Route("/student/show/{id}", name="student_show")
      */
-    public function show(Student $student, AdminRepository $adminRepo)
+    public function show(Student $student)
     {
-        $admin = $adminRepo->findOneBy(['establishment' => $student->getEstablishment()]);
-        
-        // on retourne la vue et les données
         return $this->render('student/show.html.twig', [
             'student' => $student,
-            'admin' => $admin,
         ]);
     }
 
@@ -105,16 +79,12 @@ class StudentController extends AbstractController
      */
     public function create(UserPasswordEncoderInterface $encoder, ObjectManager $manager, Request $request, EstablishmentRepository $estabRepo, ClassroomRepository $classroomRepo)
     {
-        // on instancie un nouveau user
         $student = new Student();
 
-        // Création du formulaire à partir du fichier NewUserType
         $form = $this->createForm(StudentType::class, $student);
 
-        // récupération des données du formulaire
         $form->handleRequest($request);
 
-        // si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()){
 
             // USER
@@ -131,16 +101,15 @@ class StudentController extends AbstractController
             // title
             $student->getUser()->setTitle('ROLE_USER');
 
+            // CreatedAt
+            $student->getUser()->setCreatedAt(new \DateTime());
+
             // STUDENT
-            // on vérifie si une seule classe a été coché
             if (Count($request->request->get('classroom')) == 0) {
 
-                // on stocke un message flash
                 $this->addFlash('warning',"Aucune classe n'a été sélectionnée !");
 
-                // on redirige vers la liste des administrateurs
                 return $this->render('student/new.html.twig', [
-                    // on envoie le formulaire à la vue
                     'form' => $form->createView(),
                     'establishments' => $estabRepo->findAll(),
                 ]);
@@ -148,75 +117,49 @@ class StudentController extends AbstractController
 
             if (Count($request->request->get('classroom')) == 1) {
 
-                // on récupére la classe
                 $classroom_id = $request->request->get('classroom');
                 $classroom = $classroomRepo->findOneBy(['id' => $classroom_id]);
             } else {
-                // on stocke un message flash
                 $this->addFlash('warning',"L'étudiant ne peut avoir qu'une seule classe !");
 
-                // on redirige vers la liste des administrateurs
                 return $this->render('student/new.html.twig', [
-                    // on envoie le formulaire à la vue
                     'form' => $form->createView(),
                     'establishments' => $estabRepo->findAll(),
                 ]);
             }
 
             // classroom
-            $student->setClassroom($classroom);
-
-            // CreatedAt
-            $student->setCreatedAt(new \DateTime());
+            $student->addClassroom($classroom);
             
             $passport = new Passport();
             $passport->setStudent($student);
             $passport->setCreatedAt(new \DateTime());
+            $passport->setExist(1);
 
-            // on persiste et on sauvegarde les données du formulaire
             $manager->persist($passport);
             $manager->persist($student);
             $manager->flush();
 
-            // on envoie un email au user pour lui indiquer son mot de passe
-            $to = $student->getUser()->getEmail();
-            $sujet = 'Compte créé sur passeportgpme.estiennedorves.net';
-            $message =
-            '</body>
-            </html>
-            <html>
-            <head>
-            <title>Compte créé sur passeportgpme.estiennedorves.net</title>
-            </head>
-            <body>
-            <p>Bonjour,</p>
-            <p>Vous trouverez ci-dessous :</p>
-            <p>votre identifiant : '.$student->getUser()->getEmail().'</p>
-            <p>votre mot de passe : '.$passRandom.'</p>
-            </body>
-            </html>';
-            $headers = 
-            '<p>From: gpme.contact@gmail.com</p>
-            <p>Reply-To: gpme.contact@gmail.com</p>';
-            mail($to,$sujet,$message,$headers);
+            $from = "gpme.contact@gmail.com";
+            $link = "<a href='http://passeportgpme.estiennedorves.net'>Passeport Numérique</a>";
+            $to = $admin->getUser()->getEmail();
+            $subject = "Création d'un compte Passeport Numérique";
+            $message = 
+            "
+            Bonjour,<br>
+            Nous avons le plaisir de vous informer de la création d'un compte sur le site ".$link." .<br>
+            Votre identifiant est : ".$admin->getUser()->getEmail()." .<br>
+            Votre mot de passe est : ".$passRandom." .<br>
+            A réception de cet email, pensez à modifier votre mot de passe.
+            ";
+            $headers = "MIME-Version: 1.0"."\r\n";
+            $headers .= "Content-type: text/html; charset=iso-8859-1"."\r\n";
+            $headers .= "From:" . $from;
+            mail($to,$subject,$message,$headers);
 
-            // on stocke un message flash
             $this->addFlash('success',"L'étudiant a bien été créé !");
 
-            // on redirige vers la liste des administrateurs
             return $this->redirectToRoute('student_show_list');
-        }
-
-        // on regarde si un établissement a été transmis
-        if ($request->request->get('establishment_choice')) {
-            $estab_id = $request->request->get('establishment_choice');
-            $classrooms = $classroomRepo->findBy(['establishment' => $estab_id]);
-
-            // on retourne la vue et les données
-            return $this->render('student/new.html.twig', [
-                'form' => $form->createView(),
-                'establishments' => $estabRepo->findAll(),
-            ]);
         }
 
         return $this->render('student/new.html.twig', [
@@ -273,7 +216,7 @@ class StudentController extends AbstractController
             }
 
             // on assigne sa classe
-            $student->setClassroom($classroom);
+            $student->addClassroom($classroom);
 
             // on persiste et on sauvegarde les données du formulaire
             $manager->persist($student);
@@ -297,40 +240,59 @@ class StudentController extends AbstractController
     }
 
     /**
+     * @Route("/student/enable/{id}", name="student_enable")
+     */
+    public function enable(ObjectManager $manager, Request $request, Student $student)
+    {
+        $student->getUser()->setExist(1);
+        $manager->persist($student);
+        $manager->flush();
+
+        $referer = $request->headers->get('referer');   
+        return new RedirectResponse($referer);
+    }
+
+    /**
+     * @Route("/student/disable/{id}", name="student_disable")
+     */
+    public function disable(ObjectManager $manager, Request $request, Student $student)
+    {
+        $student->getUser()->setExist(0);
+        $manager->persist($student);
+        $manager->flush();
+
+        $referer = $request->headers->get('referer');   
+        return new RedirectResponse($referer);
+    }
+
+    /**
      * @Route("/student/delete/{id}", name="student_delete")
      */
-    public function delete(ObjectManager $manager, Student $student, PassportRepository $passportRepo, CardRepository $cardRepo)
+    public function delete(ObjectManager $manager, Student $student, Request $request)
     {
-        // on récupére l'utilisateur
-        $user = $student->getUser();
+        if ($student->getUser()->getExist() == false){
 
-        // on vérifie que son compte est inactif
-        if ($user->getExist() == false){
-
-            // On supprime le passeport
-            $passport = $passportRepo->findOneBy(['student' => $student]);
-            $cards = $cardRepo->findBy(['student' => $student]);
+            $passport = $student->getPassport();
+            $cards = $student->getPassport()->getCards();
             foreach ($cards as $card) {
                 $manager->remove($card);
             }
 
-            // on supprime la ligne de la table Student et de la table User
             $manager->remove($passport);
             $manager->remove($student);
             $manager->flush();
 
-            // on enregistre un message flash
             $this->addFlash('success', "L'étudiant a bien été supprimé !");
 
-            // on redirige vers la liste des étudiants
-            return $this->redirectToRoute('student_show_list');
+            $referer = $request->headers->get('referer');   
+            return new RedirectResponse($referer);
+            
         } else {
 
-            // on enregistre un message flash
             $this->addFlash('danger', "L'étudiant ne peut pas être supprimé car son compte est toujours actif !");
 
-            // on redirige vers la liste des étudiants
-            return $this->redirectToRoute('student_show_list');
+            $referer = $request->headers->get('referer');   
+            return new RedirectResponse($referer);
         }
     }
 }

@@ -19,6 +19,7 @@ use App\Repository\TeacherRepository;
 use App\Repository\TermRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -27,65 +28,39 @@ class CardController extends AbstractController
     /**
     * @Route("/card/show_list", name="card_show_list")
     */
-    public function index(CardRepository $cardRepo, StudentRepository $studentRepo, TeacherRepository $teacherRepo, AdminRepository $adminRepo, SadminRepository $sadminRepo, EstablishmentRepository $estabRepo, ClassroomRepository $classroomRepo)
+    public function index(StudentRepository $studentRepo)
     {
-        // Récupération de l'utilisateur connecté
-        if ($this->getUser()) {
-
-            $user = $this->getUser();
-
-        }
-
-        // ROLE_USER
-        if ($user->getTitle() == "ROLE_USER") {
-
-            $student = $studentRepo->findOneBy(['user' => $user]);
+        if ($this->getUser()->getTitle() == "ROLE_SADMIN") {
 
             return $this->render('card/list.html.twig', [
-                'student' => $student,
+                'students' => $studentRepo->findAll(),
             ]);
         }
 
-        // ROLE_TEACHER
-        if ($user->getTitle() == "ROLE_TEACHER") {
+        if ($this->getUser()->getTitle() == "ROLE_ADMIN") {
 
-            $teacher = $teacherRepo->findOneBy(['user' => $user]);
-
-            $establishment = $teacher->getEstablishment();
-
-            $classrooms = $teacher->getClassrooms();
-
-            $students = [];
-            foreach ($classrooms as $classroom) {
-                $students += $studentRepo->findBy(['classroom' => $classroom]);
-            }
-
-            return $this->render('card/list.html.twig', [
-                'students' => $students,
-            ]);
-        }
-
-        // ROLE_ADMIN
-        if ($user->getTitle() == "ROLE_ADMIN") {
-
-            $admin = $adminRepo->findOneBy(['user' => $user]);
-
-            $establishment = $admin->getEstablishment();
-
-            $classrooms = $classroomRepo->findBy(['establishment' => $establishment]);
+            $classrooms = $this->getUser()->getAdmin()->getEstablishment()->getClassrooms();
 
             return $this->render('card/list.html.twig', [
                 'classrooms' => $classrooms,
             ]);
         }
 
-        // ROLE_SADMIN
-        if ($user->getTitle() == "ROLE_SADMIN") {
+        if ($this->getUser()->getTitle() == "ROLE_TEACHER") {
 
-            $cards = $cardRepo->findAll();
+            $classrooms = $this->getUser()->getTeacher()->getClassrooms();
 
             return $this->render('card/list.html.twig', [
-                'cards' => $cards,
+                'classrooms' => $classrooms,
+            ]);
+        }
+
+        if ($this->getUser()->getTitle() == "ROLE_USER") {
+
+            $student = $this->getUser()->getStudent();
+
+            return $this->render('card/list.html.twig', [
+                'student' => $student,
             ]);
         }
     }
@@ -93,51 +68,52 @@ class CardController extends AbstractController
     /**
     * @Route("/card/show/{id}", name="card_show")
     */
-    public function show(Card $card, ProblemRepository $problemRepo, ModalityRepository $modalityRepo, TermRepository $termRepo, ActivityRepository $activityRepo)
+    public function show(Card $card, TaskRepository $taskRepo, ProblemRepository $problemRepo, ModalityRepository $modalityRepo, TermRepository $termRepo, ActivityRepository $activityRepo)
     {
-        $problems = $problemRepo->findAll();
-        $modalities = $modalityRepo->findAll();
-        $terms = $termRepo->findAll();
-        $activities = $activityRepo->findAll();
-
+        dump($card);
         return $this->render('card/show.html.twig', [
             "card" => $card,
-            "problems" => $problems,
-            "modalities" => $modalities,
-            "terms" => $terms,
-            "activities" => $activities,
+            "problems" => $problemRepo->findAll(),
+            "modalities" => $modalityRepo->findAll(),
+            "terms" => $termRepo->findAll(),
+            "activities" => $activityRepo->findAll(),
+            "tasks" => $taskRepo->findAll(),
         ]);
     }
 
     /**
     * @Route("/card/new", name="card_new")
     */
-    public function create(ObjectManager $manager, Request $request, StudentRepository $studentRepo, PassportRepository $passportRepo, ActivityRepository $activityRepo, TaskRepository $taskRepo)
+    public function create(ObjectManager $manager, Request $request, StudentRepository $studentRepo, ActivityRepository $activityRepo, TaskRepository $taskRepo)
     {
         $card = new Card();
 
-        $activities = $activityRepo->findAll();
+        $student = $this->getUser()->getStudent();
 
-        // on récupére l'utilisateur
-        $user = $this->getUser();
-        $student = $studentRepo->findOneBy(['user' => $user]);
-
-        // Création du formulaire à partir du fichier NewAdminType
         $form = $this->createForm(CardType::class, $card);
 
-        // récupération des données du formulaire
         $form->handleRequest($request);
 
-        // si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()){
 
             // taches
-            $tasks = $request->request->get('task');
-            foreach ($tasks as $task) {
-                $task = $taskRepo->findOneBy(['id' => $task]);
-                $card->addTask($task);
-            }
+            if (count($request->request->get('task')) == 1) {
+                $tasks = $request->request->get('task');
+                foreach ($tasks as $task) {
+                    $task = $taskRepo->findOneBy(['id' => $task]);
+                    $card->setTask($task);
+                }
+            } else {
 
+                $this->addFlash('warning', "Vous devez choisir une seule tâche !");
+
+                return $this->render('card/new.html.twig', [
+                    'form' => $form->createView(),
+                    'student' => $student,
+                    'activities' => $activityRepo->findAll(),
+                ]);
+            }
+            
             $card->setCreatedAt(new \DateTime());
 
             $numbersp = Count($student->getCards());
@@ -147,143 +123,161 @@ class CardController extends AbstractController
 
             $card->setStudent($student);
 
-            $passport = $passportRepo->findOneBy(['student' => $student]);
-            $card->setPassport($passport);
-
+            if ($request->request->get('card')['associate'] == true) {
+                $passport = $student->getPassport();
+                $card->setPassport($passport);
+            } else {
+                $card->setPassport(null);
+            }
+            
             $manager->persist($card);
             $manager->flush();
 
-            return $this->redirectToRoute('card_show_list', []);
+            $this->addFlash('success', "Votre fiche a bien été créée.");
+
+            return $this->redirectToRoute('card_show_list');
         }
 
         return $this->render('card/new.html.twig', [
             'form' => $form->createView(),
             'student' => $student,
-            'activities' => $activities,
+            'activities' => $activityRepo->findAll(),
         ]);
     }
 
     /**
     * @Route("/card/modify/{id}", name="card_modify")
     */
-    public function modify(Card $card, ObjectManager $manager, Request $request, StudentRepository $studentRepo, ActivityRepository $activityRepo, TaskRepository $taskRepo)
+    public function modify(Card $card, ObjectManager $manager, Request $request, ActivityRepository $activityRepo, TaskRepository $taskRepo)
     {
-        $activities = $activityRepo->findAll();
+        if ($this->getUser()->getTitle() != "ROLE_USER") {
+            $student = $card->getStudent();
+        } else {
+            $student = $this->getUser()->getStudent();
+        }
 
-        // on récupére l'utilisateur
-        $user = $this->getUser();
-        $student = $studentRepo->findOneBy(['user' => $user]);
-
-        // Création du formulaire à partir du fichier card
         $form = $this->createForm(CardType::class, $card);
 
-        // récupération des données du formulaire
         $form->handleRequest($request);
 
-        // si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()){
 
             // taches
-            foreach ($card->getTasks() as $task) {
-                $task = $taskRepo->findOneBy(['id' => $task]);
-                $card->removeTask($task);
+            if (count($request->request->get('task')) == 1) {
+                $tasks = $request->request->get('task');
+                foreach ($tasks as $task) {
+                    $task = $taskRepo->findOneBy(['id' => $task]);
+                    $card->setTask($task);
+                }
+            } else {
+
+                $this->addFlash('warning', "Vous devez choisir une seule tâche !");
+
+                return $this->render('card/modify.html.twig', [
+                    'form' => $form->createView(),
+                    'student' => $student,
+                    'activities' => $activityRepo->findAll(),
+                ]);
             }
 
-            
-            $tasks = $request->request->get('task');
-            foreach ($tasks as $task) {
-                $task = $taskRepo->findOneBy(['id' => $task]);
-                $card->addTask($task);
+            if ($request->request->get('card')['associate'] == true) {
+                $passport = $student->getPassport();
+                $card->setPassport($passport);
+            } else {
+                $card->setPassport(null);
             }
 
             $manager->persist($card);
             $manager->flush();
 
-            return $this->redirectToRoute('card_show_list', []);
+            $this->addFlash('success', "Votre fiche a bien été modifiée.");
+
+            return $this->redirectToRoute('card_show_list');
         }
 
         return $this->render('card/modify.html.twig', [
             'form' => $form->createView(),
             "card" => $card,
-            'activities' => $activities,
+            'activities' => $activityRepo->findAll(),
+        ]);
+    }
+
+    /**
+     * @Route("/card/enable/{id}", name="card_enable")
+     */
+    public function enable(ObjectManager $manager, Request $request, Card $card)
+    {
+        $card->setExist(1);
+        $manager->persist($card);
+        $manager->flush();
+
+        $referer = $request->headers->get('referer');   
+        return new RedirectResponse($referer);
+    }
+
+    /**
+     * @Route("/card/disable/{id}", name="card_disable")
+     */
+    public function disable(ObjectManager $manager, Request $request, Card $card)
+    {
+        $card->setExist(0);
+        $manager->persist($card);
+        $manager->flush();
+
+        $referer = $request->headers->get('referer');   
+        return new RedirectResponse($referer);
+    }
+
+    /**
+    * @Route("/card/print/{id}", name="card_print")
+    */
+    public function print(Card $card, ProblemRepository $problemRepo, ModalityRepository $modalityRepo, TermRepository $termRepo, ActivityRepository $activityRepo)
+    {
+        return $this->render('card/print.html.twig', [
+            "card" => $card,
+            "problems" => $problemRepo->findAll(),
+            "modalities" => $modalityRepo->findAll(),
+            "terms" => $termRepo->findAll(),
+            "activities" => $activityRepo->findAll(),
         ]);
     }
 
     /**
     * @Route("/card/duplicate/{id}", name="card_duplicate")
     */
-    public function duplicate(Card $card, ObjectManager $manager, Request $request, StudentRepository $studentRepo, PassportRepository $passportRepo)
+    public function duplicate(Card $card, ObjectManager $manager, Request $request)
     {
-        // on récupére l'utilisateur
-        $user = $this->getUser();
-        $student = $studentRepo->findOneBy(['user' => $user]);
+        $newCard = clone $card;
 
-        // Création du formulaire à partir du fichier NewAdminType
-        $form = $this->createForm(CardType::class, $card);
+        $manager->persist($newCard);
+        $manager->flush();
 
-        // récupération des données du formulaire
-        $form->handleRequest($request);
+        $this->addFlash('success', "Votre fiche a bien été dupliquée.");
 
-        // si le formulaire est soumis et valide
-        if ($form->isSubmitted() && $form->isValid()){
-
-            $card = new Card();
-
-            $card->setCreatedAt(new \DateTime());
-
-            $numbersp = Count($student->getCards());
-            $numbersp = $numbersp + 1;
-
-            $card->setNumbersp($numbersp);
-
-            $card->setExist($form->getData('card')->getExist());
-
-            $card->setStudent($student);
-
-            $passport = $passportRepo->findOneBy(['student' => $student]);
-            $card->setPassport($passport);
-
-            $manager->persist($card);
-            $manager->flush();
-
-            return $this->redirectToRoute('card_show_list', []);
-        }
-
-        return $this->render('card/modify.html.twig', [
-            'form' => $form->createView(),
-            "card" => $card,
-            "student" => $student,
-        ]);
+        $referer = $request->headers->get('referer');   
+        return new RedirectResponse($referer);
     }
 
     /**
      * @Route("/card/delete/{id}", name="card_delete")
      */
-    public function delete(Card $card, ObjectManager $manager)
+    public function delete(Card $card, ObjectManager $manager, Request $request)
     {
-        // on récupére l'utilisateur
-        $user = $admin->getUser();
-        $student = $studentRepo->findOneBy(['user' => $user]);
+        if ($card->getExist() == false && $this->getUser()->getTitle() == "ROLE_SADMIN"){
 
-        // on vérifie que son compte est inactif
-        if ($card->getExist() == false && $card->getStudent() == $student || $user->roles() == "ROLE_SADMIN"){
-
-            // on supprime la ligne de la table fiche
             $manager->remove($card);
             $manager->flush();
 
-            // on enregistre un message flash
             $this->addFlash('success', "La fiche a bien été supprimé !");
 
-            // on redirige vers la liste des administrateurs
-            return $this->redirectToRoute('card_show_list');
+            $referer = $request->headers->get('referer');   
+            return new RedirectResponse($referer);
         } else {
 
-            // on enregistre un message flash
             $this->addFlash('danger', "La fiche ne peut être supprimé car elle existe !");
 
-            // on redirige vers la liste des administrateurs
-            return $this->redirectToRoute('card_show_list');
+            $referer = $request->headers->get('referer');   
+            return new RedirectResponse($referer);
         }
     }
 }

@@ -41,16 +41,6 @@ class Establishment
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $latitude;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $longitude;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
     private $backgroundUrl;
 
     /**
@@ -59,13 +49,17 @@ class Establishment
     private $slug;
 
     /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
      * @ORM\Column(type="boolean")
      */
     private $exist;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Department", inversedBy="establishment")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Department", inversedBy="establishments")
      */
     private $department;
 
@@ -73,6 +67,11 @@ class Establishment
      * @ORM\OneToMany(targetEntity="App\Entity\Classroom", mappedBy="establishment")
      */
     private $classrooms;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Admin", mappedBy="establishment")
+     */
+    private $admins;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Teacher", mappedBy="establishment")
@@ -84,14 +83,10 @@ class Establishment
      */
     private $students;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $createdAt;
-
     public function __construct()
     {
         $this->classrooms = new ArrayCollection();
+        $this->admins = new ArrayCollection();
         $this->teachers = new ArrayCollection();
         $this->students = new ArrayCollection();
     }
@@ -149,36 +144,12 @@ class Establishment
         return $this;
     }
 
-    public function getLatitude(): ?string
-    {
-        return $this->latitude;
-    }
-
-    public function setLatitude(?string $latitude): self
-    {
-        $this->latitude = $latitude;
-
-        return $this;
-    }
-
-    public function getLongitude(): ?string
-    {
-        return $this->longitude;
-    }
-
-    public function setLongitude(?string $longitude): self
-    {
-        $this->longitude = $longitude;
-
-        return $this;
-    }
-
     public function getBackgroundUrl(): ?string
     {
         return $this->backgroundUrl;
     }
 
-    public function setBackgroundUrl(string $backgroundUrl): self
+    public function setBackgroundUrl(?string $backgroundUrl): self
     {
         $this->backgroundUrl = $backgroundUrl;
 
@@ -193,6 +164,18 @@ class Establishment
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }
@@ -246,6 +229,37 @@ class Establishment
             // set the owning side to null (unless already changed)
             if ($classroom->getEstablishment() === $this) {
                 $classroom->setEstablishment(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Admin[]
+     */
+    public function getAdmins(): Collection
+    {
+        return $this->admins;
+    }
+
+    public function addAdmin(Admin $admin): self
+    {
+        if (!$this->admins->contains($admin)) {
+            $this->admins[] = $admin;
+            $admin->setEstablishment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdmin(Admin $admin): self
+    {
+        if ($this->admins->contains($admin)) {
+            $this->admins->removeElement($admin);
+            // set the owning side to null (unless already changed)
+            if ($admin->getEstablishment() === $this) {
+                $admin->setEstablishment(null);
             }
         }
 
@@ -310,18 +324,6 @@ class Establishment
                 $student->setEstablishment(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
 
         return $this;
     }

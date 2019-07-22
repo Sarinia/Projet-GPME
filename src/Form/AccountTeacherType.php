@@ -14,11 +14,10 @@ class AccountTeacherType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        // ->add('createdAt')
         // ->add('establishment')
-        // ->add('classroom')
+        // ->add('classrooms')
         ->add('user', AccountUserType::class)
-        ->add('save', SubmitType::class, ['attr' => ['class' => 'btn btn-primary']]);
+        ->add('save', SubmitType::class, ['label' => 'Mettre à jour', 'attr' => ['class' => 'btn btn-primary']]);
         ;
     }
 

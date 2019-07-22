@@ -29,7 +29,9 @@ class ContactController extends AbstractController
 
                 $this->addFlash('success','Votre message a bien été envoyé');
 
-                return $this->redirectToRoute('dashboard');
+                return $this->redirectToRoute('dashboard',[
+                    'slug' => $this->getUser()->getSlug(),
+                ]);
 
             } else {
                 $this->addFlash('danger','Tous les champs doivent être remplis');

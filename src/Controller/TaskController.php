@@ -4,29 +4,31 @@ namespace App\Controller;
 
 use App\Entity\Task;
 use App\Form\TaskType;
+use App\Repository\ActivityRepository;
 use App\Repository\TaskRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class TaskController extends AbstractController
 {
     /**
-     * @Route("/referentiel/task/list", name="referentiel_task_list")
+     * @Route("/task/list", name="referentiel_task_list")
      */
-    public function index(TaskRepository $taskRepo)
+    public function index(ActivityRepository $activityRepo)
     {
     	// tâches
-    	$tasks = $taskRepo->findAll();
+    	$activities = $activityRepo->findAll();
 
-    	return $this->render('referentiel/task/list.html.twig', [
-    		'tasks' => $tasks,
+    	return $this->render('task/list.html.twig', [
+    		'activities' => $activities,
     	]);
     }
 
     /**
-     * @Route("/referentiel/task/new", name="referentiel_task_new")
+     * @Route("/task/new", name="referentiel_task_new")
      */
     public function create(ObjectManager $manager, Request $request)
     {
@@ -46,17 +48,17 @@ class TaskController extends AbstractController
 
             $this->addFlash('success','Votre tâche a bien été ajouté !');
 
-    		return $this->redirectToRoute('referentiel_activity_list');
-    	}
+            return $this->redirectToRoute('referentiel_task_list');
+        }
 
         // on redirige vers la liste des administrateurs
-    	return $this->render('referentiel/task/new.html.twig', [
-    		'form' => $form->createView(),
-    	]);
+        return $this->render('task/new.html.twig', [
+          'form' => $form->createView(),
+      ]);
     }
 
     /**
-     * @Route("/referentiel/task/modify/{id}", name="referentiel_task_modify")
+     * @Route("/task/modify/{id}", name="referentiel_task_modify")
      */
     public function modify(Task $task, ObjectManager $manager, Request $request)
     {
@@ -73,26 +75,27 @@ class TaskController extends AbstractController
 
     		$this->addFlash('success','Votre tâche a bien été modifié !');
 
-    		return $this->redirectToRoute('referentiel_activity_list');
+    		return $this->redirectToRoute('referentiel_task_list');
     	}
 
         // on redirige vers la liste des administrateurs
-    	return $this->render('referentiel/task/modify.html.twig', [
+    	return $this->render('task/modify.html.twig', [
             'form' => $form->createView(),
-    		'task' => $task,
-    	]);
+            'task' => $task,
+        ]);
     }
 
     /**
-     * @Route("/referentiel/task/delete/{id}", name="referentiel_task_delete")
+     * @Route("/task/delete/{id}", name="referentiel_task_delete")
      */
-    public function delete(Task $task, ObjectManager $manager)
+    public function delete(Task $task, ObjectManager $manager, Request $request)
     {
     	$manager->remove($task);
     	$manager->flush();
 
     	$this->addFlash('success','Votre tâche a bien été supprimé !');
 
-    	return $this->redirectToRoute('referentiel_activity_list');
+    	$referer = $request->headers->get('referer');   
+        return new RedirectResponse($referer);
     }
 }

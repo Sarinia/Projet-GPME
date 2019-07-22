@@ -19,6 +19,13 @@ class Card
     private $id;
 
     /**
+     * Nom du mouton
+     *
+     * @var String
+     */
+    protected $_name;
+
+    /**
      * @ORM\Column(type="integer")
      */
     private $numbersp;
@@ -115,12 +122,6 @@ class Card
     private $student;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Passport", inversedBy="card")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $passport;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Problem", inversedBy="card")
      */
     private $problem;
@@ -146,14 +147,9 @@ class Card
     private $createdAt;
 
     /**
-     * @ORM\Column(type="date", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $monthsp;
-
-    /**
-     * @ORM\Column(type="date", length=255, nullable=true)
-     */
-    private $yearsp;
+    private $datesp;
 
     /**
      * @ORM\Column(type="boolean")
@@ -161,13 +157,22 @@ class Card
     private $associate;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Task", mappedBy="card")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Passport", inversedBy="cards")
      */
-    private $tasks;
+    private $passport;
 
-    public function __construct()
-    {
-        $this->tasks = new ArrayCollection();
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Task", inversedBy="cards")
+     */
+    private $task;
+
+    /**
+     * Methode magique clone
+     *
+     * @return void
+     */
+    public function __clone() {
+        $this->_name = 'Copie de '.$this->_name;
     }
 
     public function getId(): ?int
@@ -403,18 +408,6 @@ class Card
         return $this;
     }
 
-    public function getPassport(): ?Passport
-    {
-        return $this->passport;
-    }
-
-    public function setPassport(?Passport $passport): self
-    {
-        $this->passport = $passport;
-
-        return $this;
-    }
-
     public function getProblem(): ?Problem
     {
         return $this->problem;
@@ -475,26 +468,14 @@ class Card
         return $this;
     }
 
-    public function getMonthsp(): ?string
+    public function getDatesp(): ?string
     {
-        return $this->monthsp;
+        return $this->datesp;
     }
 
-    public function setMonthsp(string $monthsp): self
+    public function setDatesp(?string $datesp): self
     {
-        $this->monthsp = $monthsp;
-
-        return $this;
-    }
-
-    public function getYearsp(): ?string
-    {
-        return $this->yearsp;
-    }
-
-    public function setYearsp(string $yearsp): self
-    {
-        $this->yearsp = $yearsp;
+        $this->datesp = $datesp;
 
         return $this;
     }
@@ -511,30 +492,26 @@ class Card
         return $this;
     }
 
-    /**
-     * @return Collection|Task[]
-     */
-    public function getTasks(): Collection
+    public function getPassport(): ?Passport
     {
-        return $this->tasks;
+        return $this->passport;
     }
 
-    public function addTask(Task $task): self
+    public function setPassport(?Passport $passport): self
     {
-        if (!$this->tasks->contains($task)) {
-            $this->tasks[] = $task;
-            $task->addCard($this);
-        }
+        $this->passport = $passport;
 
         return $this;
     }
 
-    public function removeTask(Task $task): self
+    public function getTask(): ?Task
     {
-        if ($this->tasks->contains($task)) {
-            $this->tasks->removeElement($task);
-            $task->removeCard($this);
-        }
+        return $this->task;
+    }
+
+    public function setTask(?Task $task): self
+    {
+        $this->task = $task;
 
         return $this;
     }

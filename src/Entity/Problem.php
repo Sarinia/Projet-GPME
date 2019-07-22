@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -21,79 +19,38 @@ class Problem
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $number;
+    private $entitle;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Card", mappedBy="problem")
-     */
-    private $card;
-
-    public function __construct()
-    {
-        $this->card = new ArrayCollection();
-    }
+    private $name;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNumber(): ?string
+    public function getEntitle(): ?string
     {
-        return $this->number;
+        return $this->entitle;
     }
 
-    public function setNumber(string $number): self
+    public function setEntitle(string $entitle): self
     {
-        $this->number = $number;
+        $this->entitle = $entitle;
 
         return $this;
     }
 
-    public function getTitle(): ?string
+    public function getName(): ?string
     {
-        return $this->title;
+        return $this->name;
     }
 
-    public function setTitle(string $title): self
+    public function setName(string $name): self
     {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Card[]
-     */
-    public function getCard(): Collection
-    {
-        return $this->card;
-    }
-
-    public function addCard(Card $card): self
-    {
-        if (!$this->card->contains($card)) {
-            $this->card[] = $card;
-            $card->setProblem($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCard(Card $card): self
-    {
-        if ($this->card->contains($card)) {
-            $this->card->removeElement($card);
-            // set the owning side to null (unless already changed)
-            if ($card->getProblem() === $this) {
-                $card->setProblem(null);
-            }
-        }
+        $this->name = $name;
 
         return $this;
     }

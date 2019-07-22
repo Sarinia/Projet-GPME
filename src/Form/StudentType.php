@@ -18,13 +18,12 @@ class StudentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('candidateNb', TextType::class,['required' => false])
-            ->add('birthDate', DateType::class, ['widget'=> 'single_text'])
-            // ->add('createdAt')
-            ->add('establishment', EntityType::class, ['class' => Establishment::class, 'label' => false, 'choice_label' => function ($establishment) { return $establishment->getName()." (".$establishment->getDepartment()->getName().")"; }])
-            // ->add('classroom')
-            ->add('user', UserType::class, ['label' => false])
-            ->add('save', SubmitType::class, ['attr' => ['class' => 'btn btn-primary']]);
+        ->add('candidateNb', TextType::class,['label' => 'Numéro de candidat', 'required' => false])
+        ->add('birthDate', DateType::class, ['label' => 'Date de naissance', 'widget'=> 'single_text', 'required' => false])
+        ->add('establishment', EntityType::class, ['class' => Establishment::class, 'label' => false, 'choice_label' => function ($establishment) { return $establishment->getName()." (".$establishment->getDepartment()->getName().")"; }])
+        ->add('user', UserType::class)
+        // ->add('classrooms')
+        ->add('save', SubmitType::class, ['label' => 'Enregistrer', 'attr' => ['class' => 'btn btn-primary']]);
         ;
     }
 

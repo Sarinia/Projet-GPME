@@ -24,12 +24,12 @@ class Classroom
     private $degree;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=255)
      */
     private $startDate;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=255)
      */
     private $endDate;
 
@@ -39,13 +39,17 @@ class Classroom
     private $slug;
 
     /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
      * @ORM\Column(type="boolean")
      */
     private $exist;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Establishment", inversedBy="classrooms")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $establishment;
 
@@ -55,14 +59,9 @@ class Classroom
     private $teachers;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Student", mappedBy="classroom")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Student", mappedBy="classrooms")
      */
     private $students;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $createdAt;
 
     public function __construct()
     {
@@ -119,6 +118,18 @@ class Classroom
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }
@@ -187,7 +198,7 @@ class Classroom
     {
         if (!$this->students->contains($student)) {
             $this->students[] = $student;
-            $student->setClassroom($this);
+            $student->addClassroom($this);
         }
 
         return $this;
@@ -197,23 +208,8 @@ class Classroom
     {
         if ($this->students->contains($student)) {
             $this->students->removeElement($student);
-            // set the owning side to null (unless already changed)
-            if ($student->getClassroom() === $this) {
-                $student->setClassroom(null);
-            }
+            $student->removeClassroom($this);
         }
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
 
         return $this;
     }

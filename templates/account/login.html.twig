@@ -1,7 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% if app.request.attributes.get('establishment_choice') is defined and app.request.attributes.get('establishment_choice') != "" %}
+	{% block stylesheets %}<style>body{background:no-repeat url("{{establishment.backgroundUrl}}");}</style>{% endblock %}
+{% endif %}
 
+{% block body %}
+	
 	{% if (hasError) %}
 		<div class="alert alert-danger alert-dismissible fade show" role="alert"> Mauvais identifiant ou mot de passe
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -22,4 +26,5 @@
 			</div>
 		</form>
 	</div>
+
 {% endblock %}

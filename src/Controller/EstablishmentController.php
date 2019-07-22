@@ -13,6 +13,7 @@ use Cocur\Slugify\Slugify;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -25,30 +26,21 @@ class EstablishmentController extends AbstractController
     /**
      * @Route("/establishment/show_list", name="establishment_show_list")
      */
-    public function index(EstablishmentRepository $estabRepo, DepartmentRepository $deptRepo, Request $request)
+    public function index(EstablishmentRepository $establishmentRepo)
     {
-        // on récupère la liste de tous les établissements et de tous les départements
-        $establishments = $estabRepo->findAll();
-        $departments = $deptRepo->findAll();        
-
         return $this->render('establishment/list.html.twig', [
-            // on envoie des données à la vue
-            'establishments' => $establishments,
-            'departments' => $departments,
+            'establishments' => $establishmentRepo->findAll(),
         ]);
     }
 
     /**
      * @Route("/establishment/show/{id}", name="establishment_show")
      */
-    public function show(Establishment $establishment, AdminRepository $adminRepo)
+    public function show(Establishment $establishment, ClassroomRepository $classroomRepo)
     {
-        $admin = $adminRepo->findOneBy(['establishment' => $establishment]);
-
-        // on retourne la vue et les données
         return $this->render('establishment/show.html.twig', [
             'establishment' => $establishment,
-            'admin' => $admin,
+            'classrooms' => $classroomRepo->findBy(['establishment' => $establishment]),
         ]);
     }
 
@@ -67,7 +59,7 @@ class EstablishmentController extends AbstractController
 
             $establishment->setCreatedAt(new \DateTime());
 
-            $slugify = new Slugify();
+            $slugify = new Slugify();// on crée le slug
             $slug = $slugify->slugify($establishment->getName());
             $establishment->setSlug($slug);
             
@@ -89,15 +81,13 @@ class EstablishmentController extends AbstractController
      */
     public function modify(ObjectManager $manager, Request $request, Establishment $establishment)
     {
-        $oldName = $establishment->getName();
-
         $form = $this->createForm(EstablishmentType::class, $establishment);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
 
-            $slugify = new Slugify();
+            $slugify = new Slugify();// on crée le slug
             $slug = $slugify->slugify($establishment->getName());
             $establishment->setSlug($slug);
 
@@ -118,42 +108,62 @@ class EstablishmentController extends AbstractController
     }
 
     /**
+     * @Route("/establishment/enable/{id}", name="establishment_enable")
+     */
+    public function enable(ObjectManager $manager, Request $request, Establishment $establishment)
+    {
+        $establishment->setExist(1);
+        $manager->persist($establishment);
+        $manager->flush();
+
+        $referer = $request->headers->get('referer');   
+        return new RedirectResponse($referer);
+    }
+
+    /**
+     * @Route("/establishment/disable/{id}", name="establishment_disable")
+     */
+    public function disable(ObjectManager $manager, Request $request, Establishment $establishment)
+    {
+        $establishment->setExist(0);
+        $manager->persist($establishment);
+        $manager->flush();
+
+        $referer = $request->headers->get('referer');   
+        return new RedirectResponse($referer);
+    }
+
+    /**
      * @Route("/establishment/delete/{id}", name="establishment_delete")
      */
-    public function delete(ObjectManager $manager, Establishment $establishment)
+    public function delete(ObjectManager $manager, Establishment $establishment, Request $request)
     {
-        // on vérifie si l'établissement existe
         if ($establishment->getExist() == false){
 
-            //On vérifie si l'établissement contient encore des classes
-            if (Count($establishment->getclassrooms()) == 0) {
+            if (Count($establishment->getClassrooms()) == 0 && Count($establishment->getAdmins()) == 0) {
 
-                // on supprime l'établissement sans possibilité de retour
                 $manager->remove($establishment);
                 $manager->flush();
 
-                // on enregistre un message flash
                 $this->addFlash('success', "L'établissement a bien été supprimé !");
 
-                // on redirige vers la liste des établissements
-                return $this->redirectToRoute('establishment_show_list'); 
+                $referer = $request->headers->get('referer');   
+                return new RedirectResponse($referer); 
 
             } else {
 
-                // on enregistre un message flash
-                $this->addFlash('danger', "Supprimez d'abord toutes les classes de l'établissements !");
-                
-                // on redirige vers la liste des établissements
-                return $this->redirectToRoute('establishment_show_list');  
+                $this->addFlash('danger', "l'établissement a encore un administrateur ou des classes !");
+
+                $referer = $request->headers->get('referer');   
+                return new RedirectResponse($referer);  
             }
 
         } else {
 
-            // on enregistre un message flash
             $this->addFlash('danger', "L'établissement ne peut être supprimé car il existe !");
-            
-            // on redirige vers la liste des établissements
-            return $this->redirectToRoute('establishment_show_list');  
+
+            $referer = $request->headers->get('referer');   
+            return new RedirectResponse($referer);  
         } 
     }
 }
