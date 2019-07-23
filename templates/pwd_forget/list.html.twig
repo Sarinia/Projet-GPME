@@ -18,10 +18,12 @@
 				<tr>
 					<td>{{pwdForget.id}}</td>
 					<td>{{pwdForget.user.email}}</td>
-					<td>{{pwdForget.unread}}</td>
+					<td class="{% if pwdForget.unread == true %}text-danger{% else %}text-success{% endif %}">{% if pwdForget.unread == true %} non lu {% else %} traité {% endif %}</td>
 					<td>{{pwdForget.createdAt | date('d/m/Y')}}</td>
 					<td class="py-1">
+						{% if pwdForget.unread == true %}
 						<a href="{{ path('pwd_forget_modify', {'user': pwdForget.user.id, 'forget': pwdForget.id}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Générer mdp"><i class="fas fa-key"></i></a>
+						{% endif %}
 					</td>
 				</tr>
 			{% endfor %}
