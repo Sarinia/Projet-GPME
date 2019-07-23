@@ -27,7 +27,7 @@
 						<a href="{{ path('classroom_modify', {'id': classroom.id}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Modifier"><i class="far fa-edit"></i></a>
 						{% if classroom.exist == false %}{% set dataId = classroom.id %}{% set dataLink = path('classroom_delete', {'id': classroom.id,}) %}
 							<a href="{{ path('classroom_enable', {'id': classroom.id}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Activer"><i class="far fa-eye"></i></a>
-							{% include 'partials/modals/modal.html.twig' %}
+							{% include 'partials/modals/confirm.html.twig' %}
 						{% else %}
 							<a href="{{ path('classroom_disable', {'id': classroom.id}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Désactiver"><i class="far fa-eye-slash"></i></a>
 						{% endif %}

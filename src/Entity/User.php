@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -76,6 +78,16 @@ class User implements UserInterface
      * @ORM\OneToOne(targetEntity="App\Entity\Student", mappedBy="user", cascade={"persist", "remove"})
      */
     private $student;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\PwdForget", mappedBy="user")
+     */
+    private $pwdForgets;
+
+    public function __construct()
+    {
+        $this->pwdForgets = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -270,6 +282,37 @@ class User implements UserInterface
         $newUser = $student === null ? null : $this;
         if ($newUser !== $student->getUser()) {
             $student->setUser($newUser);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PwdForget[]
+     */
+    public function getPwdForgets(): Collection
+    {
+        return $this->pwdForgets;
+    }
+
+    public function addPwdForget(PwdForget $pwdForget): self
+    {
+        if (!$this->pwdForgets->contains($pwdForget)) {
+            $this->pwdForgets[] = $pwdForget;
+            $pwdForget->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePwdForget(PwdForget $pwdForget): self
+    {
+        if ($this->pwdForgets->contains($pwdForget)) {
+            $this->pwdForgets->removeElement($pwdForget);
+            // set the owning side to null (unless already changed)
+            if ($pwdForget->getUser() === $this) {
+                $pwdForget->setUser(null);
+            }
         }
 
         return $this;

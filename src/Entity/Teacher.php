@@ -33,9 +33,15 @@ class Teacher
      */
     private $classrooms;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Postit", mappedBy="teacher")
+     */
+    private $postits;
+
     public function __construct()
     {
         $this->classrooms = new ArrayCollection();
+        $this->postits = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -88,6 +94,37 @@ class Teacher
     {
         if ($this->classrooms->contains($classroom)) {
             $this->classrooms->removeElement($classroom);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Postit[]
+     */
+    public function getPostits(): Collection
+    {
+        return $this->postits;
+    }
+
+    public function addPostit(Postit $postit): self
+    {
+        if (!$this->postits->contains($postit)) {
+            $this->postits[] = $postit;
+            $postit->setTeacher($this);
+        }
+
+        return $this;
+    }
+
+    public function removePostit(Postit $postit): self
+    {
+        if ($this->postits->contains($postit)) {
+            $this->postits->removeElement($postit);
+            // set the owning side to null (unless already changed)
+            if ($postit->getTeacher() === $this) {
+                $postit->setTeacher(null);
+            }
         }
 
         return $this;

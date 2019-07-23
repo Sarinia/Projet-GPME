@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="container">
+		<form class="w-25 mx-auto text-center" action="" method="post">
+			<div class="form-group">
+				<input placeholder="Votre email" required type="text" name="email" class="form-control">
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-success" name="submit_pwdforget" value="envoyer">Envoyer</button>
+			</div>
+		</form>
+	</div>
+{% endblock %}

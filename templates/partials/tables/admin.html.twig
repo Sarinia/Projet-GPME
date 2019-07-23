@@ -27,7 +27,7 @@
 						<a href="{{ path('admin_modify', {'id': admin.id,}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Modifier"><i class="far fa-edit"></i></a>
 						{% if admin.user.exist == false %}{% set dataId = admin.id %}{% set dataLink = path('admin_delete', {'id': admin.id,}) %}
 							<a href="{{ path('admin_enable', {'id': admin.id,}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Activer"><i class="far fa-eye"></i></a>
-							{% include 'partials/modals/modal.html.twig' %}
+							{% include 'partials/modals/confirm.html.twig' %}
 						{% else %}
 							<a href="{{ path('admin_disable', {'id': admin.id,}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Désactiver"><i class="far fa-eye-slash"></i></a>
 						{% endif %}

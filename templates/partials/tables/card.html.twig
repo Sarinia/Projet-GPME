@@ -27,7 +27,7 @@
 						<a href="{{ path('card_print', {'id': card.id}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Apercu avant impression"><i class="fas fa-print"></i></a>
 						{% if card.exist == false %}{% set dataId = card.id %}{% set dataLink = path('card_delete', {'id': card.id,}) %}
 							<a href="{{ path('card_enable', {'id': card.id}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Activer"><i class="far fa-eye"></i></a>
-							{% include 'partials/modals/modal.html.twig' %}
+							{% include 'partials/modals/confirm.html.twig' %}
 						{% else %}
 							<a href="{{ path('card_disable', {'id': card.id}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Désactiver"><i class="far fa-eye-slash"></i></a>
 						{% endif %}
@@ -64,6 +64,7 @@
 						<a href="{{ path('card_show', {'id': card.id}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Voir"><i class="far fa-file-alt"></i></a>
 						<a href="{{ path('card_modify', {'id': card.id}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Modifier"><i class="far fa-edit"></i></a>
 						<a href="{{ path('card_print', {'id': card.id}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Apercu avant impression"><i class="fas fa-print"></i></a>
+						<a href="{{ path('card_postit', {'id': card.id}) }}" class="btn btn-sm btn-{% if card.postits | length > 0 %}success{% else %}primary{% endif %} my-1" data-toggle="tooltip" data-placement="top" title="Post-it"><i class="far fa-sticky-note"></i></a>
 					</td>
 				</tr>
 			{% endfor %}
@@ -98,6 +99,7 @@
 							<a href="{{ path('card_show', {'id': card.id}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Voir"><i class="far fa-file-alt"></i></a>
 							<a href="{{ path('card_modify', {'id': card.id}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Modifier"><i class="far fa-edit"></i></a>
 							<a href="{{ path('card_print', {'id': card.id}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Apercu avant impression"><i class="fas fa-print"></i></a>
+							<a href="{{ path('card_postit', {'id': card.id}) }}" class="btn btn-sm btn-{% if card.postits | length > 0 %}success{% else %}primary{% endif %} my-1" data-toggle="tooltip" data-placement="top" title="Post-it"><i class="far fa-sticky-note"></i></a>
 						</td>
 					</tr>
 				{% endif %}

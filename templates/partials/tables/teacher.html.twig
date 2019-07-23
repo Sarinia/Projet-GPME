@@ -25,7 +25,7 @@
 						<a href="{{ path('teacher_modify', {'id': teacher.id,}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Modifier"><i class="far fa-edit"></i></a>
 						{% if teacher.user.exist == false %}{% set dataId = teacher.id %}{% set dataLink = path('teacher_delete', {'id': teacher.id,}) %}
 							<a href="{{ path('teacher_enable', {'id': teacher.id,}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Activer"><i class="far fa-eye"></i></a>
-							{% include 'partials/modals/modal.html.twig' %}
+							{% include 'partials/modals/confirm.html.twig' %}
 						{% else %}
 							<a href="{{ path('teacher_disable', {'id': teacher.id,}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Désactiver"><i class="far fa-eye-slash"></i></a>
 						{% endif %}

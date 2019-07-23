@@ -167,6 +167,16 @@ class Card
     private $task;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Postit", mappedBy="card")
+     */
+    private $postits;
+
+    public function __construct()
+    {
+        $this->postits = new ArrayCollection();
+    }
+
+    /**
      * Methode magique clone
      *
      * @return void
@@ -512,6 +522,37 @@ class Card
     public function setTask(?Task $task): self
     {
         $this->task = $task;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Postit[]
+     */
+    public function getPostits(): Collection
+    {
+        return $this->postits;
+    }
+
+    public function addPostit(Postit $postit): self
+    {
+        if (!$this->postits->contains($postit)) {
+            $this->postits[] = $postit;
+            $postit->setCard($this);
+        }
+
+        return $this;
+    }
+
+    public function removePostit(Postit $postit): self
+    {
+        if ($this->postits->contains($postit)) {
+            $this->postits->removeElement($postit);
+            // set the owning side to null (unless already changed)
+            if ($postit->getCard() === $this) {
+                $postit->setCard(null);
+            }
+        }
 
         return $this;
     }

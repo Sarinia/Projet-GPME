@@ -3,9 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Card;
+use App\Entity\Postit;
 use App\Form\CardType;
+use App\Form\PostitType;
 use App\Repository\ActivityRepository;
 use App\Repository\ModalityRepository;
+use App\Repository\PostitRepository;
 use App\Repository\ProblemRepository;
 use App\Repository\StudentRepository;
 use App\Repository\TaskRepository;
@@ -63,7 +66,6 @@ class CardController extends AbstractController
     */
     public function show(Card $card, TaskRepository $taskRepo, ProblemRepository $problemRepo, ModalityRepository $modalityRepo, TermRepository $termRepo, ActivityRepository $activityRepo)
     {
-        dump($card);
         return $this->render('card/show.html.twig', [
             "card" => $card,
             "problems" => $problemRepo->findAll(),
@@ -72,6 +74,105 @@ class CardController extends AbstractController
             "activities" => $activityRepo->findAll(),
             "tasks" => $taskRepo->findAll(),
         ]);
+    }
+
+    /**
+    * @Route("/card/postit/{id}", name="card_postit")
+    */
+    public function postit(ObjectManager $manager, Request $request, Card $card, PostitRepository $postitRepo, TaskRepository $taskRepo, ProblemRepository $problemRepo, ModalityRepository $modalityRepo, TermRepository $termRepo, ActivityRepository $activityRepo)
+    {
+        if ($this->getUser()->getTitle() == "ROLE_ADMIN") {
+
+            $postit = $postitRepo->findOneBy(['card' => $card, 'admin' => $this->getUser()->getAdmin()]);
+
+            if ($postit) {
+
+                $form = $this->createForm(PostitType::class, $postit);
+
+                $form->handleRequest($request);
+
+                if ($form->isSubmitted() && $form->isValid()){
+
+                    $manager->persist($postit);
+                    $manager->flush();
+                }
+            } else {
+
+                $postit = new Postit();
+
+                $form = $this->createForm(PostitType::class, $postit);
+
+                $form->handleRequest($request);
+
+                if ($form->isSubmitted() && $form->isValid()){
+
+                    $postit->setCard($card);
+
+                    $postit->setAdmin($this->getUser()->getAdmin());
+
+                    $manager->persist($postit);
+                    $manager->flush();
+                }
+            }
+        }
+
+        if ($this->getUser()->getTitle() == "ROLE_TEACHER") {
+
+            $postit = $postitRepo->findOneBy(['card' => $card, 'teacher' => $this->getUser()->getTeacher()]);
+
+            if ($postit) {
+
+                $form = $this->createForm(PostitType::class, $postit);
+
+                $form->handleRequest($request);
+
+                if ($form->isSubmitted() && $form->isValid()){
+
+                    $manager->persist($postit);
+                    $manager->flush();
+                }
+            } else {
+
+                $postit = new Postit();
+
+                $form = $this->createForm(PostitType::class, $postit);
+
+                $form->handleRequest($request);
+
+                if ($form->isSubmitted() && $form->isValid()){
+
+                    $postit->setCard($card);
+
+                    $postit->setTeacher($this->getUser()->getTeacher());
+
+                    $manager->persist($postit);
+                    $manager->flush();
+                }
+            }
+        }
+        return $this->render('card/postit.html.twig', [
+            'form' => $form->createView(),
+            "postit" => $postit,
+            "card" => $card,
+            "problems" => $problemRepo->findAll(),
+            "modalities" => $modalityRepo->findAll(),
+            "terms" => $termRepo->findAll(),
+            "activities" => $activityRepo->findAll(),
+            "tasks" => $taskRepo->findAll(),
+        ]);
+    }
+
+    /**
+     * @Route("/card/delete/postit/{id}", name="card_delete_postit")
+     */
+    public function postitDelete(Postit $postit, ObjectManager $manager, Request $request)
+    {
+            $manager->remove($postit);
+            $manager->flush();
+
+            $this->addFlash('success', "Votre post-it a bien été supprimé !");
+
+            return $this->redirectToRoute('card_show_list');
     }
 
     /**

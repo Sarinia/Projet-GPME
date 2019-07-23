@@ -24,7 +24,7 @@
 {# ---------------------------------------------------------------------------------------------------------------------------------------------- #}
 
 <!-- menu secondaire -->
-<div id="menu_secondaire" class="my-3">
+<div id="menu_secondaire" class="d-flex my-3">
 
 	<!-- account -->
 	{% if (app.request.attributes.get('_route') | slice(0,7) == "account") %}
@@ -45,9 +45,13 @@
 
 	<!-- cardsp -->
 	{% if (app.request.attributes.get('_route') == "card_show") %}
-		<a href="{{ path('card_show_list') }}" class="btn btn-sm btn-primary">Retour</a>
-		<a href="{{ path('card_modify', {'id': card.id}) }}" class="btn btn-sm btn-primary">Modifier</a>
-		<a href="{{ path('card_print', {'id': card.id}) }}" class="btn btn-sm btn-primary">Imprimer</a>
+		<a href="{{ path('card_show_list') }}" class="m-1 btn btn-sm btn-primary">Retour</a>
+		<a href="{{ path('card_modify', {'id': card.id}) }}" class="m-1 btn btn-sm btn-primary">Modifier</a>
+		<a href="{{ path('card_print', {'id': card.id}) }}" class="m-1 btn btn-sm btn-primary">Imprimer</a>
+		<a href="{{ path('card_postit', {'id': card.id}) }}" class="m-1 btn btn-sm btn-primary">Post-it</a>
+	{% endif %}
+	{% if (app.request.attributes.get('_route') == "card_postit") %}
+		<a href="{{ path('card_show_list') }}" class="m-1 btn btn-sm btn-primary">Retour</a>
 	{% endif %}
 	{% if (app.request.attributes.get('_route') == "card_modify") %}
 		<a href="{{ path('card_show_list') }}" class="btn btn-sm btn-primary">Retour</a>

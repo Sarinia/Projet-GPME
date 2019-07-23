@@ -21,6 +21,7 @@
 	<a href="{{ path('admin_show_list') }}" class="m-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,5) == "admin") %}success{% else %}primary{% endif %}">Administrateurs</a>
 	<a href="{{ path('establishment_show_list') }}" class="m-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,13) == "establishment") %}success{% else %}primary{% endif %}">Etablissements</a>
 	<a href="{{ path('department_show_list') }}" class="m-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,10) == "department") %}success{% else %}primary{% endif %}">Départements</a>
+	<a href="{{ path('pwd_forget_show_list') }}" class="m-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,10) == "pwd_forget") %}success{% else %}primary{% endif %}">MDP oubliés</a>
 
 </div>
 
@@ -196,5 +197,16 @@
 	{% if (app.request.attributes.get('_route') == "department_modify") %}
 		<a href="{{ path('department_show_list') }}" class="btn btn-sm btn-primary">Retour</a>
 	{% endif %}
+
+	<!-- Pwd forget -->
+	{% if (app.request.attributes.get('_route') == "pwd_forget_show_list") %}
+		
+	{% endif %}
+	{# {% if (app.request.attributes.get('_route') == "pwd_forget_show") %}
+		<a href="{{ path('pwd_forget_show_list') }}" class="btn btn-sm btn-primary">Retour</a>
+	{% endif %}
+	{% if (app.request.attributes.get('_route') == "pwd_forget_new") %}
+		<a href="{{ path('pwd_forget_show_list') }}" class="btn btn-sm btn-primary">Retour</a>
+	{% endif %} #}
 	
 </div>

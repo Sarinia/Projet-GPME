@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+	<h5>Liste des demandes</h5>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col" class="col-1">#</th>
+				<th scope="col" class="col-2">Email</th>
+				<th scope="col" class="col-2">Etat</th>
+				<th scope="col" class="col-2">Date</th>
+				<th scope="col" class="col-2">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for pwdForget in pwdForgets %}
+				<tr>
+					<td>{{pwdForget.id}}</td>
+					<td>{{pwdForget.user.email}}</td>
+					<td>{{pwdForget.unread}}</td>
+					<td>{{pwdForget.createdAt | date('d/m/Y')}}</td>
+					<td class="py-1">
+						<a href="{{ path('pwd_forget_modify', {'user': pwdForget.user.id, 'forget': pwdForget.id}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Générer mdp"><i class="fas fa-key"></i></a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+{% endblock %}

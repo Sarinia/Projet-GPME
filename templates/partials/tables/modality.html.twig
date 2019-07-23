@@ -16,7 +16,7 @@
 				{% if app.user.title == "ROLE_SADMIN" or app.user.title == "ROLE_ADMIN" %}
 					<td class="py-1">{% set dataId = modality.id %}{% set dataLink = path('referentiel_modality_delete', {'id': modality.id,}) %}
 						<a href="{{ path('referentiel_modality_modify', {'id': modality.id,}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Modifier"><i class="far fa-edit"></i></a>
-						{% include 'partials/modals/modal.html.twig' %}
+						{% include 'partials/modals/confirm.html.twig' %}
 					</td>
 				{% endif %}
 			</tr>

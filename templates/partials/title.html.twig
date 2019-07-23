@@ -16,6 +16,7 @@
 {# Card #}
 {% if (app.request.attributes.get('_route') == "card_show_list") %}Liste des fiches de situation professionnelle{% endif %}
 {% if (app.request.attributes.get('_route') == "card_show") %}Page de la fiche de situation professionnelle{% endif %}
+{% if (app.request.attributes.get('_route') == "card_postit") %}Page de la fiche de situation professionnelle{% endif %}
 {% if (app.request.attributes.get('_route') == "card_new") %}Création d'une fiche de situation professionnelle{% endif %}
 {% if (app.request.attributes.get('_route') == "card_modify") %}Modification d'une fiche de situation professionnelle{% endif %}
 {% if (app.request.attributes.get('_route') == "card_print") %}Aperçu avant impression{% endif %}
@@ -61,5 +62,11 @@
 {# Department #}
 {% if (app.request.attributes.get('_route') == "department_show_list") %}Liste des départements{% endif %}
 {% if (app.request.attributes.get('_route') == "department_show") %}Page du département {{ department.name }}{% endif %}
+{% if (app.request.attributes.get('_route') == "department_new") %}Création d'un département{% endif %}
+{% if (app.request.attributes.get('_route') == "department_modify") %}Modification d'un département{% endif %}
+
+{# PwdForget #}
+{% if (app.request.attributes.get('_route') == "pwd_forget_show_list") %}Liste des demandes de nouveau mot de passe{% endif %}
+{% if (app.request.attributes.get('_route') == "pwd_forget_new") %}Demande d'un nouveau mot de passe{% endif %}
 {% if (app.request.attributes.get('_route') == "department_new") %}Création d'un département{% endif %}
 {% if (app.request.attributes.get('_route') == "department_modify") %}Modification d'un département{% endif %}

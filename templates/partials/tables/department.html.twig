@@ -16,12 +16,12 @@
 					<td>{{ department.name | upper }}</td>
 					<td>{{ department.createdAt | date('d/m/Y') }}</td>
 					<td class="{% if department.exist == true %}text-success{% else %}text-danger{% endif %}">{% if department.exist == true %} oui {% else %} non {% endif %}</td>
-					<td class="col-2 py-1">
+					<td class="py-1">
 						<a href="{{ path('department_show', {'id': department.id}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Voir"><i class="far fa-file-alt"></i></a>
 						<a href="{{ path('department_modify', {'id': department.id}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Modifier"><i class="far fa-edit"></i></a>
 						{% if department.exist == false %}{% set dataId = department.id %}{% set dataLink = path('department_delete', {'id': department.id,}) %}
 							<a href="{{ path('department_enable', {'id': department.id}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Activer"><i class="far fa-eye"></i></a>
-							{% include 'partials/modals/modal.html.twig' %}
+							{% include 'partials/modals/confirm.html.twig' %}
 						{% else %}
 							<a href="{{ path('department_disable', {'id': department.id}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Désactiver"><i class="far fa-eye-slash"></i></a>
 						{% endif %}
