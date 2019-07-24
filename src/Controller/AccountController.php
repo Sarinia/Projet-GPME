@@ -307,7 +307,9 @@ class AccountController extends AbstractController
                 $this->addFlash('success','Le mot de passe a bien été modifié');
 
                 // on redirige vers la page de dashboard
-                return $this->redirectToRoute('dashboard');
+                return $this->redirectToRoute('dashboard',[
+                    'slug' => $this->getUser()->getSlug(),
+                ]);
                 
             } else {
                 // on enregistre un message flash
