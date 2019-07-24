@@ -17,11 +17,10 @@
             </div>
         </div>
         <div class="col-9">
-            {% for classroom in teacher.classrooms %}
+            {% for classroom in teacher.classrooms %}{% set students = classroom.students %}
                 <h5>Classe {{classroom.degree}}</h5>
-                {% set students = classroom.students %}
-                    {% include 'partials/tables/student.html.twig' %}
-                {% endfor %}
-            </div>
+                {% include 'partials/tables/student.html.twig' %}
+            {% endfor %}
         </div>
-    {% endblock %}
+    </div>
+{% endblock %}

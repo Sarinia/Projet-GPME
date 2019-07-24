@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+	{% block body %}
+
+		{{ form_start(form) }}
+		{{ form_row(form.topic) }}
+		<div class="form-group">
+			<label class="required" for="user">Choisir un destinataire </label>
+			<select class="form-control" id="user" name="user">
+				{% for user in users %}
+					{% if user.id != app.user.id %}
+						<option value="{{user.id}}">{{user.lastname}} {{user.firstname}}</option>
+					{% endif %}
+				{% endfor %}
+			</select>
+		</div>
+		{{ form_end(form) }}
+		<p>* champs obligatoires</p>
+
+	{% endblock %}

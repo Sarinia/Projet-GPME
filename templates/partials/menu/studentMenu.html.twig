@@ -1,6 +1,7 @@
 <!-- menu principal -->
 <div id="menu_principal" class="my-3 d-flex flex-wrap justify-content-center">
 
+	<a href="{{ path('tchat_show_list') }}" class="m-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,9) == "messaging") %}success{% else %}primary{% endif %}">Discussions</a>
 	<a href="{{ path('passport_show', {'id': app.user.student.passport.id}) }}" class="m-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,8) == "passport") %}success{% else %}primary{% endif %}">Tableau</a>
 	<a href="{{ path('card_show_list') }}" class="m-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,4) == "card") %}success{% else %}primary{% endif %}">Fiches SP</a>
 	<a href="{{ path('student_show_list') }}" class="m-1 btn btn-{% if (app.request.attributes.get('_route') | slice(0,7) == "student") %}success{% else %}primary{% endif %}">Etudiants</a>
@@ -31,6 +32,14 @@
 		<a href="{{ path('dashboard', {'slug': app.user.slug,}) }}" class="m-1 btn btn-primary">Retour</a>
 		<a href="{{ path('account_profile') }}" class="m-1 btn btn-{% if app.request.attributes.get('_route') == "account_profile" %}success{% else %}primary{% endif %}">Modification du profil</a>
 		<a href="{{ path('account_password') }}" class="m-1 btn btn-{% if app.request.attributes.get('_route') == "account_password" %}success{% else %}primary{% endif %}">Modification du mot de passe</a>
+	{% endif %}
+
+	<!-- tchat -->
+	{% if (app.request.attributes.get('_route') == "tchat_show_list") %}
+		<a href="{{ path('tchat_new') }}" class="btn btn-sm btn-primary">Créer une discussion</a>
+	{% endif %}
+	{% if (app.request.attributes.get('_route') == "tchat_show") %}
+		<a href="{{ path('tchat_show_list') }}" class="btn btn-sm btn-primary">Retour</a>
 	{% endif %}
 
 	<!-- passport -->

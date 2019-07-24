@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+	<div class="row">
+		<div class="col-3">
+			<div class="card">
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item">Créé par : {% if tchat.forwarder.id == app.user.id %}Moi{% else %}{{tchat.forwarder.lastname}} {{tchat.forwarder.firstname}}{% endif %}</li>
+					<li class="list-group-item">Destinataire : {% if tchat.recipient.id == app.user.id %}Moi{% else %}{{tchat.recipient.lastname}} {{tchat.recipient.firstname}}{% endif %}</li>
+					<li class="list-group-item">Nb de message : {{tchat.messages | length}}</li>
+					<li class="list-group-item">Créée le : {{tchat.createdAt | date('d/m/Y')}}</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-9">
+			<div class="mb-3">
+				{{ form_start(form) }}
+				{{ form_end(form) }}
+			</div>
+			<div>
+				{% for message in messages %}
+					<div class="card bg-light mb-3">
+						<div class="card-header d-flex justify-content-between"><p class="m-0">Auteur : {% if message.createdBy.id == app.user.id %}Moi{% else %}{{message.createdBy.lastname}} {{message.createdBy.firstname}}{% endif %}</p><p class="m-0">Posté le : {{message.createdAt | date('d/m/Y H:i')}}</p></div>
+						<div class="card-body">
+							<p class="card-text">{{message.text}}</p>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

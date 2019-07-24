@@ -442,7 +442,7 @@ class UserFixtures extends Fixture
 		->setTask($task1_1_1)
 		->setCreatedAt(new \DateTime())
 		->setExist(1)
-		->setAssociate(true);
+		->setAssociate(false);
 		$manager->persist($card);
 
 		// passport

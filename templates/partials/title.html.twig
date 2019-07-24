@@ -8,10 +8,15 @@
 {# Contact #}
 {% if (app.request.attributes.get('_route') == "contact") %}Formulaire de contact{% endif %}
 
+{# Tchat #}
+{% if (app.request.attributes.get('_route') == "tchat_show_list") %}Liste des discussions{% endif %}
+{% if (app.request.attributes.get('_route') == "tchat_show") %}Discussion ({{tchat.topic}}){% endif %}
+{% if (app.request.attributes.get('_route') == "tchat_new") %}Création d'une nouvelle discussion{% endif %}
+
 {# Passport #}
 {% if (app.request.attributes.get('_route') == "passport_show_list") %}Liste des Tableaux Synoptiques{% endif %}
 {% if (app.request.attributes.get('_route') == "passport_show") %}Tableau Synoptique{% endif %}
-	{% if (app.request.attributes.get('_route') == "passport_print") %}Aperçu avant impression{% endif %}
+{% if (app.request.attributes.get('_route') == "passport_print") %}Aperçu avant impression{% endif %}
 
 {# Card #}
 {% if (app.request.attributes.get('_route') == "card_show_list") %}Liste des fiches de situation professionnelle{% endif %}

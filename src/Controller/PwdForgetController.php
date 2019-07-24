@@ -20,7 +20,7 @@ class PwdForgetController extends AbstractController
      */
     public function index(PwdForgetRepository $pwdForgetRepo)
     {
-    	$pwdForgets = $pwdForgetRepo->findAll();
+    	$pwdForgets = $pwdForgetRepo->findAll([],['createdAt' => 'DESC']);
 
     	return $this->render('pwd_forget/list.html.twig', [
     		'pwdForgets' => $pwdForgets,

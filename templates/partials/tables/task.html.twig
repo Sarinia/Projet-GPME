@@ -1,29 +1,97 @@
-{% for activity in activities %}
-	<h5>Activité 1.{{activity.entitle}}</h5>
-	<table class="table table-striped">
-		<thead>
-			<tr>
-				<th class="col-1">Numéro</th>
-
-				<th>Tâches</th>
-				{% if app.user.title == "ROLE_SADMIN" or app.user.title == "ROLE_ADMIN" %}
-					<th scope="col" class="col-1">Actions</th>
-				{% endif %}
-			</tr>
-		</thead>
-		<tbody>
-			{% for task in activity.tasks %}
+{% if app.user.title == "ROLE_SADMIN" %}
+	{% for activity in activities %}
+		<h5>Activité 1.{{activity.entitle}}</h5>
+		<table class="table table-striped">
+			<thead>
 				<tr>
-					<td>{{task.entitle}}</td>
-					<td>{{task.name}}</td>
-					{% if app.user.title == "ROLE_SADMIN" or app.user.title == "ROLE_ADMIN" %}
+					<th scope="col">Numéro</th>
+					<th scope="col">Tâches</th>
+					<th scope="col">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for task in activity.tasks %}
+					<tr>
+						<td>{{task.entitle}}</td>
+						<td>{{task.name}}</td>
 						<td class="py-1">{% set dataId = task.id %}{% set dataLink = path('referentiel_task_delete', {'id': task.id,}) %}
 							<a href="{{ path('referentiel_task_modify', {'id': task.id,}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Modifier"><i class="far fa-edit"></i></a>
 							{% include 'partials/modals/confirm.html.twig' %}
 						</td>
-					{% endif %}
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endfor %}
+{% endif %}
+
+{% if app.user.title == "ROLE_ADMIN" %}
+	{% for activity in activities %}
+		<h5>Activité 1.{{activity.entitle}}</h5>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th scope="col">Numéro</th>
+					<th scope="col">Tâches</th>
+					<th scope="col">Actions</th>
 				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-{% endfor %}
+			</thead>
+			<tbody>
+				{% for task in activity.tasks %}
+					<tr>
+						<td>{{task.entitle}}</td>
+						<td>{{task.name}}</td>
+						<td class="py-1">{% set dataId = task.id %}{% set dataLink = path('referentiel_task_delete', {'id': task.id,}) %}
+							<a href="{{ path('referentiel_task_modify', {'id': task.id,}) }}" class="btn btn-sm btn-primary my-1" data-toggle="tooltip" data-placement="top" title="Modifier"><i class="far fa-edit"></i></a>
+							{% include 'partials/modals/confirm.html.twig' %}
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endfor %}
+{% endif %}
+
+{% if app.user.title == "ROLE_TEACHER" %}
+	{% for activity in activities %}
+		<h5>Activité 1.{{activity.entitle}}</h5>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th scope="col">Numéro</th>
+					<th scope="col">Tâches</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for task in activity.tasks %}
+					<tr>
+						<td>{{task.entitle}}</td>
+						<td>{{task.name}}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endfor %}
+{% endif %}
+
+{% if app.user.title == "ROLE_USER" %}
+	{% for activity in activities %}
+		<h5>Activité 1.{{activity.entitle}}</h5>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th scope="col">Numéro</th>
+					<th scope="col">Tâches</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for task in activity.tasks %}
+					<tr>
+						<td>{{task.entitle}}</td>
+						<td>{{task.name}}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endfor %}
+{% endif %}
