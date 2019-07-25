@@ -48,7 +48,7 @@ class AccountController extends AbstractController
             //on vérifie si un établissement a été choisi
             if (isset($establishment) && !empty($establishment)) {
 
-                $establishment = $establishmentRepo->findOneBy(['id' => $establishment]);dump($establishment);
+                $establishment = $establishmentRepo->findOneBy(['id' => $establishment]);
 
                 // on redirige vers la page de login
                 return $this->redirectToRoute('account_login', [
