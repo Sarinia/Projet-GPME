@@ -3,6 +3,8 @@
 {% block body %}
 	
 	{% if app.user.title == "ROLE_SADMIN" %}
+		<h5>Mes discussions</h5>
+		{% include 'partials/tables/discussion.html.twig' %}
 		<h5>Derniers étudiants ajoutés</h5>
 		{% include 'partials/tables/student.html.twig' %}
 		<h5>Derniers enseignants ajoutés</h5>
@@ -18,8 +20,8 @@
 	{% endif %}
 
 	{% if app.user.title == "ROLE_ADMIN" %}
-		<h5>Mes discussions  <span>(x message(s) non lu(s))</span></h5>
-		
+		<h5>Mes discussions</h5>
+		{% include 'partials/tables/discussion.html.twig' %}
 		<h5>Liste des tableaux synoptiques</h5>
 		{% for classroom in classrooms %}	
 			{% include 'partials/tables/passport.html.twig' %}
@@ -33,8 +35,8 @@
 	{% endif %}
 
 	{% if app.user.title == "ROLE_TEACHER" %}
-		<h5>Mes discussions  <span>(x message(s) non lu(s))</span></h5>
-		
+		<h5>Mes discussions</h5>
+		{% include 'partials/tables/discussion.html.twig' %}
 		<h5>Liste des tableaux synoptiques</h5>
 		{% for classroom in classrooms %}	
 			{% include 'partials/tables/passport.html.twig' %}
@@ -48,8 +50,8 @@
 	{% endif %}
 
 	{% if app.user.title == "ROLE_USER" %}
-		<h5>Mes discussions  <span>(x message(s) non lu(s))</span></h5>
-
+		<h5>Mes discussions</h5>
+		{% include 'partials/tables/discussion.html.twig' %}
 		<h5>Résumé de mon passeport professionnel</h5>
 		{% include 'partials/tables/passport.html.twig' %}
 		<h5>Mes fiches de situation professionnelle</h5>

@@ -113,7 +113,7 @@ class TeacherController extends AbstractController
             $link = "<a href='http://passeportgpme.estiennedorves.net'>Passeport Numérique</a>";
             $to = $teacher->getUser()->getEmail();
             $subject = "Création d'un compte Passeport Numérique";
-            $message = 
+            $message =
             "
             Bonjour,<br>
             Nous avons le plaisir de vous informer de la création d'un compte sur le site ".$link." .<br>
@@ -204,7 +204,7 @@ class TeacherController extends AbstractController
         $manager->persist($teacher);
         $manager->flush();
 
-        $referer = $request->headers->get('referer');   
+        $referer = $request->headers->get('referer');
         return new RedirectResponse($referer);
     }
 
@@ -217,7 +217,7 @@ class TeacherController extends AbstractController
         $manager->persist($teacher);
         $manager->flush();
 
-        $referer = $request->headers->get('referer');   
+        $referer = $request->headers->get('referer');
         return new RedirectResponse($referer);
     }
 
@@ -233,13 +233,13 @@ class TeacherController extends AbstractController
 
             $this->addFlash('success', "L'enseignant a bien été supprimé !");
 
-            $referer = $request->headers->get('referer');   
+            $referer = $request->headers->get('referer');
             return new RedirectResponse($referer);
-            
+
         } else {
             $this->addFlash('danger', "L'enseignant ne peut être supprimé car il existe !");
 
-            $referer = $request->headers->get('referer');   
+            $referer = $request->headers->get('referer');
             return new RedirectResponse($referer);
         }
     }
