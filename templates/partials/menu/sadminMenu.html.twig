@@ -33,9 +33,9 @@
 
 	<!-- account -->
 	{% if (app.request.attributes.get('_route') | slice(0,7) == "account") %}
-		<a href="{{ path('dashboard', {'slug': app.user.slug,}) }}" class="m-1 btn btn-primary">Retour</a>
-		<a href="{{ path('account_profile') }}" class="m-1 btn btn-{% if app.request.attributes.get('_route') == "account_profile" %}success{% else %}primary{% endif %}">Modification du profil</a>
-		<a href="{{ path('account_password') }}" class="m-1 btn btn-{% if app.request.attributes.get('_route') == "account_password" %}success{% else %}primary{% endif %}">Modification du mot de passe</a>
+		<a href="{{ path('dashboard', {'slug': app.user.slug,}) }}" class="btn btn-sm btn-primary">Retour</a>
+		<a href="{{ path('account_profile') }}" class="btn btn-sm btn-{% if app.request.attributes.get('_route') == "account_profile" %}success{% else %}primary{% endif %}">Modification du profil</a>
+		<a href="{{ path('account_password') }}" class="btn btn-sm btn-{% if app.request.attributes.get('_route') == "account_password" %}success{% else %}primary{% endif %}">Modification du mot de passe</a>
 	{% endif %}
 
 	<!-- tchat -->
