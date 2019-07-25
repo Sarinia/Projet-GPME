@@ -142,7 +142,7 @@ class StudentController extends AbstractController
             Bonjour,<br>
             Nous avons le plaisir de vous informer de la création d'un compte sur le site ".$link." .<br>
             Votre identifiant est : ".$admin->getUser()->getEmail()." .<br>
-            Votre mot de passe est : ".$passRandom." .<br>
+            Votre mot de passe est : ".$passRandom."<br>
             A réception de cet email, pensez à modifier votre mot de passe.
             ";
             $headers = "MIME-Version: 1.0"."\r\n";
