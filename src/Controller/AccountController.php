@@ -15,6 +15,7 @@ use App\Repository\ClassroomRepository;
 use App\Repository\DepartmentRepository;
 use App\Repository\EstablishmentRepository;
 use App\Repository\StudentRepository;
+use App\Repository\TchatRepository;
 use App\Repository\TeacherRepository;
 use Cocur\Slugify\Slugify;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -94,10 +95,14 @@ class AccountController extends AbstractController
     /**
     * @Route("/dashboard/{slug}", name="dashboard")
     */
-    public function dashboard(User $user, StudentRepository $studentRepo, TeacherRepository $teacherRepo, AdminRepository $adminRepo, ClassroomRepository $classroomRepo, EstablishmentRepository $establishmentRepo, DepartmentRepository $departmentRepo)
+    public function dashboard(User $user, TchatRepository $tchatRepo, StudentRepository $studentRepo, TeacherRepository $teacherRepo, AdminRepository $adminRepo, ClassroomRepository $classroomRepo, EstablishmentRepository $establishmentRepo, DepartmentRepository $departmentRepo)
     {
         if ($this->getUser()->getTitle() == "ROLE_SADMIN") {
+
+            $tchatsForwarder = $tchatRepo->findBy(['forwarder' => $this->getUser()],['createdAt' => 'DESC']);
+            
             return $this->render('account/dashboard.html.twig', [
+            'tchatsForwarder' => $tchatsForwarder,// messages
             'students' => $studentRepo->findBy([],['id' => 'DESC'],5),// liste des étudiants
             'teachers' => $teacherRepo->findBy([],['id' => 'DESC'],5),// liste des enseignants
             'classrooms' => $classroomRepo->findBy([],['createdAt' => 'DESC'],5),// liste des classes
@@ -108,24 +113,33 @@ class AccountController extends AbstractController
         }
 
         if ($this->getUser()->getTitle() == "ROLE_ADMIN") {
+
+            $tchatsForwarder = $tchatRepo->findBy(['forwarder' => $this->getUser()],['createdAt' => 'DESC']);
+
             return $this->render('account/dashboard.html.twig', [
-            // messages
+            'tchatsForwarder' => $tchatsForwarder,// messages
             'classrooms' => $this->getUser()->getAdmin()->getEstablishment()->getClassrooms(),// passeports
             // fiches SP
         ]);
         }
 
         if ($this->getUser()->getTitle() == "ROLE_TEACHER") {
+
+            $tchatsForwarder = $tchatRepo->findBy(['forwarder' => $this->getUser()],['createdAt' => 'DESC']);
+
             return $this->render('account/dashboard.html.twig', [
-            // messages
+            'tchatsForwarder' => $tchatsForwarder,// messages
             'classrooms' => $this->getUser()->getTeacher()->getClassrooms(),// passeports
             // fiches SP
         ]);
         }
 
         if ($this->getUser()->getTitle() == "ROLE_USER") {
+
+            $tchatsForwarder = $tchatRepo->findBy(['forwarder' => $this->getUser()],['createdAt' => 'DESC']);
+
             return $this->render('account/dashboard.html.twig', [
-            // messages
+            'tchatsForwarder' => $tchatsForwarder,// messages
             'student' => $this->getUser()->getStudent(),// passeports
         ]);
         }
