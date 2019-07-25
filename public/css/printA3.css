@@ -1,4 +1,4 @@
 @media print{
 	body{color: black !important;}
-	nav,h1,#menu_principal,#menu_secondaire,#menu_filtre,#debug{display: none;}
+	nav,footer,h1,#menu_principal,#menu_secondaire,#menu_filtre,#debug{display: none;}
 }
