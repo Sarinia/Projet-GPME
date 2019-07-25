@@ -135,13 +135,13 @@ class StudentController extends AbstractController
 
             $from = "gpme.contact@gmail.com";
             $link = "<a href='http://passeportgpme.estiennedorves.net'>Passeport Numérique</a>";
-            $to = $admin->getUser()->getEmail();
+            $to = $student->getUser()->getEmail();
             $subject = "Création d'un compte Passeport Numérique";
             $message = 
             "
             Bonjour,<br>
             Nous avons le plaisir de vous informer de la création d'un compte sur le site ".$link." .<br>
-            Votre identifiant est : ".$admin->getUser()->getEmail()." .<br>
+            Votre identifiant est : ".$student->getUser()->getEmail()." .<br>
             Votre mot de passe est : ".$passRandom." .<br>
             A réception de cet email, pensez à modifier votre mot de passe.
             ";
