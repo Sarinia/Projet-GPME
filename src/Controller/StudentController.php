@@ -123,7 +123,7 @@ class StudentController extends AbstractController
 
             // classroom
             $student->addClassroom($classroom);
-            
+
             $passport = new Passport();
             $passport->setStudent($student);
             $passport->setCreatedAt(new \DateTime());
@@ -135,14 +135,14 @@ class StudentController extends AbstractController
 
             $from = "gpme.contact@gmail.com";
             $link = "<a href='http://passeportgpme.estiennedorves.net'>Passeport Numérique</a>";
-            $to = $admin->getUser()->getEmail();
+            $to = $student->getUser()->getEmail();
             $subject = "Création d'un compte Passeport Numérique";
-            $message = 
+            $message =
             "
             Bonjour,<br>
             Nous avons le plaisir de vous informer de la création d'un compte sur le site ".$link." .<br>
-            Votre identifiant est : ".$admin->getUser()->getEmail()." .<br>
-            Votre mot de passe est : ".$passRandom."<br>
+            Votre identifiant est : ".$student->getUser()->getEmail()." .<br>
+            Votre mot de passe est : ".$passRandom." .<br>
             A réception de cet email, pensez à modifier votre mot de passe.
             ";
             $headers = "MIME-Version: 1.0"."\r\n";
@@ -241,7 +241,7 @@ class StudentController extends AbstractController
         $manager->persist($student);
         $manager->flush();
 
-        $referer = $request->headers->get('referer');   
+        $referer = $request->headers->get('referer');
         return new RedirectResponse($referer);
     }
 
@@ -254,7 +254,7 @@ class StudentController extends AbstractController
         $manager->persist($student);
         $manager->flush();
 
-        $referer = $request->headers->get('referer');   
+        $referer = $request->headers->get('referer');
         return new RedirectResponse($referer);
     }
 
@@ -277,14 +277,14 @@ class StudentController extends AbstractController
 
             $this->addFlash('success', "L'étudiant a bien été supprimé !");
 
-            $referer = $request->headers->get('referer');   
+            $referer = $request->headers->get('referer');
             return new RedirectResponse($referer);
-            
+
         } else {
 
             $this->addFlash('danger', "L'étudiant ne peut pas être supprimé car son compte est toujours actif !");
 
-            $referer = $request->headers->get('referer');   
+            $referer = $request->headers->get('referer');
             return new RedirectResponse($referer);
         }
     }
