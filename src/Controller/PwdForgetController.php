@@ -40,7 +40,7 @@ class PwdForgetController extends AbstractController
 
     			$user = $userRepo->findOneBy(['email' => $emailSend]);
 
-    			if (count($user) == 1) {
+    			if (count($user) != 0) {
     				$pwdForget = new PwdForget();
     				$pwdForget->setUser($user)
     				->setCreatedAt(new \DateTime())
